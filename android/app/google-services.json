@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "736301032077",
+    "firebase_url": "https://naqli-5825c-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "naqli-5825c",
+    "storage_bucket": "naqli-5825c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736301032077:android:5e43fb46a0b3cdac4ef8c4",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6paA8Ldz0PSgf9jtNUqpFXw_ttXbfDcM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
