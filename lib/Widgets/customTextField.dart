@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Widgets/formText.dart';
 
 @immutable
 final class CustomTextfield extends StatelessWidget {
@@ -8,6 +9,7 @@ final class CustomTextfield extends StatelessWidget {
   final String? text;
   final String? text1;
   final TextEditingController? controller;
+  final Color? color;
   final List<Color>? colors;
   final double? dynamicHeight;
   String? Function(String?)? validator;
@@ -21,6 +23,7 @@ final class CustomTextfield extends StatelessWidget {
     this.colors,
     this.dynamicHeight,
     this.onsaved,
+    this.color,
     this.validator,
     this.handleForm,
   });
@@ -28,19 +31,26 @@ final class CustomTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 45,
+      height: 50,
       child: TextFormField(
         style: TextStyle(height: 1),
         validator: validator,
         controller: controller,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(left: 12),
-          hintStyle: TextStyle(fontSize: 12, fontFamily: 'SegoeItalic'),
+          hintStyle: TextStyle(
+              fontStyle: FontStyle.normal,
+              fontSize: 13,
+              fontFamily: 'SegoeItalic',
+              color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.5)),
           hintText: text,
           errorText: text1,
           errorStyle: TextStyle(height: 0, fontSize: 8.5),
           errorMaxLines: 2,
           border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: color ?? Color.fromRGBO(202, 202, 202, 1),
+              ),
               borderRadius: BorderRadius.all(Radius.circular(5))),
         ),
       ),
@@ -54,44 +64,43 @@ final class CustomTextfieldGrey extends StatelessWidget {
   final String? text;
   final String? text1;
   final TextEditingController? controller;
-  final List<Color>? colors;
   final double? dynamicHeight;
+  final Color? color;
   String? Function(String?)? validator;
   final Function(String)? handleForm;
 
-  CustomTextfieldGrey({
-    this.controller,
-    super.key,
-    this.text1,
-    this.text,
-    this.colors,
-    this.dynamicHeight,
-    this.onsaved,
-    this.validator,
-    this.handleForm,
-  });
+  CustomTextfieldGrey(
+      {this.controller,
+      super.key,
+      this.text1,
+      this.text,
+      this.dynamicHeight,
+      this.onsaved,
+      this.validator,
+      this.handleForm,
+      this.color});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 45,
+      height: 50,
       child: TextFormField(
+        textAlignVertical: TextAlignVertical.center,
+        textAlign: TextAlign.center,
         style: TextStyle(height: 1),
         validator: validator,
         controller: controller,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(left: 12),
-          hintStyle: TextStyle(
-              fontSize: 13,
-              fontFamily: 'SFProText',
-              fontWeight: FontWeight.normal,
-              color: Color.fromRGBO(183, 183, 183, 1)),
+          hintStyle: AvailableText.helvetica,
           hintText: text,
           errorText: text1,
           errorStyle: TextStyle(height: 0, fontSize: 8.5),
           errorMaxLines: 2,
           border: OutlineInputBorder(
-              borderSide: BorderSide(color: Color.fromRGBO(218, 218, 218, 1)),
+              borderSide: BorderSide(
+                color: color ?? Color.fromRGBO(183, 183, 183, 1),
+              ),
               borderRadius: BorderRadius.all(Radius.circular(5))),
         ),
       ),

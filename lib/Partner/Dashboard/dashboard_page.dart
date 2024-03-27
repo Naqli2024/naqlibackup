@@ -145,7 +145,7 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Image.asset(
-                        'Naqli-final-logo.png',
+                        'naqlilogo.png',
                         width: 10.w,
                       ),
                       Row(
@@ -158,7 +158,7 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                               'User',
                               style: TextStyle(
                                 fontSize: 20,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(112, 112, 112, 1),
                               ),
                             ),
@@ -177,7 +177,7 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                               'Partner',
                               style: TextStyle(
                                 fontSize: 16,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(206, 203, 203, 1),
                               ),
                             ),
@@ -492,7 +492,7 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                                   ),
                                 )),
                         Image.asset(
-                          'Naqli-final-logo.png',
+                          'naqlilogo.png',
                           width: 10.w,
                         ),
                         Padding(
@@ -505,7 +505,7 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                               'User',
                               style: TextStyle(
                                 fontSize: 12,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(206, 203, 203, 1),
                               ),
                             ),
@@ -528,7 +528,7 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                               'Partner',
                               style: TextStyle(
                                 fontSize: 12,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(112, 112, 112, 1),
                               ),

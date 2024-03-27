@@ -103,7 +103,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Image.asset(
-                          'Naqli-final-logo.png',
+                          'naqlilogo.png',
                           width: 10.w,
                         ),
                         Row(
@@ -116,7 +116,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                 'User',
                                 style: TextStyle(
                                   fontSize: 24,
-                                  fontFamily: "HelveticaNeue",
+                                  fontFamily: "HelveticaNeueRegular",
                                   color: Color.fromRGBO(206, 203, 203, 1),
                                 ),
                               ),
@@ -135,7 +135,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                 'Partner',
                                 style: TextStyle(
                                     fontSize: 24,
-                                    fontFamily: "HelveticaNeue",
+                                    fontFamily: "HelveticaNeueRegular",
                                     color: Color.fromRGBO(100, 76, 76, 1),
                                     fontWeight: FontWeight.bold),
                               ),
@@ -349,7 +349,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                             "Naqli Advantage",
                             style: TextStyle(
                                 fontSize: 34,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(20, 3, 3, 1)),
                           ),
@@ -374,7 +374,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                 Text(
                                   "Regular trips",
                                   style: TextStyle(
-                                      fontFamily: "HelveticaNeue",
+                                      fontFamily: "HelveticaNeueRegular",
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -388,7 +388,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                   "This means you will never\n"
                                   "run out of trips.\n",
                                   style: TextStyle(
-                                    fontFamily: "HelveticaNeue",
+                                    fontFamily: "HelveticaNeueRegular",
                                     fontSize: 15,
                                   ),
                                 ),
@@ -407,7 +407,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                 Text(
                                   "Better Earning",
                                   style: TextStyle(
-                                      fontFamily: "HelveticaNeue",
+                                      fontFamily: "HelveticaNeueRegular",
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -423,7 +423,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                     "This means you will never\n"
                                     "grow your earnings!\n",
                                     style: TextStyle(
-                                      fontFamily: "HelveticaNeue",
+                                      fontFamily: "HelveticaNeueRegular",
                                       fontSize: 15,
                                     ),
                                   ),
@@ -443,7 +443,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                 Text(
                                   "On_Time Payment",
                                   style: TextStyle(
-                                      fontFamily: "HelveticaNeue",
+                                      fontFamily: "HelveticaNeueRegular",
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -457,7 +457,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                     "payments on time & get the best\n"
                                     "in class support.\n",
                                     style: TextStyle(
-                                      fontFamily: "HelveticaNeue",
+                                      fontFamily: "HelveticaNeueRegular",
                                       fontSize: 15,
                                     ),
                                   ),
@@ -484,7 +484,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                     child: Row(
                       children: [
                         Image.asset(
-                          'Naqli-final-logo.png',
+                          'naqlilogo.png',
                           width: 10.w,
                         ),
                         Padding(
@@ -497,7 +497,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                               'User',
                               style: TextStyle(
                                 fontSize: 12,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(206, 203, 203, 1),
                               ),
                             ),
@@ -520,7 +520,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                               'Partner',
                               style: TextStyle(
                                 fontSize: 12,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(112, 112, 112, 1),
                               ),
@@ -703,7 +703,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                     "Naqli Advantage",
                     style: TextStyle(
                         fontSize: 24,
-                        fontFamily: "HelveticaNeue",
+                        fontFamily: "HelveticaNeueRegular",
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(20, 3, 3, 1)),
                   ),
@@ -732,7 +732,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                           Text(
                             "Regular trips",
                             style: TextStyle(
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -746,7 +746,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                             "This means you will never\n"
                             "run out of trips.\n",
                             style: TextStyle(
-                              fontFamily: "HelveticaNeue",
+                              fontFamily: "HelveticaNeueRegular",
                               fontSize: 10,
                             ),
                           ),
@@ -769,7 +769,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                             Text(
                               "Better Earning",
                               style: TextStyle(
-                                  fontFamily: "HelveticaNeue",
+                                  fontFamily: "HelveticaNeueRegular",
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -785,7 +785,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                 "This means you will never\n"
                                 "grow your earnings!\n",
                                 style: TextStyle(
-                                  fontFamily: "HelveticaNeue",
+                                  fontFamily: "HelveticaNeueRegular",
                                   fontSize: 10,
                                 ),
                               ),
@@ -808,7 +808,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                           Text(
                             "On_Time Payment",
                             style: TextStyle(
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -822,7 +822,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                               "payments on time & get the best\n"
                               "in class support.\n",
                               style: TextStyle(
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 fontSize: 10,
                               ),
                             ),

@@ -281,7 +281,7 @@ class _OperatorState extends State<Operator> {
                         child: Text(
                           'Driver/Owner',
                           style: TextStyle(
-                              fontFamily: 'HelveticaNeue',
+                              fontFamily: 'HelveticaNeueRegular',
                               fontSize: 44,
                               fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(106, 102, 209, 1)),

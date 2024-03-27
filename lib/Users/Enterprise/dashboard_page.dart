@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/classes/language.dart';
@@ -17,7 +18,8 @@ import 'trigger_booking.dart';
 import 'users.dart';
 
 class EnterDashboardPage extends StatefulWidget {
-  const EnterDashboardPage({Key? key}) : super(key: key);
+  final User user;
+  EnterDashboardPage({required this.user});
 
   @override
   State<EnterDashboardPage> createState() => _MyHomePageState();
@@ -40,7 +42,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
   bool payNowButtonEnabled = false;
   bool expandWork = false;
   String? selectedValue;
-  Widget _currentContent = Dashboard(); // Initial content
+  Widget _currentContent = enterDashboard(); // Initial content
 
   void handleRadioValueChanged(String? newValue) {
     setState(() {
@@ -110,7 +112,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Image.asset(
-                        'Naqli-final-logo.png',
+                        'naqlilogo.png',
                         width: 10.w,
                       ),
                       Row(
@@ -123,7 +125,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                               'User',
                               style: TextStyle(
                                 fontSize: 20,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(112, 112, 112, 1),
                               ),
                             ),
@@ -142,7 +144,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                               'Partner',
                               style: TextStyle(
                                 fontSize: 16,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(206, 203, 203, 1),
                               ),
                             ),
@@ -367,7 +369,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                                     title: 'Dashboard',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = Dashboard();
+                                        _currentContent = enterDashboard();
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -520,7 +522,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = Dashboard();
+                            _currentContent = enterDashboard();
                           });
                           Navigator.pop(context);
                         }),
@@ -638,7 +640,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                                   ),
                                 )),
                         Image.asset(
-                          'Naqli-final-logo.png',
+                          'naqlilogo.png',
                           width: 10.w,
                         ),
                         Padding(
@@ -651,7 +653,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                               'User',
                               style: TextStyle(
                                 fontSize: 12,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(206, 203, 203, 1),
                               ),
                             ),
@@ -674,7 +676,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                               'Partner',
                               style: TextStyle(
                                 fontSize: 12,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(112, 112, 112, 1),
                               ),

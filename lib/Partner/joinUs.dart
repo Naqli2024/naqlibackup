@@ -24,7 +24,7 @@ class _State extends State<Partner> {
                     title: Container(
                       padding: const EdgeInsets.only(left: 380, top: 15),
                       child: Image.asset(
-                        'Naqli-final-logo.png',
+                        'naqlilogo.png',
                         width: 100,
                         height: 100,
                       ),
@@ -416,7 +416,7 @@ class _State extends State<Partner> {
                       title: Container(
                         padding: const EdgeInsets.only(left: 5, top: 5),
                         child: Image.asset(
-                          'Naqli-final-logo.png',
+                          'naqlilogo.png',
                           width: 50,
                           height: 50,
                         ),

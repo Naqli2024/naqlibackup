@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'formText.dart';
+
 @immutable
 final class CustomButton extends StatelessWidget {
   final String? text;
@@ -25,7 +27,7 @@ final class CustomButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           elevation: 2,
-          backgroundColor: Color.fromRGBO(98, 106, 254, 1),
+          backgroundColor: Color.fromRGBO(98, 105, 254, 1),
           shape: RoundedRectangleBorder(
             side: BorderSide(
                 color: const Color.fromRGBO(112, 112, 112, 1).withOpacity(0.3)),
@@ -35,14 +37,7 @@ final class CustomButton extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
-          child: Text(
-            text!,
-            style: TextStyle(
-              fontFamily: 'Helvetica',
-              color: Colors.white,
-              fontSize: 15,
-            ),
-          ),
+          child: Text(text!, style: DialogText.helvetica20),
         ),
       ),
     );

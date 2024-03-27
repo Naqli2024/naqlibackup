@@ -25,7 +25,8 @@ class SingleUserPayment extends StatefulWidget {
 class _SingleUserPaymentState extends State<SingleUserPayment> {
   PageController page = PageController();
   SideMenuController sideMenu = SideMenuController();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController1 = ScrollController();
+  final ScrollController _scrollController2 = ScrollController();
 
   bool value = false;
   String month = '';
@@ -42,6 +43,12 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
   String? selectedValue;
 
   @override
+  void dispose() {
+    _scrollController1.dispose();
+    _scrollController2.dispose();
+    super.dispose();
+  }
+
   void initState() {
     sideMenu.addListener((p0) {
       page.jumpToPage(p0);
@@ -78,281 +85,46 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
               borderRadius: BorderRadius.circular(20.0),
               color: Color.fromRGBO(255, 255, 255, 0.925),
             ),
-            padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
-                  child: Container(
-                    width: 1400,
-                    height: 100, // Increased height to accommodate button
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'Booking ID  XXXXX',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontFamily: 'SFProText',
-                              color: Color.fromRGBO(92, 86, 86, 1)),
-                        ),
-                        Text(
-                          'Booking Value : SAR xxxxxx',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontFamily: 'SFProText',
-                              color: Color.fromRGBO(149, 143, 143, 1)),
-                        ),
-                        Text(
-                          'Paid : SAR xxxxx',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontFamily: 'SFProText',
-                              color: Color.fromRGBO(149, 143, 143, 1)),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Balance',
-                              style: TextStyle(
-                                  fontSize: 16.0, fontFamily: 'Helvetica'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Add your button functionality here
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromRGBO(98, 105, 254, 1),
-                                foregroundColor: Colors.white,
-                                minimumSize: Size(200, 35),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: Text('XXXXX SAR',
-                                  style: TextStyle(
-                                      fontSize: 20.0, fontFamily: 'SFProText')),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              Color.fromRGBO(199, 199, 199, 1).withOpacity(0.5),
-                          blurRadius: 1,
-                          spreadRadius: 2,
-                          offset: Offset(0, 0.5), // Bottom side shadow
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 40),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width -
-                        40, // Set width to match screen width
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              Color.fromRGBO(199, 199, 199, 1).withOpacity(0.5),
-                          blurRadius: 1,
-                          spreadRadius: 2,
-                          offset: Offset(0, 0.5), // Bottom side shadow
-                        ),
-                      ],
-                    ),
-                    child: DataTable(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(216, 216, 216, 1),
-                            offset: Offset(0, 1),
-                            blurRadius: 2, // changes position of shadow
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(75, 61, 82, 1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
                           ),
-                        ],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(5),
-                          topRight: Radius.circular(5),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 50, top: 20),
+                          child: Text(
+                            'Payment',
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontFamily: 'Helvetica',
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                      headingRowColor: MaterialStateColor.resolveWith(
-                          (states) => Color.fromRGBO(75, 61, 82, 1)),
-                      dataRowColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.white),
-                      dividerThickness: 1.0,
-                      dataRowHeight: 65,
-                      columns: <DataColumn>[
-                        DataColumn(
-                            label: Expanded(
-                                child: Text(
-                          'Mode',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'SFProText'),
-                          textAlign: TextAlign.center,
-                        ))),
-                        DataColumn(
-                            label: Expanded(
-                                child: Text(
-                          'Booking Id',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'SFProText'),
-                          textAlign: TextAlign.center,
-                        ))),
-                        DataColumn(
-                            label: Expanded(
-                                child: Text(
-                          'Date',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'SFProText'),
-                          textAlign: TextAlign.center,
-                        ))),
-                        DataColumn(
-                            label: Expanded(
-                                child: Text(
-                          'Unit Type',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'SFProText'),
-                          textAlign: TextAlign.center,
-                        ))),
-                        DataColumn(
-                            label: Expanded(
-                                child: Text(
-                          'Payment',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'SFproText'),
-                          textAlign: TextAlign.center,
-                        ))),
-                        DataColumn(
-                            label: Expanded(
-                                child: Text(
-                          'Payment Status',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'SFproText'),
-                          textAlign: TextAlign.center,
-                        ))),
-                      ],
-                      rows: <DataRow>[
-                        DataRow(
-                          cells: <DataCell>[
-                            for (var item in [
-                              'Trip',
-                              '#456789231',
-                              '18.2.2022',
-                              'Box truck',
-                              'Xxx SAR',
-                              'Completed'
-                            ])
-                              DataCell(
-                                Container(
-                                  height: 65, // Adjust height as needed
-                                  alignment: Alignment.center,
-                                  child: Text(item,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontFamily: 'SFproText')),
-                                ),
-                              ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: <DataCell>[
-                            for (var item in [
-                              'Bus Trip',
-                              '#456789231',
-                              '13.6.2022',
-                              'Sleeper',
-                              'Xxx SAR',
-                              'Completed'
-                            ])
-                              DataCell(
-                                Container(
-                                  height: 65, // Adjust height as needed
-                                  alignment: Alignment.center,
-                                  child: Text(item,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontFamily: 'SFproText')),
-                                ),
-                              ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: <DataCell>[
-                            for (var item in [
-                              'Equipment Hire',
-                              '#456789231',
-                              '12.5.2022',
-                              'Crane',
-                              'Xxx SAR',
-                              'Completed'
-                            ])
-                              DataCell(
-                                Container(
-                                  height: 65, // Adjust height as needed
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    item,
-                                    style: TextStyle(
-                                        fontSize: 20, fontFamily: 'SFproText'),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ));
-        } else {
-          return SingleChildScrollView(
-              child: Container(
-            height: 100.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: Color.fromRGBO(255, 255, 255, 0.925),
-            ),
-            padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                SizedBox(height: 30),
                 Padding(
                   padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
                   child: Scrollbar(
-                    controller: _scrollController,
+                    controller: _scrollController1,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      controller: _scrollController,
+                      controller: _scrollController1,
                       child: Container(
-                        width: 1400,
+                        width: 1120,
                         height: 100, // Increased height to accommodate button
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -385,7 +157,7 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
                                 Text(
                                   'Balance',
                                   style: TextStyle(
-                                      fontSize: 16.0, fontFamily: 'Helvetica'),
+                                      fontSize: 17.0, fontFamily: 'SFProText'),
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
@@ -402,7 +174,7 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
                                   ),
                                   child: Text('XXXXX SAR',
                                       style: TextStyle(
-                                          fontSize: 20.0,
+                                          fontSize: 17.0,
                                           fontFamily: 'SFProText')),
                                 ),
                               ],
@@ -412,11 +184,10 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
 
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
-                              color: Color.fromRGBO(199, 199, 199, 1)
-                                  .withOpacity(0.5),
+                              color: Color.fromRGBO(199, 199, 199, 1),
                               blurRadius: 1,
                               spreadRadius: 2,
                               offset: Offset(0, 0.5), // Bottom side shadow
@@ -427,18 +198,14 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
                     ),
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 20),
                 Padding(
                   padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
                   child: Container(
-                    width: MediaQuery.of(context).size.width -
-                        40, // Set width to match screen width
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              Color.fromRGBO(199, 199, 199, 1).withOpacity(0.5),
+                          color: Color.fromRGBO(199, 199, 199, 1),
                           blurRadius: 1,
                           spreadRadius: 2,
                           offset: Offset(0, 0.5), // Bottom side shadow
@@ -446,164 +213,465 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
                       ],
                     ),
                     child: Scrollbar(
-                      controller: _scrollController,
+                      controller: _scrollController2,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        controller: _scrollController,
-                        child: DataTable(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromRGBO(199, 199, 199, 1)
-                                    .withOpacity(0.5),
-                                blurRadius: 1,
-                                spreadRadius: 2,
-                                offset: Offset(0, 0.5), // Bottom side shadow
-                              ),
-                            ],
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5),
-                              topRight: Radius.circular(5),
-                            ),
-                          ),
-                          headingRowColor: MaterialStateColor.resolveWith(
-                              (states) => Color.fromRGBO(75, 61, 82, 1)),
-                          dataRowColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.white),
-                          dividerThickness: 1.0,
-                          dataRowHeight: 65,
-                          columns: <DataColumn>[
-                            DataColumn(
-                                label: Expanded(
-                                    child: Text(
-                              'Mode',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'SFproText'),
-                              textAlign: TextAlign.center,
-                            ))),
-                            DataColumn(
-                                label: Expanded(
-                                    child: Text(
-                              'Booking Id',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'SFproText'),
-                              textAlign: TextAlign.center,
-                            ))),
-                            DataColumn(
-                                label: Expanded(
-                                    child: Text(
-                              'Date',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'SFproText'),
-                              textAlign: TextAlign.center,
-                            ))),
-                            DataColumn(
-                                label: Expanded(
-                                    child: Text(
-                              'Unit Type',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'SFproText'),
-                              textAlign: TextAlign.center,
-                            ))),
-                            DataColumn(
-                                label: Expanded(
-                                    child: Text(
-                              'Payment',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'SFproText'),
-                              textAlign: TextAlign.center,
-                            ))),
-                            DataColumn(
-                                label: Expanded(
-                                    child: Text(
-                              'Payment Status',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'SFproText'),
-                              textAlign: TextAlign.center,
-                            ))),
-                          ],
-                          rows: <DataRow>[
-                            DataRow(
-                              cells: <DataCell>[
-                                for (var item in [
-                                  'Trip',
-                                  '#456789231',
-                                  '18.2.2022',
-                                  'Box truck',
-                                  'Xxx SAR',
-                                  'Completed'
-                                ])
-                                  DataCell(
-                                    Container(
-                                      height: 65, // Adjust height as needed
-                                      alignment: Alignment.center,
-                                      child: Text(item,
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontFamily: 'SFproText')),
-                                    ),
-                                  ),
+                        controller: _scrollController2,
+                        child: SizedBox(
+                          width: 1120,
+                          child: DataTable(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromRGBO(199, 199, 199, 1),
+                                  blurRadius: 1,
+                                  spreadRadius: 2,
+                                  offset: Offset(0, 0.5), // Bottom side shadow
+                                ),
                               ],
                             ),
-                            DataRow(
-                              cells: <DataCell>[
-                                for (var item in [
-                                  'Bus Trip',
-                                  '#456789231',
-                                  '13.6.2022',
-                                  'Sleeper',
-                                  'Xxx SAR',
-                                  'Completed'
-                                ])
-                                  DataCell(
-                                    Container(
-                                      height: 65, // Adjust height as needed
-                                      alignment: Alignment.center,
-                                      child: Text(item,
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontFamily: 'SFproText')),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            DataRow(
-                              cells: <DataCell>[
-                                for (var item in [
-                                  'Equipment Hire',
-                                  '#456789231',
-                                  '12.5.2022',
-                                  'Crane',
-                                  'Xxx SAR',
-                                  'Completed'
-                                ])
-                                  DataCell(
-                                    Container(
-                                      height: 65, // Adjust height as needed
-                                      alignment: Alignment.center,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                                (states) => Color.fromRGBO(75, 61, 82, 1)),
+                            dataRowColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.white),
+                            dividerThickness: 1.0,
+                            dataRowHeight: 65,
+                            headingRowHeight: 75,
+                            columns: <DataColumn>[
+                              DataColumn(
+                                  label: Expanded(
                                       child: Text(
-                                        item,
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontFamily: 'SFproText'),
+                                'Mode',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: ' SFProText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Booking ID',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFProText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Date',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFProText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Unit Type',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFProText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Payment',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFproText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Payment Status',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFproText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                            ],
+                            rows: <DataRow>[
+                              DataRow(
+                                cells: <DataCell>[
+                                  for (var item in [
+                                    'Trip',
+                                    '#456789231',
+                                    '18.2.2022',
+                                    'Box truck',
+                                    'XXXX SAR',
+                                    'Completed'
+                                  ])
+                                    DataCell(
+                                      Container(
+                                        height: 65, // Adjust height as needed
+                                        alignment: Alignment.center,
+                                        child: Text(item,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: 'SFproText')),
                                       ),
                                     ),
+                                ],
+                              ),
+                              DataRow(
+                                cells: <DataCell>[
+                                  for (var item in [
+                                    'Bus Trip',
+                                    '#456789231',
+                                    '13.6.2022',
+                                    'Sleeper',
+                                    'XXXX SAR',
+                                    'Completed'
+                                  ])
+                                    DataCell(
+                                      Container(
+                                        height: 65, // Adjust height as needed
+                                        alignment: Alignment.center,
+                                        child: Text(item,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: 'SFproText')),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              DataRow(
+                                cells: <DataCell>[
+                                  for (var item in [
+                                    'Equipment Hire',
+                                    '#456789231',
+                                    '12.5.2022',
+                                    'Crane',
+                                    'XXXX SAR',
+                                    'Completed'
+                                  ])
+                                    DataCell(
+                                      Container(
+                                        height: 65, // Adjust height as needed
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          item,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'SFproText'),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
+        } else {
+          return SingleChildScrollView(
+              child: Container(
+            height: 100.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Color.fromRGBO(255, 255, 255, 0.925),
+            ),
+//padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(75, 61, 82, 1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(8.0),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 25, top: 10),
+                          child: Text(
+                            'Payment',
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontFamily: 'Helvetica',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
+                  child: Scrollbar(
+                    controller: _scrollController1,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      controller: _scrollController1,
+                      child: Container(
+                        width: 1120,
+                        height: 100, // Increased height to accommodate button
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Booking ID  XXXXX',
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontFamily: 'SFProText',
+                                  color: Color.fromRGBO(92, 86, 86, 1)),
+                            ),
+                            Text(
+                              'Booking Value : SAR xxxxxx',
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontFamily: 'SFProText',
+                                  color: Color.fromRGBO(149, 143, 143, 1)),
+                            ),
+                            Text(
+                              'Paid : SAR xxxxx',
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontFamily: 'SFProText',
+                                  color: Color.fromRGBO(149, 143, 143, 1)),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Balance',
+                                  style: TextStyle(
+                                      fontSize: 17.0, fontFamily: 'SFProText'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Add your button functionality here
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromRGBO(98, 105, 254, 1),
+                                    foregroundColor: Colors.white,
+                                    minimumSize: Size(200, 35),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
                                   ),
+                                  child: Text('XXXXX SAR',
+                                      style: TextStyle(
+                                          fontSize: 17.0,
+                                          fontFamily: 'SFProText')),
+                                ),
                               ],
+                            )
+                          ],
+                        ),
+
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromRGBO(199, 199, 199, 1),
+                              blurRadius: 1,
+                              spreadRadius: 2,
+                              offset: Offset(0, 0.5), // Bottom side shadow
                             ),
                           ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(199, 199, 199, 1),
+                          blurRadius: 1,
+                          spreadRadius: 2,
+                          offset: Offset(0, 0.5), // Bottom side shadow
+                        ),
+                      ],
+                    ),
+                    child: Scrollbar(
+                      controller: _scrollController2,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        controller: _scrollController2,
+                        child: SizedBox(
+                          width: 1120,
+                          child: DataTable(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromRGBO(199, 199, 199, 1),
+                                  blurRadius: 1,
+                                  spreadRadius: 2,
+                                  offset: Offset(0, 0.5), // Bottom side shadow
+                                ),
+                              ],
+                            ),
+                            headingRowColor: MaterialStateColor.resolveWith(
+                                (states) => Color.fromRGBO(75, 61, 82, 1)),
+                            dataRowColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.white),
+                            dividerThickness: 1.0,
+                            dataRowHeight: 65,
+                            headingRowHeight: 75,
+                            columns: <DataColumn>[
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Mode',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFproText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Booking ID',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFproText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Date',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFproText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Unit Type',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFproText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Payment',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFproText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                              DataColumn(
+                                  label: Expanded(
+                                      child: Text(
+                                'Payment Status',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'SFproText'),
+                                textAlign: TextAlign.center,
+                              ))),
+                            ],
+                            rows: <DataRow>[
+                              DataRow(
+                                cells: <DataCell>[
+                                  for (var item in [
+                                    'Trip',
+                                    '#456789231',
+                                    '18.2.2022',
+                                    'Box truck',
+                                    'Xxx SAR',
+                                    'Completed'
+                                  ])
+                                    DataCell(
+                                      Container(
+                                        height: 65, // Adjust height as needed
+                                        alignment: Alignment.center,
+                                        child: Text(item,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: 'SFproText')),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              DataRow(
+                                cells: <DataCell>[
+                                  for (var item in [
+                                    'Bus Trip',
+                                    '#456789231',
+                                    '13.6.2022',
+                                    'Sleeper',
+                                    'Xxx SAR',
+                                    'Completed'
+                                  ])
+                                    DataCell(
+                                      Container(
+                                        height: 65, // Adjust height as needed
+                                        alignment: Alignment.center,
+                                        child: Text(item,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: 'SFproText')),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              DataRow(
+                                cells: <DataCell>[
+                                  for (var item in [
+                                    'Equipment Hire',
+                                    '#456789231',
+                                    '12.5.2022',
+                                    'Crane',
+                                    'Xxx SAR',
+                                    'Completed'
+                                  ])
+                                    DataCell(
+                                      Container(
+                                        height: 65, // Adjust height as needed
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          item,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'SFproText'),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -147,120 +147,68 @@ class _DashboardState extends State<Dashboard> {
                       child: Expanded(
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               height: 250,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color.fromRGBO(240, 240, 240, 1)
-                                        .withOpacity(0.1),
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 2.0,
-                                    blurRadius:
-                                        0.01, // changes position of shadow
-                                  ),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              alignment: Alignment.center,
-                              child: AspectRatio(
-                                aspectRatio: 1.3,
-                                child: Row(
-                                  children: <Widget>[
-                                    AspectRatio(
-                                      aspectRatio: 1,
-                                      child: PieChart(
-                                        PieChartData(
-                                          pieTouchData: PieTouchData(
-                                            touchCallback: (FlTouchEvent event,
-                                                pieTouchResponse) {
-                                              setState(() {
-                                                if (!event
-                                                        .isInterestedForInteractions ||
-                                                    pieTouchResponse == null ||
-                                                    pieTouchResponse
-                                                            .touchedSection ==
-                                                        null) {
-                                                  touchedIndex = -1;
-                                                  return;
-                                                }
-                                                touchedIndex = pieTouchResponse
-                                                    .touchedSection!
-                                                    .touchedSectionIndex;
-                                              });
-                                            },
-                                          ),
-                                          borderData: FlBorderData(
-                                            show: false,
-                                          ),
-                                          sectionsSpace: 0,
-                                          centerSpaceRadius: 40,
-                                          sections: showingSections(),
+                              child: Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      startDegreeOffset: 250,
+                                      sectionsSpace: 0,
+                                      centerSpaceRadius: 100,
+                                      sections: [
+                                        PieChartSectionData(
+                                          value: 45,
+                                          color: Colors.greenAccent,
+                                          radius: 45,
+                                          showTitle: false,
                                         ),
-                                      ),
-                                    ),
-                                    const Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Indicator(
-                                          color: AppColors.contentColorBlue,
-                                          text: 'First',
-                                          isSquare: true,
-                                          textStyle: TextStyle(
-                                            fontSize:
-                                                5, // Adjust the font size as needed
-                                            // Add more styling options if necessary
-                                          ),
+                                        PieChartSectionData(
+                                          value: 35,
+                                          color: Colors.blue.shade900,
+                                          radius: 25,
+                                          showTitle: false,
                                         ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Indicator(
-                                          color: AppColors.contentColorYellow,
-                                          text: 'Second',
-                                          isSquare: true,
-                                          textStyle: TextStyle(
-                                            fontSize:
-                                                5, // Adjust the font size as needed
-                                            // Add more styling options if necessary
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Indicator(
-                                          color: AppColors.contentColorGreen,
-                                          text: 'Third',
-                                          isSquare: true,
-                                          textStyle: TextStyle(
-                                            fontSize:
-                                                5, // Adjust the font size as needed
-                                            // Add more styling options if necessary
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Indicator(
-                                          color: AppColors.contentColorPurple,
-                                          text: 'Fourth',
-                                          isSquare: true,
-                                          textStyle: TextStyle(
-                                            fontSize:
-                                                5, // Adjust the font size as needed
-                                            // Add more styling options if necessary
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 18,
+                                        PieChartSectionData(
+                                          value: 20,
+                                          color: Colors.grey.shade400,
+                                          radius: 20,
+                                          showTitle: false,
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Positioned.fill(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 160,
+                                          width: 160,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.shade200,
+                                                blurRadius: 10.0,
+                                                spreadRadius: 10.0,
+                                                offset: const Offset(3.0, 3.0),
+                                              ),
+                                            ],
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              "2305",
+                                              style: TextStyle(fontSize: 20),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                             SizedBox(
@@ -682,299 +630,67 @@ class _DashboardState extends State<Dashboard> {
                             SizedBox(
                               height: 5.h,
                             ),
-                            Container(
-                              height: 250,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color.fromRGBO(240, 240, 240, 1)
-                                        .withOpacity(0.1),
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 2.0,
-                                    blurRadius:
-                                        0.01, // changes position of shadow
-                                  ),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              alignment: Alignment.center,
-                              child: AspectRatio(
-                                aspectRatio: 1.3,
-                                child: Row(
-                                  children: <Widget>[
-                                    AspectRatio(
-                                      aspectRatio: 1,
-                                      child: PieChart(
-                                        PieChartData(
-                                          pieTouchData: PieTouchData(
-                                            touchCallback: (FlTouchEvent event,
-                                                pieTouchResponse) {
-                                              setState(() {
-                                                if (!event
-                                                        .isInterestedForInteractions ||
-                                                    pieTouchResponse == null ||
-                                                    pieTouchResponse
-                                                            .touchedSection ==
-                                                        null) {
-                                                  touchedIndex = -1;
-                                                  return;
-                                                }
-                                                touchedIndex = pieTouchResponse
-                                                    .touchedSection!
-                                                    .touchedSectionIndex;
-                                              });
-                                            },
-                                          ),
-                                          borderData: FlBorderData(
-                                            show: false,
-                                          ),
-                                          sectionsSpace: 0,
-                                          centerSpaceRadius: 40,
-                                          sections: showingSections(),
-                                        ),
-                                      ),
-                                    ),
-                                    const Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Indicator(
-                                          color: AppColors.contentColorBlue,
-                                          text: 'First',
-                                          isSquare: true,
-                                          textStyle: TextStyle(
-                                            fontSize:
-                                                5, // Adjust the font size as needed
-                                            // Add more styling options if necessary
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Indicator(
-                                          color: AppColors.contentColorYellow,
-                                          text: 'Second',
-                                          isSquare: true,
-                                          textStyle: TextStyle(
-                                            fontSize:
-                                                5, // Adjust the font size as needed
-                                            // Add more styling options if necessary
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Indicator(
-                                          color: AppColors.contentColorGreen,
-                                          text: 'Third',
-                                          isSquare: true,
-                                          textStyle: TextStyle(
-                                            fontSize:
-                                                5, // Adjust the font size as needed
-                                            // Add more styling options if necessary
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Indicator(
-                                          color: AppColors.contentColorPurple,
-                                          text: 'Fourth',
-                                          isSquare: true,
-                                          textStyle: TextStyle(
-                                            fontSize:
-                                                5, // Adjust the font size as needed
-                                            // Add more styling options if necessary
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 18,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
                             SizedBox(
-                              height: 5.h,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color.fromRGBO(240, 240, 240, 1)
-                                        .withOpacity(0.1),
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 2.0,
-                                    blurRadius:
-                                        0.01, // changes position of shadow
-                                  ),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
                               height: 250,
-                              child: Chart(
-                                data: lineMarkerData,
-                                variables: {
-                                  'day': Variable(
-                                    accessor: (Map datum) =>
-                                        datum['day'] as String,
-                                    scale: OrdinalScale(inflate: true),
-                                  ),
-                                  'value': Variable(
-                                    accessor: (Map datum) =>
-                                        datum['value'] as num,
-                                    scale: LinearScale(
-                                      max: 15,
-                                      min: -3,
-                                      tickCount: 7,
-                                      formatter: (v) => '${v.toInt()} ℃',
-                                    ),
-                                  ),
-                                  'group': Variable(
-                                    accessor: (Map datum) =>
-                                        datum['group'] as String,
-                                  ),
-                                },
-                                marks: [
-                                  LineMark(
-                                    position: Varset('day') *
-                                        Varset('value') /
-                                        Varset('group'),
-                                    color: ColorEncode(
-                                      variable: 'group',
-                                      values: [
-                                        const Color(0xff5470c6),
-                                        const Color(0xff91cc75),
+                              child: Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      startDegreeOffset: 250,
+                                      sectionsSpace: 0,
+                                      centerSpaceRadius: 100,
+                                      sections: [
+                                        PieChartSectionData(
+                                          value: 45,
+                                          color: Colors.greenAccent,
+                                          radius: 45,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 35,
+                                          color: Colors.blue.shade900,
+                                          radius: 25,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 20,
+                                          color: Colors.grey.shade400,
+                                          radius: 20,
+                                          showTitle: false,
+                                        ),
                                       ],
                                     ),
                                   ),
-                                ],
-                                axes: [
-                                  Defaults.horizontalAxis,
-                                  Defaults.verticalAxis,
-                                ],
-                                selections: {
-                                  'tooltipMouse': PointSelection(on: {
-                                    GestureType.hover,
-                                  }, devices: {
-                                    PointerDeviceKind.mouse
-                                  }, variable: 'day', dim: Dim.x),
-                                  'tooltipTouch': PointSelection(on: {
-                                    GestureType.scaleUpdate,
-                                    GestureType.tapDown,
-                                    GestureType.longPressMoveUpdate
-                                  }, devices: {
-                                    PointerDeviceKind.touch
-                                  }, variable: 'day', dim: Dim.x),
-                                },
-                                tooltip: TooltipGuide(
-                                  followPointer: [true, true],
-                                  align: Alignment.topLeft,
-                                  variables: ['group', 'value'],
-                                ),
-                                crosshair: CrosshairGuide(
-                                  followPointer: [false, true],
-                                ),
-                                annotations: [
-                                  LineAnnotation(
-                                    dim: Dim.y,
-                                    value: 6.14,
-                                    style: PaintStyle(
-                                      strokeColor: const Color(0xff5470c6)
-                                          .withAlpha(100),
-                                      dash: [2],
+                                  Positioned.fill(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 160,
+                                          width: 160,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.shade200,
+                                                blurRadius: 10.0,
+                                                spreadRadius: 10.0,
+                                                offset: const Offset(3.0, 3.0),
+                                              ),
+                                            ],
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              "2305",
+                                              style: TextStyle(fontSize: 20),
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                  ),
-                                  LineAnnotation(
-                                    dim: Dim.y,
-                                    value: 3.57,
-                                    style: PaintStyle(
-                                      strokeColor: const Color(0xff91cc75)
-                                          .withAlpha(100),
-                                      dash: [2],
-                                    ),
-                                  ),
-                                  CustomAnnotation(
-                                      renderer: (offset, _) => [
-                                            CircleElement(
-                                                center: offset,
-                                                radius: 5,
-                                                style: PaintStyle(
-                                                    fillColor: const Color(
-                                                        0xff5470c6)))
-                                          ],
-                                      values: ['Mar', -3]),
-                                  CustomAnnotation(
-                                      renderer: (offset, _) => [
-                                            CircleElement(
-                                                center: offset,
-                                                radius: 5,
-                                                style: PaintStyle(
-                                                    fillColor: const Color(
-                                                        0xff5470c6)))
-                                          ],
-                                      values: ['Jul', -7]),
-                                  CustomAnnotation(
-                                      renderer: (offset, _) => [
-                                            CircleElement(
-                                                center: offset,
-                                                radius: 5,
-                                                style: PaintStyle(
-                                                    fillColor: const Color(
-                                                        0xff91cc75)))
-                                          ],
-                                      values: ['Feb', 2]),
-                                  CustomAnnotation(
-                                      renderer: (offset, _) => [
-                                            CircleElement(
-                                                center: offset,
-                                                radius: 5,
-                                                style: PaintStyle(
-                                                    fillColor: const Color(
-                                                        0xff91cc75)))
-                                          ],
-                                      values: ['Apr', -5]),
-                                  TagAnnotation(
-                                    label: Label(
-                                        '13',
-                                        LabelStyle(
-                                          textStyle: Defaults.textStyle,
-                                          offset: const Offset(0, -10),
-                                        )),
-                                    values: ['Mar', -13],
-                                  ),
-                                  TagAnnotation(
-                                    label: Label(
-                                        '9',
-                                        LabelStyle(
-                                          textStyle: Defaults.textStyle,
-                                          offset: const Offset(0, -10),
-                                        )),
-                                    values: ['July', -9],
-                                  ),
-                                  TagAnnotation(
-                                    label: Label(
-                                        '-2',
-                                        LabelStyle(
-                                          textStyle: Defaults.textStyle,
-                                          offset: const Offset(0, -10),
-                                        )),
-                                    values: ['Feb', -2],
-                                  ),
-                                  TagAnnotation(
-                                    label: Label(
-                                        '5',
-                                        LabelStyle(
-                                          textStyle: Defaults.textStyle,
-                                          offset: const Offset(0, -10),
-                                        )),
-                                    values: ['Apr', -5],
-                                  ),
+                                  )
                                 ],
                               ),
                             ),

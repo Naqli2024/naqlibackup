@@ -1,9 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
+import 'package:flutter_application_1/Users/Enterprise/dashboard_page.dart';
+import 'package:flutter_application_1/DialogBox/SingleTimeUser/mblNoDialog.dart';
+import 'package:flutter_application_1/DialogBox/SingleTimeUser/optDialog.dart';
 import 'package:flutter_application_1/Users/SingleUser/dashboard_page.dart';
-
-import 'package:flutter_application_1/loginPage.dart';
+import 'package:flutter_application_1/Users/SuperUser/dashboard_page.dart';
+import 'package:flutter_application_1/Widgets/customDropdown.dart';
+import 'package:flutter_application_1/Widgets/customTextField.dart';
+import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -15,29 +22,22 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController contactNumberController = TextEditingController();
 
   List<String> cities = ['City 1', 'City 2', 'City 3', 'City 4'];
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  String? selectedCity;
-  String? selectedType;
-  String? selectedOption;
   bool isVerified = false;
+  String firstName = '';
+  String lastName = '';
+  String phoneNumber = '';
+  String enterpriseSelect = 'User';
 
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController contactNumberController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController govtIdController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController alternateNumberController = TextEditingController();
-  TextEditingController address2Controller = TextEditingController();
-  TextEditingController idNumberController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController accounttypeController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ScrollController _Scroll1 = ScrollController();
+  AllUsersFormController controller = AllUsersFormController();
   TextEditingController otpController = TextEditingController();
+
   void showErrorDialog(String errorMessage) {
     showDialog(
       context: context,
@@ -53,165 +53,6 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
         ],
       ),
-    );
-  }
-
-  Future<void> _saveUserDataToFirestore() async {
-    print("track2");
-    try {
-      CollectionReference usersCollection = _firestore.collection('users');
-
-      await usersCollection.add({
-        'firstName': firstNameController.text,
-        'lastName': lastNameController.text,
-        'email': emailController.text,
-        'password': passwordController.text,
-        'phoneNumber': contactNumberController.text,
-        'address': addressController.text,
-        'city': selectedCity,
-        'govtId': selectedOption,
-        'confirmPassword': confirmPasswordController.text,
-        'alternateNumber': alternateNumberController.text,
-        'address2': address2Controller.text,
-        'accountType': selectedType,
-        'idNumber': idNumberController.text,
-      });
-
-      print('User data saved to Firestore successfully!');
-    } catch (e) {
-      print('Error saving user data to Firestore: $e');
-    }
-  }
-
-  Future<void> _startPhoneAuth(String phoneNumber) async {
-    print("track3");
-
-    FirebaseAuth _auth = FirebaseAuth.instance;
-
-    try {
-      await _auth.verifyPhoneNumber(
-        phoneNumber: "+91${contactNumberController.text}",
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          await _auth.signInWithCredential(credential).then((value) {
-            Navigator.pop(context);
-            setState(() {
-              isVerified = true;
-            });
-          });
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          // Handle the verification failure
-          print('Phone authentication failed: $e');
-        },
-        codeSent: (String verificationId, [int? forceResendingToken]) {
-          // Store the verification ID for later use (e.g., resend OTP)
-          String storedVerificationId = verificationId;
-
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => AlertDialog(
-              title: Text("Enter OTP"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: otpController,
-                  ),
-                ],
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    FirebaseAuth auth = FirebaseAuth.instance;
-                    String smsCode = otpController.text;
-                    PhoneAuthCredential _credential =
-                        PhoneAuthProvider.credential(
-                      verificationId: storedVerificationId,
-                      smsCode: smsCode,
-                    );
-
-                    auth.signInWithCredential(_credential).then((result) {
-                      // Check if the verification is successful
-                      if (result.user != null) {
-                        print("otp verified successfully");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SingleUserDashboardPage(),
-                          ),
-                        );
-                        setState(() {
-                          isVerified = true;
-                        });
-                      } else {
-                        showErrorDialog(
-                            "Invalid verification code. Please enter the correct code.");
-                      }
-                    }).catchError((e) {
-                      print("Error signing in with credential: $e");
-                    });
-                  },
-                  child: Text("Done"),
-                ),
-              ],
-            ),
-          );
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          // Handle code auto retrieval timeout (optional)
-        },
-      );
-    } catch (e) {
-      print('Error during phone authentication: $e');
-    }
-  }
-
-  void _showOtpVerificationDialog() {
-    print("track4");
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Verification"),
-          content: Column(
-            children: [
-              Text("Enter OTP"),
-              TextField(
-                controller: otpController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: 'OTP',
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("Cancel"),
-            ),
-            InkWell(
-              onTap: () async {
-                // Validate OTP and proceed if valid
-                String enteredOtp = otpController.text;
-                if (enteredOtp.isNotEmpty) {
-                  // You can add OTP validation logic here
-                  // If the OTP is valid, you can perform further actions
-                  // For now, let's just close the dialog
-                  Navigator.of(context).pop();
-                } else {
-                  // Handle case where OTP is empty
-                }
-              },
-              child: Text("Verify"),
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -262,1080 +103,1090 @@ class _CreateAccountState extends State<CreateAccount> {
     return Sizer(builder: (context, orientation, deviceType) {
       return LayoutBuilder(
           builder: (BuildContext ctx, BoxConstraints constraints) {
-        if (constraints.maxWidth >= 650) {
-          return Dialog(
-            child: Container(
-              width: 1100,
-              height: 750,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(31),
-                  bottomLeft: Radius.circular(31),
-                  topRight: Radius.circular(31),
-                  bottomRight: Radius.circular(31),
-                ),
-              ),
-              child: Padding(
-                padding:
-                    EdgeInsets.only(left: 5.w, right: 5.w, top: 50, bottom: 45),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Text(
-                        'Create your account',
-                        style: TextStyle(
-                          fontFamily: 'ColfaxBold',
-                          fontSize: 30,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+        if (constraints.maxWidth >= 1180) {
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 18.w,
+              right: 18.w,
+              top: 8.h,
+              bottom: 8.h,
+            ),
+            child: Scrollbar(
+              controller: _Scroll1,
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: _Scroll1,
+                scrollDirection: Axis.vertical,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(31))),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        left: 5.w, right: 5.w, top: 50, bottom: 45),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(31)),
+                    height: 770,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('First Name '),
-                          SizedBox(width: 75),
-                          Expanded(
-                            child: SizedBox(
-                              height: 45,
-                              width: 100,
-                              child: TextFormField(
-                                controller: firstNameController,
-                                validator: nameValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 16),
-                                  hintText: 'First Name',
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 25),
-                          Expanded(
-                            child: SizedBox(
-                              height: 45,
-                              child: TextFormField(
-                                controller: lastNameController,
-                                validator: nameValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 16),
-                                  hintText: 'Last Name',
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Text('Email Address',
-                              style: TextStyle(
-                                  fontFamily: 'Colfax', fontSize: 16)),
-                          SizedBox(width: 40),
-                          Expanded(
-                            child: SizedBox(
-                              height: 45,
-                              child: TextFormField(
-                                controller: emailController,
-                                validator: emailValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 16),
-                                  hintText: 'Email address',
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Password', style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 40,
+                              Expanded(child: SizedBox()),
+                              Text(
+                                'Create your account',
+                                style: LoginpageText.helvetica30bold,
                               ),
-                              Text('Contact Number',
-                                  style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text('Address 1', style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text('City', style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text('Govt ID', style: TextStyle(fontSize: 16)),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    controller: passwordController,
-                                    validator: validatePassword,
-                                    decoration: InputDecoration(
-                                      hintStyle: TextStyle(fontSize: 16),
-                                      hintText: 'Password',
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    controller: contactNumberController,
-                                    validator: (value) {
-                                      if (value!.length != 10)
-                                        return 'Mobile Number must be of 10 digit';
-                                      else
-                                        return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      hintStyle: TextStyle(fontSize: 16),
-                                      hintText: 'Phone Number',
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    controller: addressController,
-                                    validator: nameValidator,
-                                    decoration: InputDecoration(
-                                      hintStyle: TextStyle(fontSize: 16),
-                                      hintText: 'Address',
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: DropdownButtonFormField(
-                                    isExpanded: true,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                    value: selectedCity,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedCity = newValue;
-                                      });
-                                    },
-                                    items: cities.map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value,
-                                            style: TextStyle(fontSize: 16)),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: DropdownButtonFormField<String>(
-                                    isExpanded: true,
-                                    value: selectedOption,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedOption = newValue;
-                                      });
-                                    },
-                                    items: [
-                                      DropdownMenuItem<String>(
-                                        value: 'National ID',
-                                        child: Text('National ID',
-                                            style: TextStyle(fontSize: 16)),
-                                      ),
-                                      DropdownMenuItem<String>(
-                                        value: 'Iqama No.',
-                                        child: Text('Iqama No.',
-                                            style: TextStyle(fontSize: 16)),
-                                      ),
-                                      DropdownMenuItem<String>(
-                                        value: 'Visit Visa / Border No',
-                                        child: Text('Visit Visa / Border No',
-                                            style: TextStyle(fontSize: 16)),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Confirm Password',
-                                  style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text('Alternate Number',
-                                  style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text('Address 2', style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text('Account Type',
-                                  style: TextStyle(fontSize: 16)),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Text('ID Number', style: TextStyle(fontSize: 16)),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    validator: validatePassword,
-                                    controller: confirmPasswordController,
-                                    decoration: InputDecoration(
-                                      hintStyle: TextStyle(fontSize: 16),
-                                      hintText: 'Password',
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5))),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    validator: (value) {
-                                      if (value!.length != 10)
-                                        return 'Mobile Number must be of 10 digit';
-                                      else
-                                        return null;
-                                    },
-                                    controller: alternateNumberController,
-                                    decoration: InputDecoration(
-                                      hintStyle: TextStyle(fontSize: 16),
-                                      hintText: 'Phone Number',
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    validator: nameValidator,
-                                    controller: address2Controller,
-                                    decoration: InputDecoration(
-                                      hintStyle: TextStyle(fontSize: 16),
-                                      hintText: 'Address',
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: DropdownButtonFormField<String>(
-                                    isExpanded: true,
-                                    value: selectedType,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedType = newValue;
-                                      });
-                                    },
-                                    items: [
-                                      DropdownMenuItem<String>(
-                                        value: 'User',
-                                        child: Text('User',
-                                            style: TextStyle(fontSize: 16)),
-                                      ),
-                                      DropdownMenuItem<String>(
-                                        value: 'SuperUser',
-                                        child: Text('SuperUser',
-                                            style: TextStyle(fontSize: 16)),
-                                      ),
-                                      DropdownMenuItem<String>(
-                                        value: 'Enterprise',
-                                        child: Text('Enterprise',
-                                            style: TextStyle(fontSize: 16)),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    validator: (value) {
-                                      if (value!.length != 10)
-                                        return 'Mobile Number must be of 10 digit';
-                                      else
-                                        return null;
-                                    },
-                                    controller: idNumberController,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(5.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 45,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  print("track1");
-                                  await _startPhoneAuth(
-                                      contactNumberController.text);
-                                  // _showOtpVerificationDialog();
-                                  // Save user data and start phone authentication
-                                  await _saveUserDataToFirestore();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 128, 123, 229),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                              child: Text(
-                                'Create Account',
-                                style: TextStyle(
-                                  fontFamily: 'Colfax',
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          SizedBox(
-                            height: 45,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  print("track1");
-                                  await _startPhoneAuth(
-                                      contactNumberController.text);
-                                  // _showOtpVerificationDialog();
-                                  // Save user data and start phone authentication
-                                  await _saveUserDataToFirestore();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                fixedSize:
-                                    const Size.fromWidth(double.infinity),
-                                backgroundColor:
-                                    Color.fromARGB(112, 112, 112, 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      5), // Adjust border radius as needed
-                                ),
-                              ),
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                  fontFamily: 'Colfax',
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Already have an account? '),
-                          InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return LoginPage();
+                              Expanded(child: SizedBox()),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
                                 },
-                              );
-                            },
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
+                                child: ImageIcon(
+                                  AssetImage('cancel.png'),
+                                  color: Color.fromRGBO(112, 112, 112, 1),
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Column(
+                                children: [
+                                  Text('First Name ',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text('Email Address',
+                                      style: HomepageText.helvetica16black),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 42,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            child: CustomTextfield(
+                                          // validator: nameValidator,
+                                          controller: controller.firstName,
+                                          text: 'First Name',
+                                        )),
+                                        SizedBox(width: 25),
+                                        Expanded(
+                                            child: CustomTextfield(
+                                          // validator: nameValidator,
+                                          controller: controller.lastName,
+                                          text: 'Last Name',
+                                        )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    CustomTextfield(
+                                      controller: controller.email,
+                                      validator: emailValidator,
+                                      text: 'Email address',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Password',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text('Contact Number',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text('Address 1',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text('City',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text(
+                                      enterpriseSelect == 'Enterprise'
+                                          ? 'Company ID No'
+                                          : 'Govt ID',
+                                      style: HomepageText.helvetica16black),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomTextfield(
+                                      controller: controller.password,
+                                      // validator: validatePassword,
+                                      text: 'Password',
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    CustomTextfield(
+                                      controller: controller.contactNumber,
+                                      // validator: (value) {
+                                      //   if (value!.length != 10)
+                                      //     return 'Mobile Number must be of 10 digit';
+                                      //   else
+                                      //     return null;
+                                      // },
+                                      text: 'Phone Number',
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    CustomTextfield(
+                                      controller: controller.address,
+                                      // validator: nameValidator,
+                                      text: 'Address',
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    CustomDropDown(
+                                      value: controller
+                                              .selectedCity.text.isNotEmpty
+                                          ? controller.selectedCity.text
+                                          : 'Select',
+                                      items: [
+                                        'City 1',
+                                        'City 2',
+                                        'City 3',
+                                        'City 4',
+                                        'Select'
+                                      ],
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          controller.selectedCity.text =
+                                              newValue!;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    enterpriseSelect == 'Enterprise'
+                                        ? CustomTextfield(
+                                            // validator: nameValidator,
+                                            controller:
+                                                controller.companyidNumber,
+                                            text: 'Id number',
+                                          )
+                                        : CustomDropDown(
+                                            value: controller.selectedGovtId
+                                                    .text.isNotEmpty
+                                                ? controller.selectedGovtId.text
+                                                : 'Select',
+                                            items: [
+                                              'National ID',
+                                              'Iqama No.',
+                                              'Visit Visa / Border No',
+                                              'Select',
+                                            ],
+                                            onChanged: (String? newValue) {
+                                              setState(() {
+                                                controller.selectedGovtId.text =
+                                                    newValue!;
+                                              });
+                                            },
+                                          ),
+                                    // SizedBox(
+                                    //   height: 45,
+                                    //   child: DropdownButtonFormField<String>(
+                                    //     isExpanded: true,
+                                    //     value: selectedOption,
+                                    //     decoration: InputDecoration(
+                                    //       contentPadding: EdgeInsets.all(5.0),
+                                    //       border: OutlineInputBorder(
+                                    //         borderRadius: BorderRadius.all(
+                                    //             Radius.circular(5)),
+                                    //       ),
+                                    //     ),
+                                    //     onChanged: (String? newValue) {
+                                    //       setState(() {
+                                    //         selectedOption = newValue;
+                                    //       });
+                                    //     },
+                                    //     items: [
+                                    //       DropdownMenuItem<String>(
+                                    //         value: 'National ID',
+                                    //         child: Text('National ID',
+                                    //             style: TextStyle(fontSize: 16)),
+                                    //       ),
+                                    //       DropdownMenuItem<String>(
+                                    //         value: 'Iqama No.',
+                                    //         child: Text('Iqama No.',
+                                    //             style: TextStyle(fontSize: 16)),
+                                    //       ),
+                                    //       DropdownMenuItem<String>(
+                                    //         value: 'Visit Visa / Border No',
+                                    //         child: Text(
+                                    //             'Visit Visa / Border No',
+                                    //             style: TextStyle(fontSize: 16)),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Confirm Password',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text('Alternate Number',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text('Address 2',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text('Account Type',
+                                      style: HomepageText.helvetica16black),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text(
+                                      enterpriseSelect == 'Enterprise'
+                                          ? 'Legal Name'
+                                          : 'ID Number',
+                                      style: HomepageText.helvetica16black),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomTextfield(
+                                      controller: controller.confirmPassword,
+                                      // validator: validatePassword,
+                                      text: 'Confirm Password',
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    CustomTextfield(
+                                      // validator: (value) {
+                                      //   if (value!.length != 10)
+                                      //     return 'Mobile Number must be of 10 digit';
+                                      //   else
+                                      //     return null;
+                                      // },
+                                      controller: controller.alternateNumber,
+                                      text: 'Phone Number',
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    CustomTextfield(
+                                      // validator: nameValidator,
+                                      controller: controller.address2,
+                                      text: 'Address',
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    CustomDropDown(
+                                      value: controller.selectedAccounttype.text
+                                              .isNotEmpty
+                                          ? controller.selectedAccounttype.text
+                                          : 'Select',
+                                      items: <String>[
+                                        'User',
+                                        'Super User',
+                                        'Enterprise',
+                                        'Select',
+                                      ],
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          controller.selectedAccounttype.text =
+                                              newValue!;
+                                          enterpriseSelect = controller
+                                              .selectedAccounttype.text;
+                                        });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    enterpriseSelect == 'Enterprise'
+                                        ? CustomTextfield(
+                                            // validator: nameValidator,
+                                            controller: controller.legalName,
+                                            text: 'Leagl name',
+                                          )
+                                        : CustomTextfield(
+                                            // validator: (value) {
+                                            //   if (value!.length != 10)
+                                            //     return 'Mobile Number must be of 10 digit';
+                                            //   else
+                                            //     return null;
+                                            // },
+                                            controller: controller.idNumber,
+                                            text: 'ID Number',
+                                          ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 45,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      String email = controller.email.text;
+                                      String password =
+                                          controller.password.text;
+                                      String selectedAccounttype =
+                                          controller.selectedAccounttype.text;
+
+                                      String firstName =
+                                          controller.firstName.text;
+                                      String lastName =
+                                          controller.lastName.text;
+                                      String legalName =
+                                          controller.legalName.text;
+                                      String contactNumber =
+                                          controller.contactNumber.text;
+                                      String address = controller.address.text;
+                                      String govtId =
+                                          controller.selectedGovtId.text;
+                                      String confirmPassword =
+                                          controller.confirmPassword.text;
+                                      String alternateNumber =
+                                          controller.alternateNumber.text;
+                                      String address2 =
+                                          controller.address2.text;
+                                      String idNumber =
+                                          controller.idNumber.text;
+                                      String city =
+                                          controller.selectedCity.text;
+                                      String companyidNumber =
+                                          controller.companyidNumber.text;
+                                      UserCredential userCredential =
+                                          await _auth
+                                              .createUserWithEmailAndPassword(
+                                        email: controller.email.text,
+                                        password: controller.password.text,
+                                      );
+                                      // User creation successful
+                                      String accountType =
+                                          controller.selectedAccounttype.text;
+                                      print(
+                                          "User created: ${userCredential.user!.email}");
+                                      print(
+                                          'Account Type before create Account : $accountType');
+                                      await _createAccount(
+                                          userCredential.user!.uid,
+                                          accountType);
+                                      print('value passed$accountType');
+                                      print("track1");
+                                      showDialog(
+                                        barrierColor:
+                                            Colors.grey.withOpacity(0.5),
+                                        context: context,
+                                        builder: (context) {
+                                          return MblNoDialog(
+                                              email,
+                                              password,
+                                              selectedAccounttype,
+                                              firstName,
+                                              legalName,
+                                              lastName,
+                                              confirmPassword,
+                                              contactNumber,
+                                              address2,
+                                              address,
+                                              govtId,
+                                              alternateNumber,
+                                              idNumber,
+                                              city,
+                                              companyidNumber);
+                                        },
+                                      );
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 128, 123, 229),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Create Account',
+                                    style: TextStyle(
+                                      fontFamily: 'Colfax',
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              SizedBox(
+                                height: 45,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize:
+                                        const Size.fromWidth(double.infinity),
+                                    backgroundColor:
+                                        Color.fromARGB(112, 112, 112, 1),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          5), // Adjust border radius as needed
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      fontFamily: 'Colfax',
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Already have an account? ',
+                                  style: HomepageText.helvetica16black),
+                              InkWell(
+                                onTap: () {
+                                  // Call _register function when onTap is triggered
+                                },
+                                child: Text(
+                                  'Sign In',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(128, 123, 229, 1),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: const Color.fromRGBO(112, 112, 112, 1),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('By Clicking Sign up, you agree to the ',
+                                  style: HomepageText.helvetica16black),
+                              Text(
+                                'Terms & Privacy policy.',
+                                style: TextStyle(
+                                  color: Color.fromRGBO(128, 123, 229, 1),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
           );
         } else {
-          return Dialog(
-              child: SingleChildScrollView(
-                  child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(31),
-                  bottomLeft: Radius.circular(31),
-                  topRight: Radius.circular(31),
-                  bottomRight: Radius.circular(31),
-                ),
+          return Padding(
+              padding: EdgeInsets.only(
+                left: 18.w,
+                right: 18.w,
+                top: 8.h,
+                bottom: 8.h,
               ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: 2.5.h, right: 2.5.h, top: 3.w, bottom: 3.w),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Text(
-                          'Create your account',
-                          style: TextStyle(
-                            fontFamily: 'ColfaxBold',
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(31))),
+                child: Container(
+                  padding: EdgeInsets.only(
+                      left: 5.w, right: 5.w, top: 50, bottom: 45),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(31)),
+                  height: 770,
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(width: 150, child: Text('First Name ')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: firstNameController,
-                                validator: nameValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'First Name',
-                                  contentPadding: EdgeInsets.all(2.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(2.0)),
-                                  ),
-                                ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(child: SizedBox()),
+                              Text(
+                                'Create your account',
+                                style: LoginpageText.helvetica30bold,
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Last Name')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: lastNameController,
-                                validator: nameValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'Last Name',
-                                  contentPadding: EdgeInsets.all(1.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(2.0)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Email Address')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: emailController,
-                                validator: emailValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'Email address',
-                                  contentPadding: EdgeInsets.all(2.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(2)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Password')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: emailController,
-                                validator: emailValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'Password',
-                                  contentPadding: EdgeInsets.all(2.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(2)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Confirm Password')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: emailController,
-                                validator: emailValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'Password',
-                                  contentPadding: EdgeInsets.all(2.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(2)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Contact Number')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: contactNumberController,
-                                validator: (value) {
-                                  if (value!.length != 10)
-                                    return 'Mobile Number must be of 10 digit';
-                                  else
-                                    return null;
+                              Expanded(child: SizedBox()),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
                                 },
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'Phone Number',
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
+                                child: ImageIcon(
+                                  AssetImage('cancel.png'),
+                                  color: Color.fromRGBO(112, 112, 112, 1),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Alternate Number')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value!.length != 10)
-                                    return 'Mobile Number must be of 10 digit';
-                                  else
-                                    return null;
-                                },
-                                controller: alternateNumberController,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'Phone Number',
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Address 1')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: addressController,
-                                validator: nameValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'Address',
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Address 2')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: addressController,
-                                validator: nameValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  hintText: 'Address',
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Çity')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: DropdownButtonFormField(
-                                isExpanded: true,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                                value: selectedCity,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedCity = newValue;
-                                  });
-                                },
-                                items: cities.map<DropdownMenuItem<String>>(
-                                    (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value,
-                                        style: TextStyle(fontSize: 14)),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Account Type')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: DropdownButtonFormField(
-                                isExpanded: true,
-                                value: selectedType,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedType = newValue;
-                                  });
-                                },
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: 'Individual',
-                                    child: Text('Individual',
-                                        style: TextStyle(fontSize: 14)),
-                                  ),
-                                  DropdownMenuItem<String>(
-                                    value: 'Company',
-                                    child: Text('Company',
-                                        style: TextStyle(fontSize: 14)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('Govt ID')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: DropdownButtonFormField(
-                                isExpanded: true,
-                                value: selectedOption,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedOption = newValue;
-                                  });
-                                },
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: 'National ID',
-                                    child: Text(
-                                      'National ID',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  DropdownMenuItem<String>(
-                                    value: 'Iqama No.',
-                                    child: Text(
-                                      'Iqama No.',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                  DropdownMenuItem<String>(
-                                    value: 'Visit Visa / Border No',
-                                    child: Text(
-                                      'Visit Visa / Border No',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          SizedBox(width: 150, child: Text('ID Number')),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: TextFormField(
-                                controller: addressController,
-                                validator: nameValidator,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(fontSize: 13),
-                                  hintText: 'ID Number',
-                                  contentPadding: EdgeInsets.all(5.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
                           SizedBox(
-                            height: 40,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  print("track1");
-                                  await _startPhoneAuth(
-                                      contactNumberController.text);
-                                  // _showOtpVerificationDialog();
-                                  // Save user data and start phone authentication
-                                  await _saveUserDataToFirestore();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                fixedSize:
-                                    const Size.fromWidth(double.infinity),
-                                backgroundColor:
-                                    Color.fromARGB(255, 128, 123, 229),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      5), // Adjust border radius as needed
-                                ),
-                              ),
-                              child: Text(
-                                'Create Account',
-                                style: TextStyle(
-                                  fontFamily: 'Colfax',
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
+                            height: 30,
                           ),
-                          SizedBox(width: 7),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('First Name ',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                  child: CustomTextfield(
+                                // validator: nameValidator,
+                                controller: controller.firstName,
+                                text: 'First Name',
+                              )),
+                            ],
+                          ),
                           SizedBox(
-                            height: 40,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  print("track1");
-                                  await _startPhoneAuth(
-                                      contactNumberController.text);
-                                  // _showOtpVerificationDialog();
-                                  // Save user data and start phone authentication
-                                  await _saveUserDataToFirestore();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                fixedSize:
-                                    const Size.fromWidth(double.infinity),
-                                backgroundColor:
-                                    Color.fromARGB(112, 112, 112, 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      5), // Adjust border radius as needed
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Last Name',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                  child: CustomTextfield(
+                                // validator: nameValidator,
+                                controller: controller.lastName,
+                                text: 'Last Name',
+                              )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Email Address',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomTextfield(
+                                  controller: controller.email,
+                                  validator: emailValidator,
+                                  text: 'Email address',
                                 ),
                               ),
-                              child: Text(
-                                'Cancel',
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Password',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomTextfield(
+                                  controller: controller.password,
+                                  validator: validatePassword,
+                                  text: 'Password',
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Confirm Password',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomTextfield(
+                                  controller: controller.confirmPassword,
+                                  validator: validatePassword,
+                                  text: 'Confirm Password',
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Contact Number',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomTextfield(
+                                  // validator: (value) {
+                                  //   if (value!.length != 10)
+                                  //     return 'Mobile Number must be of 10 digit';
+                                  //   else
+                                  //     return null;
+                                  // },
+                                  controller: controller.contactNumber,
+                                  text: 'Phone Number',
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Alternate Number',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomTextfield(
+                                  // validator: (value) {
+                                  //   if (value!.length != 10)
+                                  //     return 'Mobile Number must be of 10 digit';
+                                  //   else
+                                  //     return null;
+                                  // },
+                                  controller: controller.alternateNumber,
+                                  text: 'Phone Number',
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Address 1',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomTextfield(
+                                  // validator: nameValidator,
+                                  controller: controller.address,
+                                  text: 'Address',
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Address 2',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomTextfield(
+                                  // validator: nameValidator,
+                                  controller: controller.address2,
+                                  text: 'Address',
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Çity',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomDropDown(
+                                  value: controller.selectedCity.text.isNotEmpty
+                                      ? controller.selectedCity.text
+                                      : 'Select',
+                                  items: [
+                                    'City 1',
+                                    'City 2',
+                                    'City 3',
+                                    'City 4',
+                                    'Select',
+                                  ],
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      controller.selectedCity.text = newValue!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  child: Text('Account Type',
+                                      style: HomepageText.helvetica16black)),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CustomDropDown(
+                                  value: controller
+                                          .selectedAccounttype.text.isNotEmpty
+                                      ? controller.selectedAccounttype.text
+                                      : 'Select',
+                                  items: <String>[
+                                    'User',
+                                    'Super User',
+                                    'Enterprise',
+                                    'Select',
+                                  ],
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      controller.selectedAccounttype.text =
+                                          newValue!;
+                                      enterpriseSelect =
+                                          controller.selectedAccounttype.text;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 150,
+                                child: Text(
+                                    enterpriseSelect == 'Enterprise'
+                                        ? 'Company ID No'
+                                        : 'Govt ID',
+                                    style: HomepageText.helvetica16black),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: enterpriseSelect == 'Enterprise'
+                                    ? CustomTextfield(
+                                        // validator: nameValidator,
+                                        controller: controller.companyidNumber,
+                                        text: 'Id number',
+                                      )
+                                    : CustomDropDown(
+                                        value: controller
+                                                .selectedGovtId.text.isNotEmpty
+                                            ? controller.selectedGovtId.text
+                                            : 'Select',
+                                        items: [
+                                          'National ID',
+                                          'Iqama No.',
+                                          'Visit Visa / Border No',
+                                          'Select',
+                                        ],
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            controller.selectedGovtId.text =
+                                                newValue!;
+                                          });
+                                        },
+                                      ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 150,
+                                child: Text(
+                                    enterpriseSelect == 'Enterprise'
+                                        ? 'Legal Name'
+                                        : 'ID Number',
+                                    style: HomepageText.helvetica16black),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: enterpriseSelect == 'Enterprise'
+                                    ? CustomTextfield(
+                                        // validator: nameValidator,
+                                        controller: controller.legalName,
+                                        text: 'Leagl name',
+                                      )
+                                    : CustomTextfield(
+                                        // validator: (value) {
+                                        //   if (value!.length != 10)
+                                        //     return 'Mobile Number must be of 10 digit';
+                                        //   else
+                                        //     return null;
+                                        // },
+                                        controller: controller.idNumber,
+                                        text: 'ID Number',
+                                      ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 45,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      try {
+                                        UserCredential userCredential =
+                                            await _auth
+                                                .createUserWithEmailAndPassword(
+                                          email: controller.email.text,
+                                          password: controller.password.text,
+                                        );
+                                        // User creation successful
+                                        String accountType =
+                                            controller.selectedAccounttype.text;
+                                        print(
+                                            "User created: ${userCredential.user!.email}");
+                                        print(
+                                            'Account Type before create Account : $accountType');
+                                        await _createAccount(
+                                            userCredential.user!.uid,
+                                            accountType);
+                                        print('value passed$accountType');
+                                      } catch (e) {
+                                        print("Error creating user: $e");
+                                      }
+                                      print("track1");
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 128, 123, 229),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Create Account',
+                                    style: TextStyle(
+                                      fontFamily: 'Colfax',
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              SizedBox(
+                                height: 45,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize:
+                                        const Size.fromWidth(double.infinity),
+                                    backgroundColor:
+                                        Color.fromARGB(112, 112, 112, 1),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          5), // Adjust border radius as needed
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      fontFamily: 'Colfax',
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Already have an account? ',
+                                  style: HomepageText.helvetica16black),
+                              InkWell(
+                                onTap: () {},
+                                child: Text(
+                                  'Sign In',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(128, 123, 229, 1),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Divider(
+                            color: const Color.fromRGBO(112, 112, 112, 1),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('By Clicking Sign up, you agree to the ',
+                                  style: HomepageText.helvetica16black),
+                              Text(
+                                'Terms & Privacy policy.',
                                 style: TextStyle(
-                                  fontFamily: 'Colfax',
-                                  fontSize: 10,
-                                  color: Colors.white,
+                                  color: Color.fromRGBO(128, 123, 229, 1),
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Already have an account? '),
-                          InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return LoginPage();
-                                },
-                              );
-                            },
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          )));
+              ));
         }
       });
     });
+  }
+
+  Future<void> _createAccount(String uid, String selectedType) async {
+    try {
+      String userCollection;
+      Map<String, dynamic> userData = {
+        'firstName': controller.firstName.text,
+        'lastName': controller.lastName.text,
+        'email': controller.email.text,
+        'password': controller.password.text,
+        'contactNumber': controller.contactNumber.text,
+        'address': controller.address.text,
+        'alternateNumber': controller.alternateNumber.text,
+        'address2': controller.address2.text,
+        'city': controller.selectedCity.text,
+        'accounttype': controller.selectedAccounttype.text,
+      };
+
+      if (selectedType == 'Enterprise') {
+        userCollection = 'enterprisedummy';
+        userData['legalName'] = controller.legalName.text;
+        userData['companyidNumber'] = controller.companyidNumber.text;
+      } else if (selectedType == 'User') {
+        userCollection = 'userdummy';
+        userData['govtId'] = controller.selectedGovtId.text;
+        userData['idNumber'] = controller.idNumber.text;
+      } else if (selectedType == 'Super User') {
+        userCollection = 'superuserdummy';
+        userData['govtId'] = controller.selectedGovtId.text;
+        userData['idNumber'] = controller.idNumber.text;
+      } else {
+        throw Exception('Invalid selected type');
+      }
+
+      await FirebaseFirestore.instance
+          .collection(userCollection)
+          .doc(uid)
+          .set(userData);
+    } catch (e) {
+      print("Data doesn't store : $e");
+    }
   }
 }
