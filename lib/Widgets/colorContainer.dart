@@ -50,7 +50,7 @@ final class ColorContainer extends StatelessWidget {
               Text(
                 text2!,
                 style: const TextStyle(
-                    fontFamily: 'SFProTextMedium',
+                    fontFamily: 'SFProText',
                     fontWeight: FontWeight.bold,
                     fontSize: 9,
                     color: Color.fromRGBO(127, 106, 255, 1)),

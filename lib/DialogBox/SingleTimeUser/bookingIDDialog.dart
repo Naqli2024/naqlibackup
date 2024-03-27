@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Users/SingleTimeUser/bookingPage.dart';
-import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../Widgets/formText.dart';
 
 class BookingIDDialog extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10.0),
                           topRight: Radius.circular(10.0)),
-                      color: Color.fromRGBO(98, 106, 254, 1),
+                      color: Color.fromRGBO(98, 105, 254, 1),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,14 +51,8 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                'Booking ID XXXXXXXXXXXXXX',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontFamily: 'Helvetica',
-                                ),
-                              ),
+                              child: Text('Booking ID ***************',
+                                  style: DialogText.helvetica21),
                             ),
                           ),
                         ),
@@ -80,7 +75,7 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                   ),
                   Center(
                     child: Container(
-                      height: 200,
+                      height: 250,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(10.0),
@@ -88,13 +83,8 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                         color: Colors.white,
                       ),
                       child: Center(
-                        child: Text(
-                          'Booking Generated',
-                          style: TextStyle(
-                              color: Color.fromRGBO(116, 97, 97, 1),
-                              fontFamily: 'Helvetica',
-                              fontSize: 35),
-                        ),
+                        child: Text('Booking Generated',
+                            style: DialogText.helvetica40),
                       ),
                     ),
                   ),

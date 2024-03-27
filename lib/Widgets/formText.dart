@@ -1,5 +1,97 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
+
+class HomepageText {
+  static const TextStyle helvetica16black = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(0, 0, 0, 1),
+    fontSize: 14,
+  );
+  static const TextStyle helvetica16bold = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: 14,
+  );
+}
+
+class LoginpageText {
+  static const TextStyle helvetica30bold = TextStyle(
+    color: Color.fromRGBO(0, 0, 0, 1),
+    fontFamily: 'Helvetica',
+    fontWeight: FontWeight.w800,
+    fontSize: 28,
+  );
+  static const TextStyle purplehelvetica = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(128, 123, 229, 1),
+    fontSize: 14,
+  );
+  static const TextStyle helvetica16white = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Colors.white,
+    fontSize: 14,
+  );
+}
+
+class DialogText {
+  static const TextStyle helvetica16sandal = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(238, 225, 225, 1),
+    fontSize: 14,
+  );
+  static const TextStyle helvetica25black = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(0, 0, 0, 1),
+    fontSize: 23,
+  );
+  static const TextStyle helvetica20 = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Colors.white,
+    fontSize: 18,
+  );
+  static const TextStyle purplehelveticabold = TextStyle(
+    fontFamily: 'Helvetica',
+    fontWeight: FontWeight.bold,
+    color: Color.fromRGBO(128, 123, 229, 1),
+    fontSize: 14,
+  );
+  static const TextStyle helvetica21 = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: 19,
+  );
+  static TextStyle helvetica40 = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(116, 97, 97, 1).withOpacity(0.5),
+    fontSize: 38,
+  );
+}
+
+class AvailableText {
+  static const TextStyle helvetica17black = TextStyle(
+      fontFamily: 'Helvetica',
+      color: Color.fromRGBO(0, 0, 0, 1),
+      fontSize: 17,
+      fontWeight: FontWeight.bold);
+  static const TextStyle helvetica17grey = TextStyle(
+      fontFamily: 'Helvetica',
+      color: Color.fromRGBO(183, 183, 183, 1),
+      fontSize: 15,
+      fontWeight: FontWeight.bold);
+  static const TextStyle helvetica = TextStyle(
+    letterSpacing: 2,
+    fontFamily: 'Tajawal',
+    color: Color.fromRGBO(183, 183, 183, 1),
+    fontSize: 16,
+  );
+  static const TextStyle helveticablack = TextStyle(
+    letterSpacing: 0.5,
+    fontFamily: 'Tajawal',
+    color: Colors.black87,
+    fontSize: 16,
+  );
+}
 
 class FormTextStyle {
   static const TextStyle text = TextStyle(
@@ -101,12 +193,12 @@ class TabelText {
   );
   static const TextStyle usertext = TextStyle(
     fontSize: 10,
-    fontFamily: "HelveticaNeue",
+    fontFamily: "HelveticaNeueRegular",
     color: Color.fromRGBO(112, 112, 112, 1),
   );
   static const TextStyle headerText = TextStyle(
     color: Colors.white,
-    fontFamily: 'SFProTextMedium',
+    fontFamily: 'SFProText',
     fontSize: 17,
   );
   static const TextStyle tableText = TextStyle(
@@ -116,11 +208,11 @@ class TabelText {
   );
   static const TextStyle text1 = TextStyle(
     color: Colors.black87,
-    fontFamily: 'SFProTextMedium',
+    fontFamily: 'SFProText',
     fontSize: 12,
   );
   static const TextStyle text2 = TextStyle(
-    fontFamily: 'SFProTextMedium',
+    fontFamily: 'SFProText',
     color: Color.fromRGBO(143, 142, 151, 1),
     fontSize: 10,
   );

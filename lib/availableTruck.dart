@@ -19,7 +19,7 @@ class _AvailabeTruckList extends State<AvailabeTruckList> {
               centerTitle: false,
               elevation: 0.0,
               title: Image.asset(
-                'Naqli-final-logo.png',
+                'naqlilogo.png',
                 width: 140,
                 height: 140,
               ),

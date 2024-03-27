@@ -159,16 +159,15 @@ class _BookingPageState extends State<BookingPage> {
                   padding: EdgeInsets.fromLTRB(4.w, 8.h, 3.w, 8.h),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color:
-                          Color.fromARGB(255, 216, 214, 214).withOpacity(0.2),
+                      color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.1),
                     ),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
                         color:
-                            Color.fromARGB(255, 199, 198, 198).withOpacity(0.5),
+                            Color.fromARGB(255, 199, 198, 198).withOpacity(0.3),
                         blurRadius: 5,
                         spreadRadius: 5,
-                        offset: Offset(0, 0.5), // Bottom side shadow
+                        offset: Offset(0, 0), // Bottom side shadow
                       ),
                       BoxShadow(
                         color:
@@ -177,8 +176,8 @@ class _BookingPageState extends State<BookingPage> {
                         spreadRadius: 0, // Bottom side shadow
                       ),
                     ],
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color.fromRGBO(245, 243, 255, 1).withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(3),
+                    color: Color.fromRGBO(247, 246, 255, 1).withOpacity(1),
                   ),
                   child: Align(
                     alignment: Alignment.center,
@@ -472,7 +471,7 @@ class _BookingPageState extends State<BookingPage> {
                           ],
                         ),
                         Image.asset(
-                          'Naqli-final-logo.png',
+                          'naqlilogo.png',
                           width: 25.w,
                         ),
                         Column(

@@ -2,6 +2,8 @@
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
 
 @immutable
@@ -47,93 +49,74 @@ final class UnitsContainer extends StatelessWidget {
                 SizedBox(
                   width: 1.5.w,
                 ),
-                Text(
-                  text!,
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Helvetica',
-                      color: Colors.black),
-                ),
-                Row(
-                  children: [],
-                )
+                SizedBox(
+                    width: 6.w,
+                    child: Text(text!, style: AvailableText.helvetica17black)),
               ],
             ),
           ),
         ),
-        DropdownButtonHideUnderline(
-          child: DropdownButton2<String>(
-            value: value, // Use value from the list
-            items: items!.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      value,
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontFamily: 'SFProText',
-                          fontWeight: FontWeight.normal,
-                          color: Color.fromRGBO(183, 183, 183, 1)),
-                    ),
-                  ],
+        Expanded(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton2<String>(
+              value: value, // Use value from the list
+              items: items!.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value, style: AvailableText.helvetica),
+                );
+              }).toList(),
+              onChanged: onChanged,
+              buttonStyleData: ButtonStyleData(
+                height: 50,
+                padding: EdgeInsets.only(left: 9, right: 9),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
+                    right: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
+                    top: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(8),
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(8),
+                  ),
+                  color: Colors.white,
                 ),
-              );
-            }).toList(),
-            onChanged: onChanged,
-            buttonStyleData: ButtonStyleData(
-              height: 50,
-              width: 15.w,
-              padding: EdgeInsets.only(left: 9, right: 9),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
-                  right: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
-                  top: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
+              ),
+              iconStyleData: const IconStyleData(
+                icon: Icon(
+                  Icons.arrow_drop_down_sharp,
                 ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(0),
-                  topRight: Radius.circular(8),
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(8),
+                iconSize: 25,
+                iconEnabledColor: Colors.black,
+                iconDisabledColor: null,
+              ),
+              dropdownStyleData: DropdownStyleData(
+                elevation: 0,
+                maxHeight: 200,
+                padding: EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color.fromRGBO(112, 112, 112, 1)),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(0),
+                    bottomLeft: Radius.circular(5),
+                    bottomRight: Radius.circular(5),
+                  ),
+                  color: Colors.white,
                 ),
-                color: Colors.white,
-              ),
-            ),
-            iconStyleData: const IconStyleData(
-              icon: Icon(
-                Icons.arrow_drop_down_sharp,
-              ),
-              iconSize: 25,
-              iconEnabledColor: Colors.black,
-              iconDisabledColor: null,
-            ),
-            dropdownStyleData: DropdownStyleData(
-              elevation: 0,
-              maxHeight: 200,
-              padding: EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                border: Border.all(color: Color.fromRGBO(112, 112, 112, 1)),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(0),
-                  topRight: Radius.circular(0),
-                  bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5),
+                scrollPadding: EdgeInsets.all(5),
+                scrollbarTheme: ScrollbarThemeData(
+                  thickness: MaterialStateProperty.all<double>(6),
+                  thumbVisibility: MaterialStateProperty.all<bool>(true),
                 ),
-                color: Colors.white,
               ),
-              scrollPadding: EdgeInsets.all(5),
-              scrollbarTheme: ScrollbarThemeData(
-                thickness: MaterialStateProperty.all<double>(6),
-                thumbVisibility: MaterialStateProperty.all<bool>(true),
+              menuItemStyleData: MenuItemStyleData(
+                height: 30,
+                padding: EdgeInsets.only(left: 9, right: 9),
               ),
-            ),
-            menuItemStyleData: MenuItemStyleData(
-              height: 30,
-              padding: EdgeInsets.only(left: 9, right: 9),
             ),
           ),
         ),

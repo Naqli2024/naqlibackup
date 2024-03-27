@@ -1,18 +1,10 @@
 // ignore_for_file: dead_code
-
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_application_1/DialogBox/bookingdialog.dart';
 import 'package:flutter_application_1/Widgets/customButton.dart';
-import 'package:flutter_application_1/Widgets/customTextField.dart';
-import 'package:flutter_application_1/Widgets/unitsContainer.dart';
-import 'package:flutter_application_1/classes/language.dart';
-import 'package:flutter_application_1/classes/language_constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -152,16 +144,15 @@ class _BookingDetailsState extends State<BookingDetails> {
                   padding: EdgeInsets.fromLTRB(4.w, 8.h, 3.w, 8.h),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color:
-                          Color.fromARGB(255, 216, 214, 214).withOpacity(0.2),
+                      color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.1),
                     ),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
                         color:
-                            Color.fromARGB(255, 199, 198, 198).withOpacity(0.5),
+                            Color.fromARGB(255, 199, 198, 198).withOpacity(0.3),
                         blurRadius: 5,
                         spreadRadius: 5,
-                        offset: Offset(0, 0.5), // Bottom side shadow
+                        offset: Offset(0, 0), // Bottom side shadow
                       ),
                       BoxShadow(
                         color:
@@ -170,8 +161,8 @@ class _BookingDetailsState extends State<BookingDetails> {
                         spreadRadius: 0, // Bottom side shadow
                       ),
                     ],
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color.fromRGBO(245, 243, 255, 1).withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(3),
+                    color: Color.fromRGBO(247, 246, 255, 1).withOpacity(1),
                   ),
                   child: Align(
                     alignment: Alignment.center,
@@ -505,7 +496,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                           ],
                         ),
                         Image.asset(
-                          'Naqli-final-logo.png',
+                          'naqlilogo.png',
                           width: 25.w,
                         ),
                         Column(

@@ -25,7 +25,7 @@ class _MyHomePageState extends State<TripDetails> {
             title: Container(
               padding: const EdgeInsets.only(left: 400),
               child: Image.asset(
-                'Naqli-final-logo.png',
+                'naqlilogo.png',
                 width: 140,
                 height: 140,
               ),

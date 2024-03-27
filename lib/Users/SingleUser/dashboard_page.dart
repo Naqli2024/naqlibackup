@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,8 @@ import 'payments.dart';
 import 'bookingHistory.dart';
 
 class SingleUserDashboardPage extends StatefulWidget {
-  const SingleUserDashboardPage({Key? key}) : super(key: key);
+  final User user;
+  const SingleUserDashboardPage({required this.user});
 
   @override
   State<SingleUserDashboardPage> createState() => _MyHomePageState();
@@ -145,7 +147,7 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Image.asset(
-                        'Naqli-final-logo.png',
+                        'naqlilogo.png',
                         width: 10.w,
                       ),
                       Row(
@@ -158,7 +160,7 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                               'User',
                               style: TextStyle(
                                 fontSize: 20,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(112, 112, 112, 1),
                               ),
                             ),
@@ -177,7 +179,7 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                               'Partner',
                               style: TextStyle(
                                 fontSize: 16,
-                                fontFamily: "HelveticaNeue",
+                                fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(206, 203, 203, 1),
                               ),
                             ),
@@ -635,7 +637,7 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                             'User',
                             style: TextStyle(
                               fontSize: 20,
-                              fontFamily: "HelveticaNeue",
+                              fontFamily: "HelveticaNeueRegular",
                               color: Color.fromRGBO(112, 112, 112, 1),
                             ),
                           ),
@@ -654,7 +656,7 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                             'Partner',
                             style: TextStyle(
                               fontSize: 16,
-                              fontFamily: "HelveticaNeue",
+                              fontFamily: "HelveticaNeueRegular",
                               color: Color.fromRGBO(206, 203, 203, 1),
                             ),
                           ),

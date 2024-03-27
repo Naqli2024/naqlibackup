@@ -1,16 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Users/SingleTimeUser/availableUnits.dart';
-import 'package:flutter_application_1/Users/SingleTimeUser/bookingDetails.dart';
-import 'package:flutter_application_1/Users/SingleTimeUser/bookingPage.dart';
-import 'package:flutter_application_1/Users/SingleUser/dashboard_page.dart';
-import 'package:flutter_application_1/Users/SuperUser/dashboard_page.dart';
+import 'package:flutter_application_1/Partner/Dashboard/dashboard.dart';
 import 'package:flutter_application_1/createAccount.dart';
 import 'package:flutter_application_1/sample.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'DialogBox/bookingSuccessful.dart';
+import 'Users/SingleTimeUser/availableUnits.dart';
 import 'classes/language_constants.dart';
-import 'confirmtrip.dart';
 import 'gen_l10n/app_localizations.dart';
 import 'homePage.dart';
 
@@ -81,7 +76,7 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
       debugShowCheckedModeBanner: false,
-      home: AvailableUnits(),
+      home: MyHomePage(),
     );
   }
 }
