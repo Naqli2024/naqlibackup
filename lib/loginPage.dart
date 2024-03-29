@@ -230,11 +230,11 @@ class _LoginPageState extends State<LoginPage> {
                                                 password:
                                                     controller.password.text,
                                               );
-
+                                              String userId =
+                                                  userCredential.user!.uid;
                                               // Check the user's role after successful sign-in
                                               String userRole =
-                                                  await getUserRole(
-                                                      userCredential.user!.uid);
+                                                  await getUserRole(userId);
 
                                               print('User Role = $userRole');
                                               // Navigate to the appropriate dashboard based on the user's role
@@ -266,8 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         EnterDashboardPage(
-                                                            user: userCredential
-                                                                .user!),
+                                                            adminUid: userId),
                                                   ),
                                                 );
                                               } else {
@@ -314,7 +313,15 @@ class _LoginPageState extends State<LoginPage> {
                                     InkWell(
                                       child: Text('Forgot Password?',
                                           style: LoginpageText.purplehelvetica),
-                                      onTap: () {},
+                                      onTap: () {
+                                        showDialog(
+                                          barrierColor: Colors.transparent,
+                                          context: context,
+                                          builder: (context) {
+                                            return ForgotPasswordPage();
+                                          },
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
@@ -485,8 +492,8 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                                 print('email---- ${controller.email.text}');
                                 // Check the user's role after successful sign-in
-                                String userRole =
-                                    await getUserRole(userCredential.user!.uid);
+                                String userId = userCredential.user!.uid;
+                                String userRole = await getUserRole(userId);
 
                                 // Navigate to the appropriate dashboard based on the user's role
                                 if (userRole == 'User') {
@@ -512,7 +519,7 @@ class _LoginPageState extends State<LoginPage> {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             EnterDashboardPage(
-                                                user: userCredential.user!),
+                                                adminUid: userId),
                                       ));
                                 } else {
                                   print('Unknown user role');
@@ -557,7 +564,15 @@ class _LoginPageState extends State<LoginPage> {
                         InkWell(
                           child: Text('Forgot Password?',
                               style: LoginpageText.purplehelvetica),
-                          onTap: () {},
+                          onTap: () {
+                            showDialog(
+                              barrierColor: Colors.transparent,
+                              context: context,
+                              builder: (context) {
+                                return ForgotPasswordPage();
+                              },
+                            );
+                          },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -619,5 +634,201 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     });
+  }
+}
+
+class ForgotPasswordPage extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+
+  Future<void> _resetPassword(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(4.w, 5.h, 3.w, 10.h),
+              height: 340,
+              width: 1225,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(31),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: ImageIcon(
+                          AssetImage('cancel.png'),
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text('Password Reset link has been sent to your email.',
+                      style: TabelText.helveticablack19),
+                  SizedBox(
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(60, 55, 148, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11),
+                          )),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 1.w,
+                          right: 1.w,
+                        ),
+                        child: Text("OK", style: DialogText.helvetica20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(e.toString()),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(18.w, 27.h, 18.w, 27.h),
+      child: SingleChildScrollView(
+        child: Expanded(
+          child: Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(31))),
+            child: Container(
+              height: 360,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(31),
+                ),
+              ),
+              padding: EdgeInsets.fromLTRB(4.w, 4.h, 2.w, 4.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text('Reset Password',
+                              style: LoginpageText.helvetica30bold),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: ImageIcon(
+                          AssetImage('cancel.png'),
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text('Enter your email to reset Password',
+                      style: DialogText.helvetica25black),
+                  SizedBox(
+                    height: 45,
+                    width: 400,
+                    child: TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: () => _resetPassword(context),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(60, 55, 148, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11),
+                          )),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 1.w,
+                          right: 1.w,
+                        ),
+                        child: Text('Send', style: DialogText.helvetica20),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 2.w, right: 5.w),
+                    child: Divider(
+                      color: Color.fromRGBO(112, 112, 112, 1),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Didn't receive OTP ?",
+                          style: HomepageText.helvetica16black),
+                      InkWell(
+                        child: Text(' Resend',
+                            style: DialogText.purplehelveticabold),
+                        onTap: () async {
+                          await FirebaseAuth.instance.sendPasswordResetEmail(
+                              email: _emailController.text);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

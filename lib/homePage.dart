@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/classes/language.dart';
 import 'package:flutter_application_1/classes/language_constants.dart';
+import 'package:flutter_application_1/createAccount.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 import 'package:sizer/sizer.dart';
@@ -23,13 +24,23 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   String _selectedValue = '1';
   String categoryValue = '1';
   String dropdownValues = 'None';
+  late TabController _tabController;
   final ScrollController _Scroll = ScrollController();
+  @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,42 +64,39 @@ class _MyHomePageState extends State<MyHomePage> {
                             'naqlilogo.png',
                           ),
                         ),
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                // Handle the first button press
-                              },
-                              child: Text(
-                                'User',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "HelveticaNeueRegular",
-                                  color: Color.fromRGBO(112, 112, 112, 1),
-                                ),
-                              ),
+                        SizedBox(
+                          width: 200,
+                          child: TabBar(
+                            overlayColor:
+                                MaterialStateProperty.resolveWith((states) {
+                              if (states.contains(MaterialState.selected)) {
+                                return Colors.transparent;
+                              }
+                              return Colors.transparent;
+                            }),
+                            automaticIndicatorColorAdjustment: false,
+                            unselectedLabelStyle: TextStyle(
+                              fontSize: 20,
+                              fontFamily: "HelveticaNeueRegular",
+                              color: Color.fromRGBO(206, 203, 203, 1),
                             ),
-                            SizedBox(
-                              height: 20,
-                              child: VerticalDivider(
-                                thickness: 2,
-                                color: Color.fromRGBO(206, 203, 203, 1),
-                              ),
+                            labelStyle: TextStyle(
+                              fontSize: 20,
+                              fontFamily: "HelveticaNeueRegular",
+                              color: Color.fromRGBO(112, 112, 112, 1),
                             ),
-                            TextButton(
-                              onPressed: () {
-                                // Handle the third button press
-                              },
-                              child: Text(
-                                'Partner',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "HelveticaNeueRegular",
-                                  color: Color.fromRGBO(206, 203, 203, 1),
-                                ),
+                            dividerHeight: 0,
+                            indicatorColor: Colors.transparent,
+                            controller: _tabController,
+                            tabs: [
+                              Tab(
+                                text: 'User',
                               ),
-                            ),
-                          ],
+                              Tab(
+                                text: 'Partner',
+                              ),
+                            ],
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,415 +222,448 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              body: SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Stack(
-                        alignment: Alignment.topCenter,
-                        children: [
-                          Column(
+              body: TabBarView(
+                controller: _tabController,
+                children: [
+                  SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Stack(
+                            alignment: Alignment.topCenter,
                             children: [
-                              CarouselSlider(
-                                options: CarouselOptions(
-                                  autoPlay: true,
-                                  viewportFraction: 1.0,
-                                  autoPlayAnimationDuration:
-                                      Durations.extralong4,
-                                  height: 500,
-                                ),
-                                items: [
-                                  Image(
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    image: AssetImage('truckslide.jpg'),
+                              Column(
+                                children: [
+                                  CarouselSlider(
+                                    options: CarouselOptions(
+                                      autoPlay: true,
+                                      viewportFraction: 1.0,
+                                      autoPlayAnimationDuration:
+                                          Durations.extralong4,
+                                      height: 500,
+                                    ),
+                                    items: [
+                                      Image(
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        image: AssetImage('truckslide.jpg'),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 450, right: 200, top: 200),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 450, right: 200, top: 200),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
-                          Positioned(
-                            top: 310,
-                            left: 14.w,
-                            right: 14.w,
-                            child: Card(
-                              elevation: 4,
-                              shadowColor: Color.fromRGBO(216, 216, 216, 1)
-                                  .withOpacity(0.5),
-                              child: Container(
-                                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                width: 1250,
-                                height: 350,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color.fromRGBO(112, 112, 112, 1)
-                                          .withOpacity(0.1)),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: Column(
-                                  // Use ListView instead of Column
-                                  children: [
-                                    SizedBox(height: 10),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                              Positioned(
+                                top: 310,
+                                left: 14.w,
+                                right: 14.w,
+                                child: Card(
+                                  elevation: 4,
+                                  shadowColor: Color.fromRGBO(216, 216, 216, 1)
+                                      .withOpacity(0.5),
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                    width: 1250,
+                                    height: 350,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color:
+                                              Color.fromRGBO(112, 112, 112, 1)
+                                                  .withOpacity(0.1)),
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Column(
+                                      // Use ListView instead of Column
                                       children: [
-                                        // Location text
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.black,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.location_on_outlined),
-                                              SizedBox(width: 5),
-                                              Container(
-                                                height: 30,
-                                                width: 1,
-                                                color: Colors.black,
-                                              ),
-                                              SizedBox(width: 5),
-                                              // SizedBox(
-                                              //   height: 200,
-                                              //   width: 200,
-                                              //   child: OpenStreetMapSearchAndPick(
-                                              //       buttonColor: Colors.blue,
-                                              //       buttonText:
-                                              //           'Set Current Location',
-                                              //       onPicked: (pickedData) {}),
-                                              // )
-                                              // Replace the below DropdownButton with your actual dropdown widget
-                                              DropdownButtonHideUnderline(
-                                                child: DropdownButton<String>(
-                                                  value: 'Location',
-                                                  onChanged:
-                                                      (String? newValue) {
-                                                    // Handle dropdown value change
-                                                  },
-                                                  items: <String>[
-                                                    'Location',
-                                                    'Location1',
-                                                    'Location2'
-                                                  ].map<
-                                                      DropdownMenuItem<String>>(
-                                                    (String value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value,
-                                                        child: Text(
-                                                          value,
-                                                          style: HomepageText
-                                                              .helvetica16black,
-                                                        ),
-                                                      );
-                                                    },
-                                                  ).toList(),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 30,
-                                    ),
-                                    Scrollbar(
-                                      controller: _Scroll,
-                                      thumbVisibility:
-                                          true, // Set to true to always show the scrollbar
-                                      child: SingleChildScrollView(
-                                        controller: _Scroll,
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
+                                        SizedBox(height: 10),
+                                        Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.end,
                                           children: [
-                                            Card(
-                                              elevation: 5.5,
-                                              shadowColor: Color.fromRGBO(
-                                                      216, 216, 216, 1)
-                                                  .withOpacity(0.6),
-                                              child: Container(
-                                                width: 200,
-                                                height: 200,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      247, 246, 255, 1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Image.asset(
-                                                        'Group68.png',
-                                                        width: 150,
-                                                        height: 139,
-                                                      ),
-                                                      Divider(
-                                                        color: Colors.black,
-                                                      ),
-                                                      SizedBox(height: 2),
-                                                      Text('Vehicle',
-                                                          style: HomepageText
-                                                              .helvetica16black),
-                                                    ],
-                                                  ),
-                                                ),
+                                            // Location text
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.black,
+                                                    width: 1.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Card(
-                                              elevation: 5.5,
-                                              shadowColor: Color.fromRGBO(
-                                                      216, 216, 216, 1)
-                                                  .withOpacity(0.6),
-                                              child: Container(
-                                                width: 200,
-                                                height: 200,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      247, 246, 255, 1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Image.asset(
-                                                        'bus.png',
-                                                        width: 150,
-                                                        height: 139,
-                                                      ),
-                                                      Divider(
-                                                        color: Colors.black,
-                                                      ),
-                                                      SizedBox(height: 2),
-                                                      Text(
-                                                        'Bus',
-                                                        style: HomepageText
-                                                            .helvetica16black,
-                                                      ),
-                                                    ],
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons
+                                                      .location_on_outlined),
+                                                  SizedBox(width: 5),
+                                                  Container(
+                                                    height: 30,
+                                                    width: 1,
+                                                    color: Colors.black,
                                                   ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Card(
-                                              elevation: 5.5,
-                                              shadowColor: Color.fromRGBO(
-                                                      216, 216, 216, 1)
-                                                  .withOpacity(0.6),
-                                              child: Container(
-                                                width: 200,
-                                                height: 200,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      247, 246, 255, 1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Image.asset(
-                                                        'Group1496.png',
-                                                        width: 150,
-                                                        height: 139,
-                                                      ),
-                                                      Divider(
-                                                        color: Colors.black,
-                                                      ),
-                                                      SizedBox(height: 2),
-                                                      Text(
-                                                        'Equipment-2',
-                                                        style: HomepageText
-                                                            .helvetica16black,
-                                                      ),
-                                                    ],
+                                                  SizedBox(width: 5),
+                                                  // SizedBox(
+                                                  //   height: 200,
+                                                  //   width: 200,
+                                                  //   child: OpenStreetMapSearchAndPick(
+                                                  //       buttonColor: Colors.blue,
+                                                  //       buttonText:
+                                                  //           'Set Current Location',
+                                                  //       onPicked: (pickedData) {}),
+                                                  // )
+                                                  // Replace the below DropdownButton with your actual dropdown widget
+                                                  DropdownButtonHideUnderline(
+                                                    child:
+                                                        DropdownButton<String>(
+                                                      value: 'Location',
+                                                      onChanged:
+                                                          (String? newValue) {
+                                                        // Handle dropdown value change
+                                                      },
+                                                      items: <String>[
+                                                        'Location',
+                                                        'Location1',
+                                                        'Location2'
+                                                      ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                        (String value) {
+                                                          return DropdownMenuItem<
+                                                              String>(
+                                                            value: value,
+                                                            child: Text(
+                                                              value,
+                                                              style: HomepageText
+                                                                  .helvetica16black,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ).toList(),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Card(
-                                              elevation: 5.5,
-                                              shadowColor: Color.fromRGBO(
-                                                      216, 216, 216, 1)
-                                                  .withOpacity(0.6),
-                                              child: Container(
-                                                width: 200,
-                                                height: 200,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      247, 246, 255, 1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Image.asset(
-                                                        'Group1660.png',
-                                                        width: 150,
-                                                        height: 139,
-                                                      ),
-                                                      Divider(
-                                                        color: Colors.black,
-                                                      ),
-                                                      SizedBox(height: 2),
-                                                      Text(
-                                                        'Special',
-                                                        style: HomepageText
-                                                            .helvetica16black,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Card(
-                                              elevation: 5.5,
-                                              shadowColor: Color.fromRGBO(
-                                                      216, 216, 216, 1)
-                                                  .withOpacity(0.6),
-                                              child: Container(
-                                                width: 200,
-                                                height: 200,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      247, 246, 255, 1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Image.asset(
-                                                        'Group1716.png',
-                                                        width: 150,
-                                                        height: 139,
-                                                      ),
-                                                      Divider(
-                                                        color: Colors.black,
-                                                      ),
-                                                      SizedBox(height: 2),
-                                                      Text(
-                                                        'Others',
-                                                        style: HomepageText
-                                                            .helvetica16black,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Card(
-                                              elevation: 5.5,
-                                              shadowColor: Color.fromRGBO(
-                                                      216, 216, 216, 1)
-                                                  .withOpacity(0.6),
-                                              child: Container(
-                                                width: 200,
-                                                height: 200,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-
-                                                  color: Color.fromRGBO(96, 105,
-                                                      255, 1), // RGB color fill
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text("Get an Estimate",
-                                                          style: HomepageText
-                                                              .helvetica16bold),
-                                                      SizedBox(height: 20),
-                                                      Image.asset(
-                                                        'right-arrow.png',
-                                                        width: 30,
-                                                        height: 30,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
+                                                ],
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        Scrollbar(
+                                          controller: _Scroll,
+                                          thumbVisibility:
+                                              true, // Set to true to always show the scrollbar
+                                          child: SingleChildScrollView(
+                                            controller: _Scroll,
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 5.5,
+                                                  shadowColor: Color.fromRGBO(
+                                                          216, 216, 216, 1)
+                                                      .withOpacity(0.6),
+                                                  child: Container(
+                                                    width: 200,
+                                                    height: 200,
+                                                    decoration: BoxDecoration(
+                                                      color: Color.fromRGBO(
+                                                          247, 246, 255, 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Image.asset(
+                                                            'Group68.png',
+                                                            width: 150,
+                                                            height: 139,
+                                                          ),
+                                                          Divider(
+                                                            color: Colors.black,
+                                                          ),
+                                                          SizedBox(height: 2),
+                                                          Text('Vehicle',
+                                                              style: HomepageText
+                                                                  .helvetica16black),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Card(
+                                                  elevation: 5.5,
+                                                  shadowColor: Color.fromRGBO(
+                                                          216, 216, 216, 1)
+                                                      .withOpacity(0.6),
+                                                  child: Container(
+                                                    width: 200,
+                                                    height: 200,
+                                                    decoration: BoxDecoration(
+                                                      color: Color.fromRGBO(
+                                                          247, 246, 255, 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Image.asset(
+                                                            'bus.png',
+                                                            width: 150,
+                                                            height: 139,
+                                                          ),
+                                                          Divider(
+                                                            color: Colors.black,
+                                                          ),
+                                                          SizedBox(height: 2),
+                                                          Text(
+                                                            'Bus',
+                                                            style: HomepageText
+                                                                .helvetica16black,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Card(
+                                                  elevation: 5.5,
+                                                  shadowColor: Color.fromRGBO(
+                                                          216, 216, 216, 1)
+                                                      .withOpacity(0.6),
+                                                  child: Container(
+                                                    width: 200,
+                                                    height: 200,
+                                                    decoration: BoxDecoration(
+                                                      color: Color.fromRGBO(
+                                                          247, 246, 255, 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Image.asset(
+                                                            'Group1496.png',
+                                                            width: 150,
+                                                            height: 139,
+                                                          ),
+                                                          Divider(
+                                                            color: Colors.black,
+                                                          ),
+                                                          SizedBox(height: 2),
+                                                          Text(
+                                                            'Equipment-2',
+                                                            style: HomepageText
+                                                                .helvetica16black,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Card(
+                                                  elevation: 5.5,
+                                                  shadowColor: Color.fromRGBO(
+                                                          216, 216, 216, 1)
+                                                      .withOpacity(0.6),
+                                                  child: Container(
+                                                    width: 200,
+                                                    height: 200,
+                                                    decoration: BoxDecoration(
+                                                      color: Color.fromRGBO(
+                                                          247, 246, 255, 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Image.asset(
+                                                            'Group1660.png',
+                                                            width: 150,
+                                                            height: 139,
+                                                          ),
+                                                          Divider(
+                                                            color: Colors.black,
+                                                          ),
+                                                          SizedBox(height: 2),
+                                                          Text(
+                                                            'Special',
+                                                            style: HomepageText
+                                                                .helvetica16black,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Card(
+                                                  elevation: 5.5,
+                                                  shadowColor: Color.fromRGBO(
+                                                          216, 216, 216, 1)
+                                                      .withOpacity(0.6),
+                                                  child: Container(
+                                                    width: 200,
+                                                    height: 200,
+                                                    decoration: BoxDecoration(
+                                                      color: Color.fromRGBO(
+                                                          247, 246, 255, 1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Image.asset(
+                                                            'Group1716.png',
+                                                            width: 150,
+                                                            height: 139,
+                                                          ),
+                                                          Divider(
+                                                            color: Colors.black,
+                                                          ),
+                                                          SizedBox(height: 2),
+                                                          Text(
+                                                            'Others',
+                                                            style: HomepageText
+                                                                .helvetica16black,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Card(
+                                                  elevation: 5.5,
+                                                  shadowColor: Color.fromRGBO(
+                                                          216, 216, 216, 1)
+                                                      .withOpacity(0.6),
+                                                  child: Container(
+                                                    width: 200,
+                                                    height: 200,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      gradient: LinearGradient(
+                                                        begin: Alignment
+                                                            .centerLeft,
+                                                        end: Alignment
+                                                            .centerRight,
+                                                        colors: [
+                                                          Color.fromRGBO(
+                                                              96, 105, 255, 1),
+                                                          Color.fromRGBO(
+                                                              123, 107, 247, 1),
+                                                        ],
+                                                      ), // RGB color fill
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                              "Get an Estimate",
+                                                              style: HomepageText
+                                                                  .helvetica16bold),
+                                                          SizedBox(height: 20),
+                                                          Image.asset(
+                                                            'right-arrow.png',
+                                                            width: 30,
+                                                            height: 30,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  Center(child: CreateAccount())
+                ],
               ));
         } else {
           return Scaffold(
@@ -1133,8 +1174,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
 
-                                              color: Color.fromRGBO(96, 105,
-                                                  255, 1), // RGB color fill
+                                              gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                colors: [
+                                                  Color.fromRGBO(
+                                                      96, 105, 255, 1),
+                                                  Color.fromRGBO(
+                                                      123, 107, 247, 1),
+                                                ],
+                                              ), // // RGB color fill
                                             ),
                                             child: Padding(
                                               padding:

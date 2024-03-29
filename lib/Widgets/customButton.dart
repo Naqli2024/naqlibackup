@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import 'formText.dart';
 
@@ -132,6 +133,52 @@ final class EditButton extends StatelessWidget {
               fontFamily: 'Helvetica',
               color: Colors.white,
               fontSize: 12,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+final class GradientButton extends StatelessWidget {
+  final String? text;
+  Widget? child;
+  final Function()? onPressed;
+
+  final List<Color>? colors;
+  final double? dynamicHeight;
+  GradientButton({
+    super.key,
+    this.text,
+    this.onPressed,
+    this.colors,
+    this.dynamicHeight,
+    this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 45,
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color.fromRGBO(96, 105, 255, 1),
+                Color.fromRGBO(123, 107, 247, 1),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(3.w, 0, 3.w, 0),
+              child: Text(text!, style: LoginpageText.helvetica16white),
             ),
           ),
         ),

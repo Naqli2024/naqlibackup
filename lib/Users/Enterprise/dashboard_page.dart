@@ -18,8 +18,8 @@ import 'trigger_booking.dart';
 import 'users.dart';
 
 class EnterDashboardPage extends StatefulWidget {
-  final User user;
-  EnterDashboardPage({required this.user});
+  String? adminUid;
+  EnterDashboardPage({this.adminUid});
 
   @override
   State<EnterDashboardPage> createState() => _MyHomePageState();
@@ -422,7 +422,9 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                                     title: 'Users',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = Users();
+                                        _currentContent = Users(
+                                          adminUid: widget.adminUid,
+                                        );
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -597,7 +599,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = Users();
+                            _currentContent = Users(adminUid: widget.adminUid);
                           });
                           Navigator.pop(context);
                         }),

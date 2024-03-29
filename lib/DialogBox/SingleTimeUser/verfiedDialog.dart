@@ -272,7 +272,8 @@ class _VerifiedDialogState extends State<VerifiedDialog> {
                                             await FirebaseAuth.instance
                                                 .signInWithCredential(
                                                     _credential);
-
+                                        String userId =
+                                            userCredential.user!.uid;
                                         if (userCredential.user != null) {
                                           String email = widget.email;
                                           String accountType =
@@ -293,8 +294,7 @@ class _VerifiedDialogState extends State<VerifiedDialog> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     EnterDashboardPage(
-                                                        user: userCredential
-                                                            .user!),
+                                                        adminUid: userId),
                                               ),
                                             );
                                           } else if (accountType ==

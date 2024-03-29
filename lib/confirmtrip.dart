@@ -38,7 +38,7 @@ class _ConfirmTrip extends State<ConfirmTrip> {
                       Icons.notifications,
                       color: Color.fromRGBO(106, 102, 209, 1),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 30,
                       child: Padding(
                         padding: EdgeInsets.only(left: 15, top: 5),
