@@ -1,12 +1,20 @@
+import 'dart:js_interop';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Widgets/customTextField.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../Controllers/allUsersFormController.dart';
+import '../../Widgets/customButton.dart';
+
 class Users extends StatefulWidget {
-  Users();
+  String? adminUid;
+  Users({this.adminUid});
   @override
   State<Users> createState() => _UsersState();
 }
@@ -24,7 +32,9 @@ class _UsersState extends State<Users> {
   bool checkbox2 = false;
   bool checkbox3 = false;
   List<String> dropdownValues = ['None'];
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final ScrollController _Scroll = ScrollController();
+  AllUsersFormController controller = AllUsersFormController();
 
   @override
   void initState() {
@@ -193,7 +203,27 @@ class _UsersState extends State<Users> {
                                                   style: TabelText.helvetica)),
                                           Expanded(
                                               child: CustomTextfield(
+                                            controller: controller.firstName,
                                             text: 'Enter name',
+                                          )),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                              width: 9.w,
+                                              child: Text('Address',
+                                                  style: TabelText.helvetica)),
+                                          Expanded(
+                                              child: CustomTextfield(
+                                            controller: controller.address,
+                                            text: 'Enter address',
                                           )),
                                         ],
                                       ),
@@ -209,21 +239,19 @@ class _UsersState extends State<Users> {
                                           Expanded(
                                               child: CustomTextfield(
                                             text: 'Enter email address',
+                                            controller: controller.email,
                                           )),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      Row(
-                                        children: [
+                                          SizedBox(
+                                            width: 2.w,
+                                          ),
                                           SizedBox(
                                               width: 9.w,
-                                              child: Text('Address',
+                                              child: Text('Password',
                                                   style: TabelText.helvetica)),
                                           Expanded(
                                               child: CustomTextfield(
-                                            text: 'Enter address',
+                                            text: 'Enter password',
+                                            controller: controller.password,
                                           )),
                                         ],
                                       ),
@@ -239,6 +267,8 @@ class _UsersState extends State<Users> {
                                           Expanded(
                                               child: CustomTextfield(
                                             text: 'Enter mobile no',
+                                            controller:
+                                                controller.contactNumber,
                                           )),
                                           SizedBox(
                                             width: 2.w,
@@ -288,7 +318,66 @@ class _UsersState extends State<Users> {
                                               )
                                             ],
                                           ),
-                                          Expanded(child: SizedBox()),
+                                          CustomButton(
+                                            onPressed: () async {
+                                              try {
+                                                String? adminUid =
+                                                    widget.adminUid;
+                                                final FirebaseAuth _auth =
+                                                    FirebaseAuth.instance;
+                                                UserCredential userCredential =
+                                                    await _auth
+                                                        .createUserWithEmailAndPassword(
+                                                  email: controller.email.text,
+                                                  password:
+                                                      controller.password.text,
+                                                );
+
+                                                // Extract UID from the userCredential.user object
+                                                String userId =
+                                                    userCredential.user!.uid;
+
+                                                // Gather admin user fields
+                                                String adminEmail =
+                                                    'controller.adnEmail.text';
+                                                // Add other admin fields as needed
+
+                                                // Gather fields for subcollection documents
+                                                String firstName =
+                                                    controller.firstName.text;
+                                                String lastName =
+                                                    controller.lastName.text;
+                                                String email =
+                                                    controller.email.text;
+                                                String password =
+                                                    controller.password.text;
+                                                String contactNumber =
+                                                    controller
+                                                        .contactNumber.text;
+                                                String address =
+                                                    controller.address.text;
+                                                String accounttype = controller
+                                                    .selectedAccounttype.text;
+
+                                                // Call functions to create documents in collection and subcollection
+                                                await createCollectionAndSubcollection(
+                                                    userId,
+                                                    adminEmail,
+                                                    adminUid!,
+                                                    firstName,
+                                                    lastName,
+                                                    email,
+                                                    password,
+                                                    contactNumber,
+                                                    address,
+                                                    accounttype);
+                                              } catch (e) {
+                                                print(
+                                                    "Error creating user: $e");
+                                              }
+                                            },
+                                            text: 'Confirm Booking',
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -490,6 +579,8 @@ class _UsersState extends State<Users> {
                                                           child:
                                                               CustomTextfield(
                                                         text: 'Enter name',
+                                                        controller: controller
+                                                            .firstName,
                                                       )),
                                                     ],
                                                   ),
@@ -509,6 +600,8 @@ class _UsersState extends State<Users> {
                                                               CustomTextfield(
                                                         text:
                                                             'Enter email address',
+                                                        controller:
+                                                            controller.email,
                                                       )),
                                                     ],
                                                   ),
@@ -526,6 +619,8 @@ class _UsersState extends State<Users> {
                                                           child:
                                                               CustomTextfield(
                                                         text: 'Enter address',
+                                                        controller:
+                                                            controller.address,
                                                       )),
                                                     ],
                                                   ),
@@ -544,6 +639,8 @@ class _UsersState extends State<Users> {
                                                           child:
                                                               CustomTextfield(
                                                         text: 'Enter mobile no',
+                                                        controller: controller
+                                                            .companyidNumber,
                                                       )),
                                                       SizedBox(
                                                         width: 2.w,
@@ -732,6 +829,166 @@ class _UsersState extends State<Users> {
       });
     });
   }
+
+  // Future<String?> addUserDataToSubcollection() async {
+  //   try {
+  //     FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  //     // Reference to the user's document
+  //     DocumentReference userDocRef =
+  //         firestore.collection('enterprisedummy').doc();
+
+  //     // Reference to the subcollection 'posts' under the user's document
+  //     CollectionReference postsCollectionRef =
+  //         userDocRef.collection('enterpriseUsers');
+
+  //     // Data to be saved in the subcollection
+  //     Map<String, dynamic> postData = {
+  //       'firstName': controller.firstName.text,
+  //       'lastName': controller.lastName.text,
+  //       'email': controller.email.text,
+  //       'password': controller.password.text,
+  //       'contactNumber': controller.contactNumber.text,
+  //       'address': controller.address.text,
+  //       'alternateNumber': controller.alternateNumber.text,
+  //       'address2': controller.address2.text,
+  //       'city': controller.selectedCity.text,
+  //       'accounttype': controller.selectedAccounttype.text,
+  //       'createdTime': Timestamp.now(),
+  //     };
+
+  //     // Add data to the subcollection
+  //     await postsCollectionRef.add(postData);
+
+  //     return 'Data added to subcollection successfully!';
+  //   } catch (error) {
+  //     print('Error adding data to subcollection: $error');
+  //     return null;
+  //   }
+  // }
+
+  // Future<String?> addMultipleCollections() async {
+  //   FirebaseFirestore.instance
+  //       .collection('enterprisedummy')
+  //       .doc('uid')
+  //       .collection('enterpriseUsers')
+  //       .add(
+  //     {
+  //       'firstName': controller.firstName.text,
+  //       'lastName': controller.lastName.text,
+  //       'email': controller.email.text,
+  //       'password': controller.password.text,
+  //       'contactNumber': controller.contactNumber.text,
+  //       'address': controller.address.text,
+  //       'alternateNumber': controller.alternateNumber.text,
+  //       'address2': controller.address2.text,
+  //       'city': controller.selectedCity.text,
+  //       'accounttype': controller.selectedAccounttype.text,
+  //     },
+  //   );
+  //   // FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //   // CollectionReference users = firestore.collection('enterprisedummy');
+  //   // users.doc(id).collection('enterpriseUsers').add({
+  //   //   'firstName': controller.firstName.text,
+  //   //   'lastName': controller.lastName.text,
+  //   //   'email': controller.email.text,
+  //   //   'password': controller.password.text,
+  //   //   'contactNumber': controller.contactNumber.text,
+  //   //   'address': controller.address.text,
+  //   //   'alternateNumber': controller.alternateNumber.text,
+  //   //   'address2': controller.address2.text,
+  //   //   'city': controller.selectedCity.text,
+  //   //   'accounttype': controller.selectedAccounttype.text,
+  //   // });
+  //   return 'Success';
+  // }
+
+  Future<void> createCollectionAndSubcollection(
+    String userId,
+    String adminEmail,
+    String adminUid,
+    String firstName,
+    String lastName,
+    String email,
+    String password,
+    String contactNumber,
+    String address,
+    String accountType,
+  ) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Reference to the user's document
+      DocumentReference userDocRef =
+          firestore.collection('enterprisedummy').doc(adminUid);
+
+      // Reference to the subcollection 'enterpriseUsers' under the user's document
+      CollectionReference enterpriseUsersCollectionRef =
+          userDocRef.collection('enterpriseUsers');
+
+      // Data for top-level document
+      // Map<String, dynamic> adminUserData = {
+      //   'adminEmail': adminEmail,
+      //   // Add other admin fields as needed
+      // };
+
+      // Data for subcollection document
+      Map<String, dynamic> subcollectionUserData = {
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'password': password,
+        'contactNumber': contactNumber,
+        'address': address,
+        'accountType': accountType,
+        'createdTime': Timestamp.now(),
+      };
+
+      // Add top-level document
+      // await userDocRef.set(adminUserData);
+
+      // Add document to subcollection
+      await enterpriseUsersCollectionRef.add(subcollectionUserData);
+
+      print('Collection and subcollection documents created successfully!');
+    } catch (error) {
+      print('Error creating documents: $error');
+    }
+  }
+
+  // Future<String?> createSubcollection(String userId) async {
+  //   try {
+  //     FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  //     // Reference to the user's document
+  //     DocumentReference userDocRef =
+  //         firestore.collection('enterprisedummy').doc(userId);
+
+  //     // Reference to the subcollection 'enterpriseUsers' under the user's document
+  //     CollectionReference enterpriseUsersCollectionRef =
+  //         userDocRef.collection('enterpriseUsers');
+
+  //     // Data to be saved in the subcollection
+  //     Map<String, dynamic> userData = {
+  //       'firstName': controller.firstName.text,
+  //       'lastName': controller.lastName.text,
+  //       'email': controller.email.text,
+  //       'password': controller.password.text,
+  //       'contactNumber': controller.contactNumber.text,
+  //       'address': controller.address.text,
+  //       'accounttype': controller.selectedAccounttype.text,
+  //       'createdTime': Timestamp.now(),
+  //     };
+
+  //     // Add data to the subcollection
+  //     await enterpriseUsersCollectionRef.add(userData);
+
+  //     return 'Subcollection created successfully!';
+  //   } catch (error) {
+  //     print('Error creating subcollection: $error');
+  //     return null;
+  //   }
+  // }
 
   DataTable _booking1Table() {
     return DataTable(

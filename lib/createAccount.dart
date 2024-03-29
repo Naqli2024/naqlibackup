@@ -8,6 +8,7 @@ import 'package:flutter_application_1/DialogBox/SingleTimeUser/mblNoDialog.dart'
 import 'package:flutter_application_1/DialogBox/SingleTimeUser/optDialog.dart';
 import 'package:flutter_application_1/Users/SingleUser/dashboard_page.dart';
 import 'package:flutter_application_1/Users/SuperUser/dashboard_page.dart';
+import 'package:flutter_application_1/Widgets/customButton.dart';
 import 'package:flutter_application_1/Widgets/customDropdown.dart';
 import 'package:flutter_application_1/Widgets/customTextField.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
@@ -85,8 +86,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   String? validatePassword(String? value) {
-    RegExp regex =
-        RegExp(r'^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[!@#\$&*~]).{8,}$');
+    RegExp regex = RegExp(
+      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$',
+    );
     if (value!.isEmpty) {
       return 'Please enter password';
     } else {
@@ -179,14 +181,14 @@ class _CreateAccountState extends State<CreateAccount> {
                                       children: [
                                         Expanded(
                                             child: CustomTextfield(
-                                          // validator: nameValidator,
+                                          validator: nameValidator,
                                           controller: controller.firstName,
                                           text: 'First Name',
                                         )),
                                         SizedBox(width: 25),
                                         Expanded(
                                             child: CustomTextfield(
-                                          // validator: nameValidator,
+                                          validator: nameValidator,
                                           controller: controller.lastName,
                                           text: 'Last Name',
                                         )),
@@ -246,7 +248,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                   children: [
                                     CustomTextfield(
                                       controller: controller.password,
-                                      // validator: validatePassword,
+                                      validator: validatePassword,
                                       text: 'Password',
                                     ),
                                     SizedBox(
@@ -254,12 +256,12 @@ class _CreateAccountState extends State<CreateAccount> {
                                     ),
                                     CustomTextfield(
                                       controller: controller.contactNumber,
-                                      // validator: (value) {
-                                      //   if (value!.length != 10)
-                                      //     return 'Mobile Number must be of 10 digit';
-                                      //   else
-                                      //     return null;
-                                      // },
+                                      validator: (value) {
+                                        if (value!.length != 10)
+                                          return 'Mobile Number must be of 10 digit';
+                                        else
+                                          return null;
+                                      },
                                       text: 'Phone Number',
                                     ),
                                     SizedBox(
@@ -267,7 +269,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                     ),
                                     CustomTextfield(
                                       controller: controller.address,
-                                      // validator: nameValidator,
+                                      validator: nameValidator,
                                       text: 'Address',
                                     ),
                                     SizedBox(
@@ -297,7 +299,12 @@ class _CreateAccountState extends State<CreateAccount> {
                                     ),
                                     enterpriseSelect == 'Enterprise'
                                         ? CustomTextfield(
-                                            // validator: nameValidator,
+                                            validator: (value) {
+                                              if (value!.length != 10)
+                                                return 'Mobile Number must be of 10 digit';
+                                              else
+                                                return null;
+                                            },
                                             controller:
                                                 controller.companyidNumber,
                                             text: 'Id number',
@@ -320,43 +327,6 @@ class _CreateAccountState extends State<CreateAccount> {
                                               });
                                             },
                                           ),
-                                    // SizedBox(
-                                    //   height: 45,
-                                    //   child: DropdownButtonFormField<String>(
-                                    //     isExpanded: true,
-                                    //     value: selectedOption,
-                                    //     decoration: InputDecoration(
-                                    //       contentPadding: EdgeInsets.all(5.0),
-                                    //       border: OutlineInputBorder(
-                                    //         borderRadius: BorderRadius.all(
-                                    //             Radius.circular(5)),
-                                    //       ),
-                                    //     ),
-                                    //     onChanged: (String? newValue) {
-                                    //       setState(() {
-                                    //         selectedOption = newValue;
-                                    //       });
-                                    //     },
-                                    //     items: [
-                                    //       DropdownMenuItem<String>(
-                                    //         value: 'National ID',
-                                    //         child: Text('National ID',
-                                    //             style: TextStyle(fontSize: 16)),
-                                    //       ),
-                                    //       DropdownMenuItem<String>(
-                                    //         value: 'Iqama No.',
-                                    //         child: Text('Iqama No.',
-                                    //             style: TextStyle(fontSize: 16)),
-                                    //       ),
-                                    //       DropdownMenuItem<String>(
-                                    //         value: 'Visit Visa / Border No',
-                                    //         child: Text(
-                                    //             'Visit Visa / Border No',
-                                    //             style: TextStyle(fontSize: 16)),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
                                     SizedBox(
                                       height: 15,
                                     ),
@@ -405,19 +375,19 @@ class _CreateAccountState extends State<CreateAccount> {
                                   children: [
                                     CustomTextfield(
                                       controller: controller.confirmPassword,
-                                      // validator: validatePassword,
+                                      validator: validatePassword,
                                       text: 'Confirm Password',
                                     ),
                                     SizedBox(
                                       height: 15,
                                     ),
                                     CustomTextfield(
-                                      // validator: (value) {
-                                      //   if (value!.length != 10)
-                                      //     return 'Mobile Number must be of 10 digit';
-                                      //   else
-                                      //     return null;
-                                      // },
+                                      validator: (value) {
+                                        if (value!.length != 10)
+                                          return 'Mobile Number must be of 10 digit';
+                                        else
+                                          return null;
+                                      },
                                       controller: controller.alternateNumber,
                                       text: 'Phone Number',
                                     ),
@@ -425,7 +395,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                       height: 15,
                                     ),
                                     CustomTextfield(
-                                      // validator: nameValidator,
+                                      validator: nameValidator,
                                       controller: controller.address2,
                                       text: 'Address',
                                     ),
@@ -457,17 +427,17 @@ class _CreateAccountState extends State<CreateAccount> {
                                     ),
                                     enterpriseSelect == 'Enterprise'
                                         ? CustomTextfield(
-                                            // validator: nameValidator,
+                                            validator: nameValidator,
                                             controller: controller.legalName,
                                             text: 'Leagl name',
                                           )
                                         : CustomTextfield(
-                                            // validator: (value) {
-                                            //   if (value!.length != 10)
-                                            //     return 'Mobile Number must be of 10 digit';
-                                            //   else
-                                            //     return null;
-                                            // },
+                                            validator: (value) {
+                                              if (value!.length != 10)
+                                                return 'Mobile Number must be of 10 digit';
+                                              else
+                                                return null;
+                                            },
                                             controller: controller.idNumber,
                                             text: 'ID Number',
                                           ),
@@ -482,99 +452,78 @@ class _CreateAccountState extends State<CreateAccount> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SizedBox(
-                                height: 45,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      String email = controller.email.text;
-                                      String password =
-                                          controller.password.text;
-                                      String selectedAccounttype =
-                                          controller.selectedAccounttype.text;
+                              GradientButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    String email = controller.email.text;
+                                    String password = controller.password.text;
+                                    String selectedAccounttype =
+                                        controller.selectedAccounttype.text;
 
-                                      String firstName =
-                                          controller.firstName.text;
-                                      String lastName =
-                                          controller.lastName.text;
-                                      String legalName =
-                                          controller.legalName.text;
-                                      String contactNumber =
-                                          controller.contactNumber.text;
-                                      String address = controller.address.text;
-                                      String govtId =
-                                          controller.selectedGovtId.text;
-                                      String confirmPassword =
-                                          controller.confirmPassword.text;
-                                      String alternateNumber =
-                                          controller.alternateNumber.text;
-                                      String address2 =
-                                          controller.address2.text;
-                                      String idNumber =
-                                          controller.idNumber.text;
-                                      String city =
-                                          controller.selectedCity.text;
-                                      String companyidNumber =
-                                          controller.companyidNumber.text;
-                                      UserCredential userCredential =
-                                          await _auth
-                                              .createUserWithEmailAndPassword(
-                                        email: controller.email.text,
-                                        password: controller.password.text,
-                                      );
-                                      // User creation successful
-                                      String accountType =
-                                          controller.selectedAccounttype.text;
-                                      print(
-                                          "User created: ${userCredential.user!.email}");
-                                      print(
-                                          'Account Type before create Account : $accountType');
-                                      await _createAccount(
-                                          userCredential.user!.uid,
-                                          accountType);
-                                      print('value passed$accountType');
-                                      print("track1");
-                                      showDialog(
-                                        barrierColor:
-                                            Colors.grey.withOpacity(0.5),
-                                        context: context,
-                                        builder: (context) {
-                                          return MblNoDialog(
-                                              email,
-                                              password,
-                                              selectedAccounttype,
-                                              firstName,
-                                              legalName,
-                                              lastName,
-                                              confirmPassword,
-                                              contactNumber,
-                                              address2,
-                                              address,
-                                              govtId,
-                                              alternateNumber,
-                                              idNumber,
-                                              city,
-                                              companyidNumber);
-                                        },
-                                      );
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 128, 123, 229),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Create Account',
-                                    style: TextStyle(
-                                      fontFamily: 'Colfax',
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
+                                    String firstName =
+                                        controller.firstName.text;
+                                    String lastName = controller.lastName.text;
+                                    String legalName =
+                                        controller.legalName.text;
+                                    String contactNumber =
+                                        controller.contactNumber.text;
+                                    String address = controller.address.text;
+                                    String govtId =
+                                        controller.selectedGovtId.text;
+                                    String confirmPassword =
+                                        controller.confirmPassword.text;
+                                    String alternateNumber =
+                                        controller.alternateNumber.text;
+                                    String address2 = controller.address2.text;
+                                    String idNumber = controller.idNumber.text;
+                                    String city = controller.selectedCity.text;
+                                    String companyidNumber =
+                                        controller.companyidNumber.text;
+                                    UserCredential userCredential = await _auth
+                                        .createUserWithEmailAndPassword(
+                                      email: controller.email.text,
+                                      password: controller.password.text,
+                                    );
+                                    // User creation successful
+                                    String adminUid = userCredential.user!.uid;
+                                    String accountType =
+                                        controller.selectedAccounttype.text;
+                                    print(
+                                        "User created: ${userCredential.user!.email}");
+                                    print(
+                                        'Account Type before create Account : $accountType');
+                                    await _createAccount(
+                                        userCredential.user!.uid, accountType);
+                                    print('value passed$accountType');
+                                    print("track1");
+                                    showDialog(
+                                      barrierColor:
+                                          Colors.grey.withOpacity(0.5),
+                                      context: context,
+                                      builder: (context) {
+                                        return MblNoDialog(
+                                          email,
+                                          password,
+                                          selectedAccounttype,
+                                          firstName,
+                                          legalName,
+                                          lastName,
+                                          confirmPassword,
+                                          contactNumber,
+                                          address2,
+                                          address,
+                                          govtId,
+                                          alternateNumber,
+                                          idNumber,
+                                          city,
+                                          companyidNumber,
+                                          adminUid!,
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                text: 'Create Account',
                               ),
                               SizedBox(
                                 width: 30,
@@ -587,19 +536,17 @@ class _CreateAccountState extends State<CreateAccount> {
                                     fixedSize:
                                         const Size.fromWidth(double.infinity),
                                     backgroundColor:
-                                        Color.fromARGB(112, 112, 112, 1),
+                                        Color.fromRGBO(112, 112, 112, 1),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
-                                          5), // Adjust border radius as needed
+                                          7), // Adjust border radius as needed
                                     ),
                                   ),
-                                  child: Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                      fontFamily: 'Colfax',
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(3.w, 0, 3.w, 0),
+                                    child: Text('Cancel',
+                                        style: LoginpageText.helvetica16white),
                                   ),
                                 ),
                               ),
@@ -799,12 +746,12 @@ class _CreateAccountState extends State<CreateAccount> {
                               SizedBox(width: 5),
                               Expanded(
                                 child: CustomTextfield(
-                                  // validator: (value) {
-                                  //   if (value!.length != 10)
-                                  //     return 'Mobile Number must be of 10 digit';
-                                  //   else
-                                  //     return null;
-                                  // },
+                                  validator: (value) {
+                                    if (value!.length != 10)
+                                      return 'Mobile Number must be of 10 digit';
+                                    else
+                                      return null;
+                                  },
                                   controller: controller.contactNumber,
                                   text: 'Phone Number',
                                 ),
@@ -823,12 +770,12 @@ class _CreateAccountState extends State<CreateAccount> {
                               SizedBox(width: 5),
                               Expanded(
                                 child: CustomTextfield(
-                                  // validator: (value) {
-                                  //   if (value!.length != 10)
-                                  //     return 'Mobile Number must be of 10 digit';
-                                  //   else
-                                  //     return null;
-                                  // },
+                                  validator: (value) {
+                                    if (value!.length != 10)
+                                      return 'Mobile Number must be of 10 digit';
+                                    else
+                                      return null;
+                                  },
                                   controller: controller.alternateNumber,
                                   text: 'Phone Number',
                                 ),
@@ -847,7 +794,7 @@ class _CreateAccountState extends State<CreateAccount> {
                               SizedBox(width: 5),
                               Expanded(
                                 child: CustomTextfield(
-                                  // validator: nameValidator,
+                                  validator: nameValidator,
                                   controller: controller.address,
                                   text: 'Address',
                                 ),
@@ -866,7 +813,7 @@ class _CreateAccountState extends State<CreateAccount> {
                               SizedBox(width: 5),
                               Expanded(
                                 child: CustomTextfield(
-                                  // validator: nameValidator,
+                                  validator: nameValidator,
                                   controller: controller.address2,
                                   text: 'Address',
                                 ),
@@ -997,17 +944,17 @@ class _CreateAccountState extends State<CreateAccount> {
                               Expanded(
                                 child: enterpriseSelect == 'Enterprise'
                                     ? CustomTextfield(
-                                        // validator: nameValidator,
+                                        validator: nameValidator,
                                         controller: controller.legalName,
                                         text: 'Leagl name',
                                       )
                                     : CustomTextfield(
-                                        // validator: (value) {
-                                        //   if (value!.length != 10)
-                                        //     return 'Mobile Number must be of 10 digit';
-                                        //   else
-                                        //     return null;
-                                        // },
+                                        validator: (value) {
+                                          if (value!.length != 10)
+                                            return 'Mobile Number must be of 10 digit';
+                                          else
+                                            return null;
+                                        },
                                         controller: controller.idNumber,
                                         text: 'ID Number',
                                       ),

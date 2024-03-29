@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,6 +34,7 @@ class MblNoDialog extends StatefulWidget {
   String idNumber;
   String selectedCity;
   String companyidNumber;
+  String adminUid;
 
   MblNoDialog(
       this.email,
@@ -49,7 +51,8 @@ class MblNoDialog extends StatefulWidget {
       this.contactNumber,
       this.idNumber,
       this.selectedCity,
-      this.selectedGovtId);
+      this.selectedGovtId,
+      this.adminUid);
 
   @override
   _MblNoDialogState createState() => _MblNoDialogState();
@@ -66,6 +69,68 @@ class _MblNoDialogState extends State<MblNoDialog> {
   AllUsersFormController controller = AllUsersFormController();
   TextEditingController otpController = TextEditingController();
   TextEditingController contactNumberController = TextEditingController();
+  String _firstName = '';
+  @override
+  late Stream<Map<String, dynamic>?> userStream;
+  String _lastName = '';
+  @override
+  void initState() {
+    super.initState();
+    fetchData().then((stream) {
+      // Assign the obtained stream to your userStream variable
+      userStream = stream;
+    });
+  }
+
+  Future<Stream<Map<String, dynamic>?>> fetchData() async {
+    try {
+      String selectedAccounttype = widget.selectedAccounttype;
+      String smsCode =
+          otp1.text + otp2.text + otp3.text + otp4.text + otp5.text + otp6.text;
+      String adminUid = widget.adminUid;
+      PhoneAuthCredential _credential = PhoneAuthProvider.credential(
+        verificationId: storedVerificationId!,
+        smsCode: smsCode,
+      );
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(_credential);
+      // Fetch user details from Firebase
+      User? user = userCredential.user;
+      String? phoneNumber = user?.phoneNumber;
+
+      // Determine the collection based on selectedAccountType
+      String collectionName = '';
+
+      if (selectedAccounttype == 'Enterprise') {
+        collectionName = 'enterprisedummy';
+      } else if (selectedAccounttype == 'Super User') {
+        collectionName = 'superuserdummy';
+      } else if (selectedAccounttype == 'User') {
+        collectionName = 'userdummy';
+      }
+      return FirebaseFirestore.instance
+          .collection(collectionName)
+          .doc(adminUid)
+          .snapshots()
+          .map((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+        if (documentSnapshot.exists) {
+          Map<String, dynamic> data = documentSnapshot.data()!;
+          String firstName = data['firstName'];
+          String lastName = data['lastName'];
+          _firstName = firstName;
+          _lastName = lastName;
+          return data;
+        } else {
+          print('Document does not exist');
+          return null;
+        }
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+      return Stream.value(null);
+    }
+  }
+
   void showErrorDialog(String errorMessage) {
     showDialog(
       context: context,
@@ -101,7 +166,7 @@ class _MblNoDialogState extends State<MblNoDialog> {
   String?
       storedVerificationId; // Declare a variable to store the verification ID
 
-  Future<void> _startPhoneAuth(String phoneNumber) async {
+  Future<void> _startPhoneAuth(String phoneNumber, String adminUid) async {
     print("mobtrack3");
 
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -275,8 +340,6 @@ class _MblNoDialogState extends State<MblNoDialog> {
                         height: 40,
                         child: ElevatedButton(
                           onPressed: () async {
-                            String email = controller.email.text;
-                            String password = controller.password.text;
                             String selectedAccounttype =
                                 widget.selectedAccounttype;
                             String smsCode = otp1.text +
@@ -284,174 +347,226 @@ class _MblNoDialogState extends State<MblNoDialog> {
                                 otp3.text +
                                 otp4.text +
                                 otp5.text +
-                                otp6.text; // Concatenate all OTP fields
+                                otp6.text;
+
                             PhoneAuthCredential _credential =
                                 PhoneAuthProvider.credential(
                               verificationId: storedVerificationId!,
                               smsCode: smsCode,
                             );
 
-                            FirebaseAuth.instance
-                                .signInWithCredential(_credential)
-                                .then((result) {
-                              if (result.user != null) {
-                                print("OTP verified successfully");
+                            try {
+                              // Sign in with phone credential
+                              UserCredential userCredential = await FirebaseAuth
+                                  .instance
+                                  .signInWithCredential(_credential);
 
+                              if (userCredential.user != null) {
+                                print("OTP verified successfully");
+                                String adminUid = widget.adminUid;
                                 // Fetch user details from Firebase
-                                // Fetch user details from Firebase
-                                User? user = FirebaseAuth.instance.currentUser;
+                                User? user = userCredential.user;
                                 String? phoneNumber = user?.phoneNumber;
 
-                                // Check if any document exists in 'users' collection
+                                // Determine the collection based on selectedAccountType
+                                String collectionName = '';
+
+                                if (selectedAccounttype == 'Enterprise') {
+                                  collectionName = 'enterprisedummy';
+                                } else if (selectedAccounttype ==
+                                    'Super User') {
+                                  collectionName = 'superuserdummy';
+                                } else if (selectedAccounttype == 'User') {
+                                  collectionName = 'userdummy';
+                                }
+
+                                // Fetch user details from the determined collection
                                 FirebaseFirestore.instance
-                                    .collection('users')
+                                    .collection(collectionName)
                                     .get()
                                     .then((QuerySnapshot querySnapshot) {
                                   if (querySnapshot.docs.isNotEmpty) {
-                                    // At least one document exists, you can fetch and display data here
-                                    // For simplicity, let's assume you want to display the first document's data
-                                    QueryDocumentSnapshot firstDocument =
+                                    QueryDocumentSnapshot recentDocument =
                                         querySnapshot.docs.first;
                                     Map<String, dynamic> userData =
-                                        firstDocument.data() as Map<String,
-                                            dynamic>; // Explicit cast
+                                        recentDocument.data()
+                                            as Map<String, dynamic>;
 
                                     // Check if 'firstName' field exists in the document
-                                    if (userData.containsKey('firstName')) {
-                                      String? firstName = userData['firstName'];
-                                      String? lastName = userData['lastName'];
-                                      // Display user details in a dialog box
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Dialog(
-                                            child: Container(
-                                              height: 340,
-                                              width: 1225,
-                                              decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(31),
-                                                ),
-                                              ),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      ImageIcon(
-                                                        AssetImage(
-                                                          'approved.png',
-                                                        ),
-                                                        color: Color.fromRGBO(
-                                                            60, 55, 148, 1),
-                                                        size: 30,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Text('Account Verified',
-                                                          style: TabelText
-                                                              .helveticablack19),
-                                                      SizedBox(
-                                                        width: 200,
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () async {
-                                                          UserCredential
-                                                              userCredential =
-                                                              await _auth
-                                                                  .signInWithEmailAndPassword(
-                                                            email: widget.email,
-                                                            password:
-                                                                widget.password,
-                                                          );
-                                                          if (widget
-                                                                  .selectedAccounttype ==
-                                                              'Enterprise') {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      EnterDashboardPage(
-                                                                          user:
-                                                                              userCredential.user!)),
-                                                            );
-                                                          } else if (widget
-                                                                  .selectedAccounttype ==
-                                                              'Super User') {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      SuperUserDashboardPage(
-                                                                          user:
-                                                                              userCredential.user!)),
-                                                            );
-                                                          } else if (widget
-                                                                  .selectedAccounttype ==
-                                                              'User') {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      SingleUserDashboardPage(
-                                                                          user:
-                                                                              userCredential.user!)),
-                                                            );
-                                                          } else {
-                                                            // Handle invalid selectedType
-                                                            print(
-                                                                'Invalid selected type: ${widget.selectedAccounttype}');
-                                                          }
-                                                        },
-                                                        child: ImageIcon(
-                                                          AssetImage(
-                                                              'cancel.png'),
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text("Name: $firstName"),
-                                                      Text("Name: $lastName"),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                      "Phone Number: $phoneNumber"),
-                                                ],
-                                              ),
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          child: Container(
+                                            height: 340,
+                                            width: 1225,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(31),
                                             ),
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      print(
-                                          'No firstName field found in Firestore document.');
-                                    }
-                                  } else {
-                                    // No documents found in 'users' collection
-                                    print('No user data found in Firestore.');
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ImageIcon(
+                                                            AssetImage(
+                                                                'approved.png'),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    60,
+                                                                    55,
+                                                                    148,
+                                                                    1),
+                                                            size: 30,
+                                                          ),
+                                                          SizedBox(width: 5),
+                                                          Text(
+                                                            'Account Verified',
+                                                            style: TabelText
+                                                                .helveticablack19,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        //dfgsfdg
+                                                        UserCredential
+                                                            userCredential =
+                                                            await _auth
+                                                                .signInWithEmailAndPassword(
+                                                          email: widget.email,
+                                                          password:
+                                                              widget.password,
+                                                        );
+                                                        String userId =
+                                                            userCredential
+                                                                .user!.uid;
+                                                        if (widget
+                                                                .selectedAccounttype ==
+                                                            'Enterprise') {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    EnterDashboardPage(
+                                                                        adminUid:
+                                                                            userId)),
+                                                          );
+                                                        } else if (widget
+                                                                .selectedAccounttype ==
+                                                            'Super User') {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    SuperUserDashboardPage(
+                                                                        user: userCredential
+                                                                            .user!)),
+                                                          );
+                                                        } else if (widget
+                                                                .selectedAccounttype ==
+                                                            'User') {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    SingleUserDashboardPage(
+                                                                        user: userCredential
+                                                                            .user!)),
+                                                          );
+                                                        } else {
+                                                          // Handle invalid selectedType
+                                                          print(
+                                                              'Invalid selected type: ${widget.selectedAccounttype}');
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Center(
+                                                            child: ImageIcon(
+                                                              AssetImage(
+                                                                  'cancel.png'),
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 20),
+                                                StreamBuilder<
+                                                    Map<String, dynamic>?>(
+                                                  stream: userStream,
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.hasData &&
+                                                        snapshot.data != null) {
+                                                      // Display the user's name
+                                                      return Text(
+                                                        "$_firstName $_lastName",
+                                                        style: DialogText
+                                                            .helvetica41,
+                                                      );
+                                                    } else {
+                                                      // Loading or error state
+                                                      return Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                                SizedBox(height: 10),
+                                                Text(
+                                                  "$phoneNumber",
+                                                  style: DialogText.helvetica42,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 2.w, right: 5.w),
+                                                  child: Divider(
+                                                    color: Color.fromRGBO(
+                                                        112, 112, 112, 1),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   }
                                 }).catchError((e) {
                                   print("Error fetching user data: $e");
+                                  // Handle error during document fetch
+                                  // Show an error message or take appropriate action
                                 });
                               } else {
                                 showErrorDialog(
                                     "Invalid verification code. Please enter the correct code.");
                               }
-                            }).catchError((e) {
+                            } catch (e) {
                               print("Error signing in with credential: $e");
-                            });
+                              // Handle error during sign-in
+                              // Show an error message or take appropriate action
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color.fromRGBO(60, 55, 148, 1),
@@ -476,7 +591,7 @@ class _MblNoDialogState extends State<MblNoDialog> {
                                 style: FormTextStyle.purplehelvetica),
                             onTap: () async {
                               await _startPhoneAuth(
-                                  contactNumberController.text);
+                                  contactNumberController.text, adminUid);
                             },
                           ),
                         ],
@@ -572,8 +687,9 @@ class _MblNoDialogState extends State<MblNoDialog> {
                               height: 30,
                               child: ElevatedButton(
                                 onPressed: () async {
+                                  String adminUid = widget.adminUid;
                                   await _startPhoneAuth(
-                                      contactNumberController.text);
+                                      contactNumberController.text, adminUid);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor:
@@ -624,7 +740,7 @@ class _MblNoDialogState extends State<MblNoDialog> {
           );
         } else {
           return Padding(
-            padding: EdgeInsets.fromLTRB(2.w, 6.h, 2.w, 6.h),
+            padding: EdgeInsets.fromLTRB(18.w, 33.h, 18.w, 33.h),
             child: SingleChildScrollView(
               child: Expanded(
                 child: Card(
@@ -632,15 +748,14 @@ class _MblNoDialogState extends State<MblNoDialog> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(31))),
                   child: Container(
-                    width: 400,
-                    height: 350,
+                    height: 280,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(
                         Radius.circular(31),
                       ),
                     ),
-                    padding: EdgeInsets.fromLTRB(1.5.w, 4.h, 1.5.w, 4.h),
+                    padding: EdgeInsets.fromLTRB(4.w, 4.h, 2.w, 4.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -666,67 +781,73 @@ class _MblNoDialogState extends State<MblNoDialog> {
                           ],
                         ),
                         SizedBox(height: 20),
-                        SizedBox(
-                          height: 30,
-                          width: 200,
-                          child: TextField(
-                            controller: contactNumberController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: '99999 99999',
-                              contentPadding: EdgeInsets.only(
-                                left: 1.w,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 30,
+                              width: 200,
+                              child: TextField(
+                                controller: contactNumberController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  hintText: '99999 99999',
+                                  contentPadding: EdgeInsets.only(
+                                    left: 1.w,
+                                  ),
+                                  hintStyle: DialogText.helvetica16sandal,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(0)),
+                                ),
                               ),
-                              hintStyle: DialogText.helvetica16sandal,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(0)),
                             ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        SizedBox(
-                          height: 30,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              showDialog(
-                                barrierColor: Colors.transparent,
-                                context: context,
-                                builder: (context) {
-                                  return OTPDialog(
-                                      verificationId: storedVerificationId);
+                            SizedBox(
+                              height: 30,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  String adminUid = widget.adminUid;
+                                  await _startPhoneAuth(
+                                      contactNumberController.text, adminUid);
                                 },
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Color.fromRGBO(60, 55, 148, 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0),
-                                )),
-                            child: Text("Get OTP",
-                                style: LoginpageText.helvetica16white),
-                          ),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromRGBO(60, 55, 148, 1),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                    )),
+                                child: Text("Get OTP",
+                                    style: LoginpageText.helvetica16white),
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 40),
                         Padding(
-                          padding: EdgeInsets.only(left: 2.w, right: 2.w),
-                          child: Divider(),
+                          padding: EdgeInsets.only(left: 2.w, right: 5.w),
+                          child: Divider(
+                            color: Color.fromRGBO(112, 112, 112, 1),
+                          ),
                         ),
                         SizedBox(height: 10),
-                        Text("Don't have an account?",
-                            style: HomepageText.helvetica16black),
-                        SizedBox(height: 10),
-                        InkWell(
-                          onTap: () {
-                            showDialog(
-                              barrierColor: Colors.grey.withOpacity(0.5),
-                              context: context,
-                              builder: (context) {
-                                return CreateAccount();
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Don't have an account?",
+                                style: HomepageText.helvetica16black),
+                            InkWell(
+                              child: Text('Create One!',
+                                  style: LoginpageText.purplehelvetica),
+                              onTap: () {
+                                showDialog(
+                                  barrierColor: Colors.grey.withOpacity(0.5),
+                                  context: context,
+                                  builder: (context) {
+                                    return CreateAccount();
+                                  },
+                                );
                               },
-                            );
-                          },
-                          child: Text('Create One!',
-                              style: LoginpageText.purplehelvetica),
+                            ),
+                          ],
                         ),
                       ],
                     ),

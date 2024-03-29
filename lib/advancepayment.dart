@@ -13,69 +13,6 @@ class _AdvancePayment extends State<AdvancePayment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          // preferredSize: Size.fromHeight(96.0),
-          // child: Padding(
-          //   padding: const EdgeInsets.only(top: 30, right: 50),
-          //   child: AppBar(
-          //     automaticallyImplyLeading: false,
-          //     centerTitle: false,
-          //     elevation: 0.0,
-          //     title: Container(
-          //       padding: const EdgeInsets.only(left: 400),
-          //       child: Image.asset(
-          //         'naqlilogo.png',
-          //         width: 140,
-          //         height: 140,
-          //       ),
-          //     ),
-          //     actions: [
-          //       Padding(
-          //         padding: EdgeInsets.only(right: 300.0, top: 10),
-          //         child: Row(
-          //           children: [
-          //             Icon(
-          //               Icons.notifications,
-          //               color: Color.fromRGBO(106, 102, 209, 1),
-          //             ),
-          //             const SizedBox(
-          //               height: 30,
-          //               child: Padding(
-          //                 padding: EdgeInsets.only(left: 15, top: 5),
-          //                 child: Text(
-          //                   "Contact Us",
-          //                   style: TextStyle(fontFamily: 'Colfax', fontSize: 16),
-          //                 ),
-          //               ),
-          //             ),
-          //             SizedBox(
-          //               width: 10,
-          //             ),
-          //             SizedBox(
-          //               height: 30,
-          //               child: VerticalDivider(
-          //                 color: Colors.black,
-          //               ),
-          //             ),
-          //             SizedBox(
-          //               height: 30,
-          //               width: 170,
-          //               child: Padding(
-          //                 padding: const EdgeInsets.only(left: 13, top: 5),
-          //                 child: Text(
-          //                   "Hello Customer!",
-          //                   style: TextStyle(fontFamily: 'Colfax', fontSize: 16),
-          //                 ),
-          //               ),
-          //             ),
-          //             SizedBox(width: 40),
-          //           ],
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

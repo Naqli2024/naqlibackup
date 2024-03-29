@@ -66,6 +66,16 @@ class DialogText {
     color: Color.fromRGBO(116, 97, 97, 1).withOpacity(0.5),
     fontSize: 38,
   );
+  static TextStyle helvetica41 = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(81, 40, 137, 1),
+    fontSize: 30,
+  );
+  static TextStyle helvetica42 = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(78, 68, 68, 1),
+    fontSize: 30,
+  );
 }
 
 class AvailableText {
