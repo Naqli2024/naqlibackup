@@ -1,15 +1,51 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Users/SingleTimeUser/bookingPage.dart';
+import 'package:flutter_application_1/Users/Enterprise/booking_manager.dart';
+import 'package:flutter_application_1/Users/SingleUser/dashboard_page.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../Widgets/formText.dart';
 
+import 'dart:math';
+
 class BookingIDDialog extends StatefulWidget {
+  final String? user;
+  final String? newBookingId;
+  final String? unitType;
+  const BookingIDDialog({this.user, this.unitType, this.newBookingId});
   @override
   _BookingIDDialogState createState() => _BookingIDDialogState();
 }
 
 class _BookingIDDialogState extends State<BookingIDDialog> {
+  String _generateBookingID() {
+    Random random = Random();
+
+    String bookingID = '';
+    for (int i = 0; i < 10; i++) {
+      bookingID += random.nextInt(10).toString();
+    }
+    String userCollection;
+    if (widget.unitType == 'Vehicle') {
+      userCollection = 'vehicleBooking';
+    } else if (widget.unitType == 'Equipment') {
+      userCollection = 'equipmentBookings';
+    } else {
+      throw Exception('Invalid selected type');
+    }
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(widget.user)
+        .collection(
+            userCollection) // Replace 'subcollectionName' with your subcollection name
+        .doc(widget
+            .newBookingId) // Replace 'subdocId' with the ID of the document in the subcollection
+        .update({
+      "bookingid": bookingID,
+    });
+    return bookingID;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
@@ -21,8 +57,8 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Container(
-              width: MediaQuery.of(context).size.width *
-                  0.5, // Adjust width responsively
+              height: 280,
+              width: MediaQuery.of(context).size.width * 0.5,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [
@@ -33,7 +69,6 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                 ],
               ),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
@@ -51,8 +86,10 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: Text('Booking ID ***************',
-                                  style: DialogText.helvetica21),
+                              child: Text(
+                                'Booking ID ${_generateBookingID()}',
+                                style: DialogText.helvetica21,
+                              ),
                             ),
                           ),
                         ),
@@ -60,12 +97,14 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                           padding: EdgeInsets.only(right: 2),
                           icon: Icon(Icons.close),
                           onPressed: () {
-                            // Navigator.of(context).pop();
+                            String unitType = 'Vehicle';
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BookingPage(),
-                              ),
+                                  builder: (context) => SingleUserDashboardPage(
+                                        unitType: unitType,
+                                        user: widget.user,
+                                      )),
                             );
                           },
                           color: Colors.white, // Setting icon color
@@ -75,7 +114,7 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                   ),
                   Center(
                     child: Container(
-                      height: 250,
+                      height: 230,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(10.0),
@@ -157,7 +196,7 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                         Padding(
                           padding: EdgeInsets.only(left: 8.0),
                           child: Text(
-                            'XXXXXXXXXXXXXXXXXX',
+                            _generateBookingID(),
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             style: TextStyle(

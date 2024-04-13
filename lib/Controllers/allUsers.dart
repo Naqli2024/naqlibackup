@@ -100,7 +100,7 @@ class AllUsers {
   }
 
   static Future<List<AllUsers>> getAllUserss() {
-    return FirebaseFirestore.instance.collection('enterprisedummy').get().then(
+    return FirebaseFirestore.instance.collection('enterpriseuser').get().then(
         (value) => value.docs.map((e) => AllUsers.fromSnapshot(e)).toList());
   }
 }

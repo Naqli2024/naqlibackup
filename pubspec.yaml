@@ -61,6 +61,11 @@ dependencies:
   google_maps_widget: ^1.0.5+1
   flutter_osm_plugin: ^0.42.0
   open_street_map_search_and_pick: ^0.1.1
+  pin_code_text_field: ^1.8.0
+  dropdown_model_list: ^2.1.0
+  flutter_calendar_week: ^3.0.2
+  table_calendar: ^3.0.9
+  rxdart: ^0.27.7
 
 dev_dependencies:
   flutter_test:

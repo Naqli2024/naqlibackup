@@ -1,12 +1,15 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
 import 'package:flutter_application_1/Widgets/colorContainer.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
+import 'package:flutter_application_1/Users/Enterprise/homePageEnterprise.dart';
 import 'package:flutter_application_1/pieChart/app_colors.dart';
 import 'package:flutter_application_1/pieChart/indicator.dart';
 import 'package:flutter_application_1/Widgets/customButton.dart';
@@ -16,7 +19,8 @@ import 'package:sizer/sizer.dart';
 import 'dart:ui';
 
 class enterDashboard extends StatefulWidget {
-  enterDashboard();
+  final String user;
+  enterDashboard({required this.user});
   @override
   State<enterDashboard> createState() => _DashboardState();
 }
@@ -24,6 +28,8 @@ class enterDashboard extends StatefulWidget {
 class _DashboardState extends State<enterDashboard> {
   final ScrollController _bookScroll = ScrollController();
   final ScrollController _pendingbookScroll = ScrollController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  AllUsersFormController controller = AllUsersFormController();
   String month = '';
   int touchedIndex = -1;
   List<PieChartSectionData> showingSections() {
@@ -148,32 +154,49 @@ class _DashboardState extends State<enterDashboard> {
                       child: Expanded(
                         child: Column(
                           children: [
-                            SizedBox(
+                            ElevationContainer(
                               height: 250,
                               child: Stack(
                                 children: [
                                   PieChart(
                                     PieChartData(
-                                      startDegreeOffset: 250,
+                                      startDegreeOffset: 110,
                                       sectionsSpace: 0,
-                                      centerSpaceRadius: 100,
+                                      centerSpaceRadius: 60,
                                       sections: [
                                         PieChartSectionData(
-                                          value: 45,
-                                          color: Colors.greenAccent,
-                                          radius: 45,
-                                          showTitle: false,
-                                        ),
-                                        PieChartSectionData(
-                                          value: 35,
-                                          color: Colors.blue.shade900,
-                                          radius: 25,
+                                          value: 49,
+                                          color:
+                                              Color.fromRGBO(127, 106, 255, 1),
+                                          radius: 50,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 20,
-                                          color: Colors.grey.shade400,
-                                          radius: 20,
+                                          color:
+                                              Color.fromRGBO(112, 207, 151, 1),
+                                          radius: 45,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 24,
+                                          color:
+                                              Color.fromRGBO(133, 232, 245, 1),
+                                          radius: 40,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 20,
+                                          color:
+                                              Color.fromRGBO(237, 90, 107, 1),
+                                          radius: 35,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 15,
+                                          color:
+                                              Color.fromRGBO(201, 104, 255, 1),
+                                          radius: 30,
                                           showTitle: false,
                                         ),
                                       ],
@@ -185,25 +208,33 @@ class _DashboardState extends State<enterDashboard> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: 160,
-                                          width: 160,
+                                          height: 120,
+                                          width: 120,
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey.shade200,
-                                                blurRadius: 10.0,
-                                                spreadRadius: 10.0,
-                                                offset: const Offset(3.0, 3.0),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "29 %",
+                                                style: TextStyle(
+                                                  fontSize: 22,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Completed",
+                                                style:
+                                                    DashboardText.helvetica10,
+                                              ),
+                                              Text(
+                                                "Sucessfully",
+                                                style:
+                                                    DashboardText.helvetica10,
                                               ),
                                             ],
-                                          ),
-                                          child: const Center(
-                                            child: Text(
-                                              "2305",
-                                              style: TextStyle(fontSize: 20),
-                                            ),
                                           ),
                                         )
                                       ],
@@ -215,67 +246,41 @@ class _DashboardState extends State<enterDashboard> {
                             SizedBox(
                               height: 5.h,
                             ),
-                            Scrollbar(
-                              controller: _bookScroll,
-                              thumbVisibility:
-                                  true, // Set to true to always show the scrollbar
-                              child: SingleChildScrollView(
-                                controller: _bookScroll,
-                                scrollDirection: Axis.horizontal,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(240, 240, 240, 1)
-                                            .withOpacity(0.1),
-                                        offset: Offset(0, 0),
-                                        spreadRadius: 2.0,
-                                        blurRadius:
-                                            0.01, // changes position of shadow
+                            ElevationContainer(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 370,
+                                    height: 55,
+                                    color: Color.fromRGBO(
+                                        75, 61, 82, 1), // Brown color
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          1.5.w, 1.5.h, 1.5.w, 1.5.h),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Booking',
+                                              style: TabelText.headerText),
+                                          Text("View All",
+                                              style: DialogText.helvetica20),
+                                        ],
                                       ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(0),
-                                        topRight: Radius.circular(0),
-                                        bottomLeft: Radius.circular(12),
-                                        bottomRight: Radius.circular(12)),
+                                    ),
                                   ),
-                                  width: 370,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        width: 378,
-                                        height: 55,
-                                        color: Color.fromRGBO(
-                                            75, 61, 82, 1), // Brown color
-                                        child: Padding(
-                                          padding: EdgeInsets.fromLTRB(
-                                              1.5.w, 1.5.h, 1.5.w, 1.5.h),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text('Bookings',
-                                                  style: TabelText.headerText),
-                                              Text("View All",
-                                                  style: TabelText.text3),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      // Add spacing between the brown container and the white container
-
-                                      SizedBox(
-                                        width: 380,
-                                        height: 200,
-                                        child: ListView(
-                                          children: [_booking1Table()],
-                                        ),
-                                      )
-                                    ],
+                                  Scrollbar(
+                                    controller: _bookScroll,
+                                    thumbVisibility:
+                                        false, // Set to true to always show the scrollbar
+                                    child: SingleChildScrollView(
+                                      controller: _bookScroll,
+                                      scrollDirection: Axis.horizontal,
+                                      child: SizedBox(
+                                          width: 357, child: _booking1Table()),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             ),
                           ],
@@ -291,21 +296,7 @@ class _DashboardState extends State<enterDashboard> {
                           Row(
                             children: [
                               Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(240, 240, 240, 1)
-                                            .withOpacity(0.1),
-                                        offset: Offset(0, 0),
-                                        spreadRadius: 2.0,
-                                        blurRadius:
-                                            0.01, // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
+                                child: ElevationContainer(
                                   height: 250,
                                   child: Chart(
                                     data: lineMarkerData,
@@ -472,23 +463,11 @@ class _DashboardState extends State<enterDashboard> {
                               SizedBox(
                                 width: 5.w,
                               ),
-                              Container(
+                              ElevationContainer(
+                                bottomleft: 20,
+                                bottomright: 20,
                                 height: 250,
                                 width: 180,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(240, 240, 240, 1)
-                                          .withOpacity(0.1),
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 2.0,
-                                      blurRadius:
-                                          0.01, // changes position of shadow
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
                                 child: Expanded(
                                   child: Column(
                                     mainAxisAlignment:
@@ -504,18 +483,31 @@ class _DashboardState extends State<enterDashboard> {
                                               style: TabelText.headerText),
                                         ),
                                       ),
-                                      Container(
-                                        height: 70,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        child: Image.asset(
-                                          color:
-                                              Color.fromRGBO(143, 142, 151, 1),
-                                          'add.png',
-                                          width: 120,
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyHomePageEnter(
+                                                user: widget.user,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 70,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          child: Image.asset(
+                                            'assets/add.png', // Make sure to provide the correct path to your image asset
+                                            color: Color.fromRGBO(
+                                                143, 142, 151, 1),
+                                            width: 120,
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
@@ -530,65 +522,41 @@ class _DashboardState extends State<enterDashboard> {
                           SizedBox(
                             height: 5.h,
                           ),
-                          Scrollbar(
-                            controller: _pendingbookScroll,
-                            thumbVisibility:
-                                true, // Set to true to always show the scrollbar
-                            child: SingleChildScrollView(
-                              controller: _pendingbookScroll,
-                              scrollDirection: Axis.horizontal,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(240, 240, 240, 1)
-                                          .withOpacity(0.1),
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 2.0,
-                                      blurRadius:
-                                          0.01, // changes position of shadow
+                          ElevationContainer(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 715,
+                                  height: 55,
+                                  color: Color.fromRGBO(
+                                      75, 61, 82, 1), // Brown color
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        1.5.w, 1.5.h, 1.5.w, 1.5.h),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Booking Approval',
+                                            style: TabelText.headerText),
+                                        Text("View All",
+                                            style: DialogText.helvetica20),
+                                      ],
                                     ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0),
-                                      bottomLeft: Radius.circular(12),
-                                      bottomRight: Radius.circular(12)),
+                                  ),
                                 ),
-                                width: 730,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 55,
-                                      color: Color.fromRGBO(
-                                          75, 61, 82, 1), // Brown color
-                                      child: Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            1.5.w, 1.5.h, 1.5.w, 1.5.h),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('Booking Approval',
-                                                style: TabelText.headerText),
-                                            Text("View All",
-                                                style: TabelText.text3),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    // Add spacing between the brown container and the white container
-
-                                    SizedBox(
-                                      height: 200,
-                                      child: ListView(
-                                        children: [_pendingbookTable()],
-                                      ),
-                                    )
-                                  ],
+                                Scrollbar(
+                                  controller: _pendingbookScroll,
+                                  thumbVisibility:
+                                      false, // Set to true to always show the scrollbar
+                                  child: SingleChildScrollView(
+                                    controller: _pendingbookScroll,
+                                    scrollDirection: Axis.horizontal,
+                                    child: SizedBox(
+                                        width: 715, child: _pendingbookTable()),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         ],
@@ -607,517 +575,276 @@ class _DashboardState extends State<enterDashboard> {
               color: Color.fromRGBO(255, 255, 255, 0.925),
             ),
             child: SingleChildScrollView(
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 1.5.h),
-                    color: Color.fromRGBO(255, 255, 255, 157),
-                    child: Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Row(
-                            children: [
-                              Text("Total Bookings : "),
-                              Text(
-                                "103",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Container(
-                            height: 250,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color.fromRGBO(240, 240, 240, 1)
-                                      .withOpacity(0.1),
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 2.0,
-                                  blurRadius:
-                                      0.01, // changes position of shadow
+                child: Container(
+                    padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 1.5.h),
+                      color: Color.fromRGBO(255, 255, 255, 157),
+                      child: Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Row(
+                              children: [
+                                Text("Total Bookings : "),
+                                Text(
+                                  "103",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12.0),
                             ),
-                            alignment: Alignment.center,
-                            child: AspectRatio(
-                              aspectRatio: 1.3,
-                              child: Row(
-                                children: <Widget>[
-                                  AspectRatio(
-                                    aspectRatio: 1,
-                                    child: PieChart(
-                                      PieChartData(
-                                        pieTouchData: PieTouchData(
-                                          touchCallback: (FlTouchEvent event,
-                                              pieTouchResponse) {
-                                            setState(() {
-                                              if (!event
-                                                      .isInterestedForInteractions ||
-                                                  pieTouchResponse == null ||
-                                                  pieTouchResponse
-                                                          .touchedSection ==
-                                                      null) {
-                                                touchedIndex = -1;
-                                                return;
-                                              }
-                                              touchedIndex = pieTouchResponse
-                                                  .touchedSection!
-                                                  .touchedSectionIndex;
-                                            });
-                                          },
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            SizedBox(
+                              height: 250,
+                              child: Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      startDegreeOffset: 110,
+                                      sectionsSpace: 0,
+                                      centerSpaceRadius: 60,
+                                      sections: [
+                                        PieChartSectionData(
+                                          value: 49,
+                                          color:
+                                              Color.fromRGBO(127, 106, 255, 1),
+                                          radius: 50,
+                                          showTitle: false,
                                         ),
-                                        borderData: FlBorderData(
-                                          show: false,
+                                        PieChartSectionData(
+                                          value: 20,
+                                          color:
+                                              Color.fromRGBO(112, 207, 151, 1),
+                                          radius: 45,
+                                          showTitle: false,
                                         ),
-                                        sectionsSpace: 0,
-                                        centerSpaceRadius: 40,
-                                        sections: showingSections(),
-                                      ),
+                                        PieChartSectionData(
+                                          value: 24,
+                                          color:
+                                              Color.fromRGBO(133, 232, 245, 1),
+                                          radius: 40,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 20,
+                                          color:
+                                              Color.fromRGBO(237, 90, 107, 1),
+                                          radius: 35,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 15,
+                                          color:
+                                              Color.fromRGBO(201, 104, 255, 1),
+                                          radius: 30,
+                                          showTitle: false,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Indicator(
-                                        color: AppColors.contentColorBlue,
-                                        text: 'First',
-                                        isSquare: true,
-                                        textStyle: TextStyle(
-                                          fontSize:
-                                              5, // Adjust the font size as needed
-                                          // Add more styling options if necessary
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Indicator(
-                                        color: AppColors.contentColorYellow,
-                                        text: 'Second',
-                                        isSquare: true,
-                                        textStyle: TextStyle(
-                                          fontSize:
-                                              5, // Adjust the font size as needed
-                                          // Add more styling options if necessary
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Indicator(
-                                        color: AppColors.contentColorGreen,
-                                        text: 'Third',
-                                        isSquare: true,
-                                        textStyle: TextStyle(
-                                          fontSize:
-                                              5, // Adjust the font size as needed
-                                          // Add more styling options if necessary
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Indicator(
-                                        color: AppColors.contentColorPurple,
-                                        text: 'Fourth',
-                                        isSquare: true,
-                                        textStyle: TextStyle(
-                                          fontSize:
-                                              5, // Adjust the font size as needed
-                                          // Add more styling options if necessary
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 18,
-                                      ),
-                                    ],
-                                  ),
+                                  Positioned.fill(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 120,
+                                          width: 120,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "29 %",
+                                                style: TextStyle(
+                                                  fontSize: 22,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Completed",
+                                                style:
+                                                    DashboardText.helvetica10,
+                                              ),
+                                              Text(
+                                                "Sucessfully",
+                                                style:
+                                                    DashboardText.helvetica10,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color.fromRGBO(240, 240, 240, 1)
-                                      .withOpacity(0.1),
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 2.0,
-                                  blurRadius:
-                                      0.01, // changes position of shadow
-                                ),
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12.0),
+                            SizedBox(
+                              height: 5.h,
                             ),
-                            height: 250,
-                            child: Chart(
-                              data: lineMarkerData,
-                              variables: {
-                                'day': Variable(
-                                  accessor: (Map datum) =>
-                                      datum['day'] as String,
-                                  scale: OrdinalScale(inflate: true),
+                            ElevationContainer(
+                              height: 250,
+                              child: Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      height: 55,
+
+                                      color: Color.fromRGBO(
+                                          75, 61, 82, 1), // Brown color
+                                      child: Center(
+                                        child: Text('New Booking',
+                                            style: TabelText.headerText),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      child: Image.asset(
+                                        color: Color.fromRGBO(143, 142, 151, 1),
+                                        'add.png',
+                                        width: 120,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 8.0,
+                                    ),
+                                  ],
                                 ),
-                                'value': Variable(
-                                  accessor: (Map datum) =>
-                                      datum['value'] as num,
-                                  scale: LinearScale(
-                                    max: 15,
-                                    min: -3,
-                                    tickCount: 7,
-                                    formatter: (v) => '${v.toInt()} ℃',
-                                  ),
-                                ),
-                                'group': Variable(
-                                  accessor: (Map datum) =>
-                                      datum['group'] as String,
-                                ),
-                              },
-                              marks: [
-                                LineMark(
-                                  position: Varset('day') *
-                                      Varset('value') /
-                                      Varset('group'),
-                                  color: ColorEncode(
-                                    variable: 'group',
-                                    values: [
-                                      const Color(0xff5470c6),
-                                      const Color(0xff91cc75),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                              axes: [
-                                Defaults.horizontalAxis,
-                                Defaults.verticalAxis,
-                              ],
-                              selections: {
-                                'tooltipMouse': PointSelection(on: {
-                                  GestureType.hover,
-                                }, devices: {
-                                  PointerDeviceKind.mouse
-                                }, variable: 'day', dim: Dim.x),
-                                'tooltipTouch': PointSelection(on: {
-                                  GestureType.scaleUpdate,
-                                  GestureType.tapDown,
-                                  GestureType.longPressMoveUpdate
-                                }, devices: {
-                                  PointerDeviceKind.touch
-                                }, variable: 'day', dim: Dim.x),
-                              },
-                              tooltip: TooltipGuide(
-                                followPointer: [true, true],
-                                align: Alignment.topLeft,
-                                variables: ['group', 'value'],
                               ),
-                              crosshair: CrosshairGuide(
-                                followPointer: [false, true],
-                              ),
-                              annotations: [
-                                LineAnnotation(
-                                  dim: Dim.y,
-                                  value: 6.14,
-                                  style: PaintStyle(
-                                    strokeColor:
-                                        const Color(0xff5470c6).withAlpha(100),
-                                    dash: [2],
-                                  ),
-                                ),
-                                LineAnnotation(
-                                  dim: Dim.y,
-                                  value: 3.57,
-                                  style: PaintStyle(
-                                    strokeColor:
-                                        const Color(0xff91cc75).withAlpha(100),
-                                    dash: [2],
-                                  ),
-                                ),
-                                CustomAnnotation(
-                                    renderer: (offset, _) => [
-                                          CircleElement(
-                                              center: offset,
-                                              radius: 5,
-                                              style: PaintStyle(
-                                                  fillColor:
-                                                      const Color(0xff5470c6)))
-                                        ],
-                                    values: ['Mar', -3]),
-                                CustomAnnotation(
-                                    renderer: (offset, _) => [
-                                          CircleElement(
-                                              center: offset,
-                                              radius: 5,
-                                              style: PaintStyle(
-                                                  fillColor:
-                                                      const Color(0xff5470c6)))
-                                        ],
-                                    values: ['Jul', -7]),
-                                CustomAnnotation(
-                                    renderer: (offset, _) => [
-                                          CircleElement(
-                                              center: offset,
-                                              radius: 5,
-                                              style: PaintStyle(
-                                                  fillColor:
-                                                      const Color(0xff91cc75)))
-                                        ],
-                                    values: ['Feb', 2]),
-                                CustomAnnotation(
-                                    renderer: (offset, _) => [
-                                          CircleElement(
-                                              center: offset,
-                                              radius: 5,
-                                              style: PaintStyle(
-                                                  fillColor:
-                                                      const Color(0xff91cc75)))
-                                        ],
-                                    values: ['Apr', -5]),
-                                TagAnnotation(
-                                  label: Label(
-                                      '13',
-                                      LabelStyle(
-                                        textStyle: Defaults.textStyle,
-                                        offset: const Offset(0, -10),
-                                      )),
-                                  values: ['Mar', -13],
-                                ),
-                                TagAnnotation(
-                                  label: Label(
-                                      '9',
-                                      LabelStyle(
-                                        textStyle: Defaults.textStyle,
-                                        offset: const Offset(0, -10),
-                                      )),
-                                  values: ['July', -9],
-                                ),
-                                TagAnnotation(
-                                  label: Label(
-                                      '-2',
-                                      LabelStyle(
-                                        textStyle: Defaults.textStyle,
-                                        offset: const Offset(0, -10),
-                                      )),
-                                  values: ['Feb', -2],
-                                ),
-                                TagAnnotation(
-                                  label: Label(
-                                      '5',
-                                      LabelStyle(
-                                        textStyle: Defaults.textStyle,
-                                        offset: const Offset(0, -10),
-                                      )),
-                                  values: ['Apr', -5],
-                                ),
-                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Container(
-                            height: 250,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color.fromRGBO(240, 240, 240, 1)
-                                      .withOpacity(0.1),
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 2.0,
-                                  blurRadius:
-                                      0.01, // changes position of shadow
-                                ),
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12.0),
+                            SizedBox(
+                              height: 5.h,
                             ),
-                            child: Expanded(
+                            ElevationContainer(
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    height: 55,
-
+                                    height: 55, width: 90.w,
                                     color: Color.fromRGBO(
                                         75, 61, 82, 1), // Brown color
-                                    child: Center(
-                                      child: Text('New Booking',
-                                          style: TabelText.headerText),
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          1.5.w, 1.5.h, 1.5.w, 1.5.h),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Bookings',
+                                              style: TabelText.headerText),
+                                          Text("View All",
+                                              style: TabelText.text3),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12.0),
+                                  Scrollbar(
+                                    controller: _bookScroll,
+                                    thumbVisibility:
+                                        true, // Set to true to always show the scrollbar
+                                    child: SingleChildScrollView(
+                                      controller: _bookScroll,
+                                      scrollDirection: Axis.horizontal,
+                                      child: Expanded(
+                                        child: Container(
+                                          width: 90.w,
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                            border: Border.all(
+                                              color: Color.fromRGBO(
+                                                      112, 112, 112, 1)
+                                                  .withOpacity(0.3),
+                                            ),
+                                          ),
+                                          child: ListView(
+                                            children: [_booking1Table()],
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    child: Image.asset(
-                                      color: Color.fromRGBO(143, 142, 151, 1),
-                                      'add.png',
-                                      width: 120,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Scrollbar(
-                            controller: _bookScroll,
-                            thumbVisibility:
-                                true, // Set to true to always show the scrollbar
-                            child: SingleChildScrollView(
-                              controller: _bookScroll,
-                              scrollDirection: Axis.horizontal,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(240, 240, 240, 1)
-                                          .withOpacity(0.1),
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 2.0,
-                                      blurRadius:
-                                          0.01, // changes position of shadow
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            ElevationContainer(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 55, width: 90.w,
+                                    color: Color.fromRGBO(
+                                        75, 61, 82, 1), // Brown color
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          1.5.w, 1.5.h, 1.5.w, 1.5.h),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Booking Approval',
+                                              style: TabelText.headerText),
+                                          Text("View All",
+                                              style: TabelText.text3),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0),
-                                      bottomLeft: Radius.circular(12),
-                                      bottomRight: Radius.circular(12)),
-                                ),
-                                width: 370,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 378,
-                                      height: 55,
-                                      color: Color.fromRGBO(
-                                          75, 61, 82, 1), // Brown color
-                                      child: Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            1.5.w, 1.5.h, 1.5.w, 1.5.h),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('Bookings',
-                                                style: TabelText.headerText),
-                                            Text("View All",
-                                                style: TabelText.text3),
-                                          ],
+                                  ),
+                                  Scrollbar(
+                                    controller: _pendingbookScroll,
+                                    thumbVisibility:
+                                        false, // Set to true to always show the scrollbar
+                                    child: SingleChildScrollView(
+                                      controller: _pendingbookScroll,
+                                      scrollDirection: Axis.horizontal,
+                                      child: Expanded(
+                                        child: Container(
+                                          height: 200,
+                                          width: 90.w,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                            border: Border.all(
+                                              color: Color.fromRGBO(
+                                                      112, 112, 112, 1)
+                                                  .withOpacity(0.3),
+                                            ),
+                                          ),
+                                          child: ListView(
+                                            children: [_pendingbookTable()],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                    // Add spacing between the brown container and the white container
-
-                                    SizedBox(
-                                      width: 380,
-                                      height: 200,
-                                      child: ListView(
-                                        children: [_booking1Table()],
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Scrollbar(
-                            controller: _pendingbookScroll,
-                            thumbVisibility:
-                                true, // Set to true to always show the scrollbar
-                            child: SingleChildScrollView(
-                              controller: _pendingbookScroll,
-                              scrollDirection: Axis.horizontal,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(240, 240, 240, 1)
-                                          .withOpacity(0.1),
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 2.0,
-                                      blurRadius:
-                                          0.01, // changes position of shadow
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0),
-                                      bottomLeft: Radius.circular(12),
-                                      bottomRight: Radius.circular(12)),
-                                ),
-                                width: 730,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 55,
-                                      color: Color.fromRGBO(
-                                          75, 61, 82, 1), // Brown color
-                                      child: Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            1.5.w, 1.5.h, 1.5.w, 1.5.h),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('Booking Approval',
-                                                style: TabelText.headerText),
-                                            Text("View All",
-                                                style: TabelText.text3),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    // Add spacing between the brown container and the white container
-
-                                    SizedBox(
-                                      height: 200,
-                                      child: ListView(
-                                        children: [_pendingbookTable()],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                            SizedBox(
+                              height: 5.h,
                             ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  )),
-            ),
+                    ))),
           );
         }
       });
@@ -1126,6 +853,14 @@ class _DashboardState extends State<enterDashboard> {
 
   DataTable _booking1Table() {
     return DataTable(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+          border: Border.all(
+            color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.3),
+          ),
+        ),
         columnSpacing: 15,
         dataRowHeight: 65,
         headingRowHeight: 0,
@@ -1312,21 +1047,25 @@ class _DashboardState extends State<enterDashboard> {
   DataTable _pendingbookTable() {
     return DataTable(
         border: TableBorder(
-            verticalInside:
-                BorderSide(width: 1, color: Color.fromRGBO(118, 112, 112, 1)),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            verticalInside: BorderSide(
+                width: 1,
+                color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.2)),
             right: BorderSide(
-                width: 0.5, color: Color.fromRGBO(118, 112, 112, 1))),
-        decoration: const BoxDecoration(
+                width: 0.5,
+                color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.2))),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
           gradient: LinearGradient(colors: [
             Colors.white,
             Color.fromRGBO(245, 243, 255, 1),
-            Color.fromRGBO(245, 243, 255, 1),
+            Colors.white,
             Color.fromRGBO(245, 243, 255, 1),
           ], stops: [
-            0.4,
-            0.4,
-            0.4,
-            0.4
+            0.033.w,
+            0.033.w,
+            0.033.w,
+            0.033.w,
           ], begin: Alignment.centerLeft, end: Alignment.centerRight),
         ),
         columnSpacing: 0,
@@ -1342,17 +1081,17 @@ class _DashboardState extends State<enterDashboard> {
       DataColumn(label: SizedBox(), numeric: false),
       DataColumn(
           label: SizedBox(
-            width: 140,
+            width: 110,
           ),
           numeric: true),
       DataColumn(
           label: SizedBox(
-            width: 140,
+            width: 110,
           ),
           numeric: true),
       DataColumn(
           label: SizedBox(
-            width: 130,
+            width: 110,
           ),
           numeric: true),
     ];
@@ -1371,154 +1110,178 @@ class _DashboardState extends State<enterDashboard> {
     return [
       DataRow(cells: [
         DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: CircleAvatar(
-                    backgroundColor: Color.fromRGBO(230, 228, 238, 1),
-                  ),
+          Row(
+            children: [
+              SizedBox(
+                width: 35,
+                height: 35,
+                child: CircleAvatar(
+                  backgroundColor: Color.fromRGBO(230, 228, 238, 1),
                 ),
-                SizedBox(
-                  width: 1.w,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Truck', style: TabelText.text1),
-                    SizedBox(height: 3),
-                    Text("Booking ID XXXXXX", style: TabelText.text2),
-                  ],
-                ),
-              ],
+              ),
+              SizedBox(
+                width: 1.w,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Truck', style: TabelText.text1),
+                  SizedBox(height: 3),
+                  Text("Booking ID XXXXXX", style: TabelText.text2),
+                ],
+              ),
+            ],
+          ),
+        ),
+        DataCell(
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            color: Color.fromRGBO(245, 243, 255, 1),
+            child: ColorContainer(
+              text1: 'Vendor 3',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(200, 251, 253, 1),
             ),
           ),
         ),
         DataCell(
-          ColorContainer(
-            text1: 'Vendor 3',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(200, 251, 253, 1),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            color: Color.fromRGBO(245, 243, 255, 1),
+            child: ColorContainer(
+              text1: 'Vendor 2',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(224, 253, 200, 1),
+            ),
           ),
         ),
         DataCell(
-          ColorContainer(
-            text1: 'Vendor 2',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(224, 253, 200, 1),
-          ),
-        ),
-        DataCell(
-          ColorContainer(
-            text1: 'Vendor 3',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(245, 253, 200, 1),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: ColorContainer(
+              text1: 'Vendor 3',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(245, 253, 200, 1),
+            ),
           ),
         ),
       ]),
       DataRow(cells: [
         DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: CircleAvatar(
-                    backgroundColor: Color.fromRGBO(230, 228, 238, 1),
-                  ),
+          Row(
+            children: [
+              SizedBox(
+                width: 35,
+                height: 35,
+                child: CircleAvatar(
+                  backgroundColor: Color.fromRGBO(230, 228, 238, 1),
                 ),
-                SizedBox(
-                  width: 1.w,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Equipment Hire', style: TabelText.text1),
-                    SizedBox(height: 3),
-                    Text("Booking ID XXXXXX", style: TabelText.text2),
-                  ],
-                ),
-              ],
+              ),
+              SizedBox(
+                width: 1.w,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Equipment Hire', style: TabelText.text1),
+                  SizedBox(height: 3),
+                  Text("Booking ID XXXXXX", style: TabelText.text2),
+                ],
+              ),
+            ],
+          ),
+        ),
+        DataCell(
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            color: Color.fromRGBO(245, 243, 255, 1),
+            child: ColorContainer(
+              text1: 'Vendor 3',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(200, 251, 253, 1),
             ),
           ),
         ),
         DataCell(
-          ColorContainer(
-            text1: 'Vendor 3',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(200, 251, 253, 1),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            color: Color.fromRGBO(245, 243, 255, 1),
+            child: ColorContainer(
+              text1: 'Vendor 2',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(224, 253, 200, 1),
+            ),
           ),
         ),
         DataCell(
-          ColorContainer(
-            text1: 'Vendor 2',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(224, 253, 200, 1),
-          ),
-        ),
-        DataCell(
-          ColorContainer(
-            text1: 'Vendor 3',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(245, 253, 200, 1),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: ColorContainer(
+              text1: 'Vendor 3',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(245, 253, 200, 1),
+            ),
           ),
         ),
       ]),
       DataRow(cells: [
         DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: CircleAvatar(
-                    backgroundColor: Color.fromRGBO(230, 228, 238, 1),
-                  ),
+          Row(
+            children: [
+              SizedBox(
+                width: 35,
+                height: 35,
+                child: CircleAvatar(
+                  backgroundColor: Color.fromRGBO(230, 228, 238, 1),
                 ),
-                SizedBox(
-                  width: 1.w,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Bus Trip', style: TabelText.text1),
-                    SizedBox(height: 3),
-                    Text("Booking ID XXXXXX", style: TabelText.text2),
-                  ],
-                ),
-              ],
+              ),
+              SizedBox(
+                width: 1.w,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Bus Trip', style: TabelText.text1),
+                  SizedBox(height: 3),
+                  Text("Booking ID XXXXXX", style: TabelText.text2),
+                ],
+              ),
+            ],
+          ),
+        ),
+        DataCell(
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            color: Color.fromRGBO(245, 243, 255, 1),
+            child: ColorContainer(
+              text1: 'Vendor 3',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(200, 251, 253, 1),
             ),
           ),
         ),
         DataCell(
-          ColorContainer(
-            text1: 'Vendor 3',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(200, 251, 253, 1),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            color: Color.fromRGBO(245, 243, 255, 1),
+            child: ColorContainer(
+              text1: 'Vendor 2',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(224, 253, 200, 1),
+            ),
           ),
         ),
         DataCell(
-          ColorContainer(
-            text1: 'Vendor 2',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(224, 253, 200, 1),
-          ),
-        ),
-        DataCell(
-          ColorContainer(
-            text1: 'Vendor 3',
-            text2: 'Xxxxx SAR',
-            colors: Color.fromRGBO(245, 253, 200, 1),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: ColorContainer(
+              text1: 'Vendor 3',
+              text2: 'Xxxxx SAR',
+              colors: Color.fromRGBO(245, 253, 200, 1),
+            ),
           ),
         ),
       ]),

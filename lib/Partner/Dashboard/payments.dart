@@ -1,4 +1,7 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
+import 'package:flutter_application_1/Widgets/colorContainer.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,6 +13,11 @@ class Payments extends StatefulWidget {
 
 class _PaymentsState extends State<Payments> {
   final ScrollController _paymentScroll = ScrollController();
+  final ScrollController _scrollController1 = ScrollController();
+  final ScrollController _scrollController2 = ScrollController();
+  AllUsersFormController controller = AllUsersFormController();
+  final fromDate = TextEditingController();
+  final toDate = TextEditingController();
   DataTable _createDataTable() {
     return DataTable(
         headingRowHeight: 65,
@@ -207,265 +215,701 @@ class _PaymentsState extends State<Payments> {
       return LayoutBuilder(
           builder: (BuildContext ctx, BoxConstraints constraints) {
         if (constraints.maxWidth >= 850) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 10, top: 30),
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
+          return SingleChildScrollView(
               child: Container(
-                height: 300,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 0.1 // changes position of shadow
-                        ),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 193,
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: 'All',
-                                onChanged: (String? newValue) {
-                                  // Handle dropdown value change
-                                },
-                                items: <String>[
-                                  'All',
-                                  'Completed',
-                                  'Incomplete Booking',
-                                  'Pending Payment',
-                                ].map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                            fontFamily: 'Colfax', fontSize: 16),
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
-                              ),
-                            ),
+            height: 100.h,
+            width: 300.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Color.fromRGBO(255, 255, 255, 0.925),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(75, 61, 82, 1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
                           ),
-                        ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 80, top: 20),
+                          child: Text('Payments',
+                              style: BookingHistoryText.helvetica40),
+                        ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Scrollbar(
-                                  controller: _paymentScroll,
-                                  thumbVisibility:
-                                      true, // Set to true to always show the scrollbar
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    controller: _paymentScroll,
-                                    child: Container(
-                                      height: 300,
-                                      width: 1200,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(
-                                                0.5), // Adjust the shadow color and opacity
-                                            blurRadius:
-                                                5.0, // Adjust the blur radius for a more visible shadow
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(4.w, 8.h, 4.w, 2.h),
+                  child: Column(
+                    children: [
+                      ElevationContainer(
+                        child: Scrollbar(
+                          controller: _scrollController1,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            controller: _scrollController1,
+                            child: Container(
+                              width: 1070,
+                              height:
+                                  100, // Increased height to accommodate button
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    'Booking ID  XXXXX',
+                                    style: PaymentText.SFproText,
+                                  ),
+                                  Text('Booking Value : SAR xxxxxx',
+                                      style: PaymentText.SFproText),
+                                  Text('Payment made: SAR xxxxx',
+                                      style: PaymentText.SFproText),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text('Pending Payment',
+                                          style: PaymentText.SFproText18),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Add your button functionality here
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Color.fromRGBO(98, 105, 254, 1),
+                                          foregroundColor: Colors.white,
+                                          minimumSize: Size(200, 35),
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    112, 112, 112, 1)),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
                                           ),
-                                        ],
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      child: SizedBox(
-                                        height: 220,
-                                        child: ListView(
-                                          children: [_createDataTable()],
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              1.w, 5, 1.w, 5),
+                                          child: Text('XXXXX SAR',
+                                              style:
+                                                  PaymentText.SFproTextwhite),
                                         ),
                                       ),
-                                    ),
-                                  ),
+                                    ],
+                                  )
+                                ],
+                              ),
+
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                border: Border.all(
+                                  color: Color.fromRGBO(112, 112, 112, 1)
+                                      .withOpacity(0.3),
                                 ),
-                                SizedBox(
-                                  height: 150,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 110),
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Container(
-                                      height: 10, // Adjust the height as needed
-                                      // Set the desired length of the scroll bar
-                                      color: Colors
-                                          .grey, // Background color of the scrollable area
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ],
+                        ),
+                      ),
+                      SizedBox(height: 50),
+                      Padding(
+                        padding: EdgeInsets.only(right: 1.5.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              height: 35,
+                              width: 140,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton2<String>(
+                                  isExpanded: true,
+                                  value: controller.fromDate.text.isNotEmpty
+                                      ? controller.fromDate.text
+                                      : 'From Date',
+                                  items: [
+                                    '14/6/2023',
+                                    '15/6/2023',
+                                    '16/6/2023',
+                                    '17/6/2023',
+                                    '18/6/2023',
+                                    'From Date'
+                                  ].map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value!,
+                                      child: Text(
+                                        value!,
+                                        style: HomepageText.helvetica16black,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      controller.fromDate.text = newValue!;
+                                    });
+                                  },
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 45,
+                                    padding: EdgeInsets.only(right: 9),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color:
+                                              Color.fromRGBO(112, 112, 112, 1)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(0)),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down_sharp),
+                                    iconSize: 25,
+                                    iconEnabledColor: Colors.black,
+                                    iconDisabledColor: null,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    elevation: 0,
+                                    maxHeight: 200,
+                                    padding: EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color:
+                                              Color.fromRGBO(112, 112, 112, 1)),
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(0),
+                                        topRight: Radius.circular(0),
+                                        bottomLeft: Radius.circular(5),
+                                        bottomRight: Radius.circular(5),
+                                      ),
+                                      color: Colors.white,
+                                    ),
+                                    scrollPadding: EdgeInsets.all(5),
+                                    scrollbarTheme: ScrollbarThemeData(
+                                      thickness:
+                                          MaterialStateProperty.all<double>(6),
+                                      thumbVisibility:
+                                          MaterialStateProperty.all<bool>(true),
+                                    ),
+                                  ),
+                                  menuItemStyleData: MenuItemStyleData(
+                                    height: 30,
+                                    padding: EdgeInsets.only(left: 9, right: 9),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 35,
+                              width: 140,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton2<String>(
+                                  isExpanded: true,
+                                  value: controller.toDate.text.isNotEmpty
+                                      ? controller.toDate.text
+                                      : 'To date',
+                                  items: [
+                                    '24/8/2023',
+                                    '25/8/2023',
+                                    '26/8/2023',
+                                    '27/8/2023',
+                                    '28/8/2023',
+                                    'To date'
+                                  ].map((String? value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value!,
+                                      child: Text(
+                                        value!,
+                                        style: HomepageText.helvetica16black,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      controller.toDate.text = newValue!;
+                                    });
+                                  },
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 45,
+                                    padding: EdgeInsets.only(right: 9),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color:
+                                              Color.fromRGBO(112, 112, 112, 1)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(0)),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down_sharp),
+                                    iconSize: 25,
+                                    iconEnabledColor: Colors.black,
+                                    iconDisabledColor: null,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    elevation: 0,
+                                    maxHeight: 200,
+                                    padding: EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color:
+                                              Color.fromRGBO(112, 112, 112, 1)),
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(0),
+                                        topRight: Radius.circular(0),
+                                        bottomLeft: Radius.circular(5),
+                                        bottomRight: Radius.circular(5),
+                                      ),
+                                      color: Colors.white,
+                                    ),
+                                    scrollPadding: EdgeInsets.all(5),
+                                    scrollbarTheme: ScrollbarThemeData(
+                                      thickness:
+                                          MaterialStateProperty.all<double>(6),
+                                      thumbVisibility:
+                                          MaterialStateProperty.all<bool>(true),
+                                    ),
+                                  ),
+                                  menuItemStyleData: MenuItemStyleData(
+                                    height: 30,
+                                    padding: EdgeInsets.only(left: 9, right: 9),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      ElevationContainer(
+                        //width:300; // Set width to match screen width
+
+                        child: Scrollbar(
+                          controller: _scrollController2,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            controller: _scrollController2,
+                            child: SizedBox(
+                              width: 1070,
+                              child: DataTable(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(8),
+                                      bottomRight: Radius.circular(8)),
+                                  border: Border.all(
+                                    color: Color.fromRGBO(112, 112, 112, 1)
+                                        .withOpacity(0.3),
+                                  ),
+                                ),
+                                headingRowColor: MaterialStateColor.resolveWith(
+                                    (states) => Color.fromRGBO(75, 61, 82, 1)),
+                                dividerThickness: 1.0,
+                                dataRowHeight: 65,
+                                headingRowHeight: 70,
+                                columns: <DataColumn>[
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Booked by',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Booking ID',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Mode',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Date',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Payment made',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Payment Status',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                ],
+                                rows: <DataRow>[
+                                  DataRow(
+                                    cells: <DataCell>[
+                                      for (var item in [
+                                        'Users',
+                                        '3459678234',
+                                        'Tow truck',
+                                        '14/11/2023',
+                                        'XXXX SAR',
+                                        'Completed'
+                                      ])
+                                        DataCell(
+                                          Container(
+                                            height:
+                                                65, // Adjust height as needed
+                                            alignment: Alignment.center,
+                                            child: Text(item,
+                                                style: BookingHistoryText
+                                                    .sfpro20black),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  DataRow(
+                                    cells: <DataCell>[
+                                      for (var item in [
+                                        'Users',
+                                        '3459678234',
+                                        'Mini van',
+                                        '21/6/2023',
+                                        'XXXX SAR',
+                                        'Completed'
+                                      ])
+                                        DataCell(
+                                          Container(
+                                            height:
+                                                65, // Adjust height as needed
+                                            alignment: Alignment.center,
+                                            child: Text(item,
+                                                style: BookingHistoryText
+                                                    .sfpro20black),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  DataRow(
+                                    cells: <DataCell>[
+                                      for (var item in [
+                                        'Users',
+                                        '3459678234',
+                                        'Bus',
+                                        '13/9/2023',
+                                        'XXXX SAR',
+                                        'Completed'
+                                      ])
+                                        DataCell(
+                                          Container(
+                                            height:
+                                                65, // Adjust height as needed
+                                            alignment: Alignment.center,
+                                            child: Text(item,
+                                                style: BookingHistoryText
+                                                    .sfpro20black),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-          );
+          ));
         } else {
-          return Padding(
-            padding: const EdgeInsets.only(left: 5, top: 30),
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
+          return SingleChildScrollView(
               child: Container(
-                height: 590,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 0.1 // changes position of shadow
+            height: 100.h,
+            width: 300.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Color.fromRGBO(255, 255, 255, 0.925),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(75, 61, 82, 1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
                         ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 80, top: 20),
+                          child: Text('Payments',
+                              style: BookingHistoryText.helvetica40),
+                        ),
+                      ),
+                    ),
                   ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(30.0),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(4.w, 12.h, 4.w, 2.h),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 193,
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: 'All',
-                                onChanged: (String? newValue) {
-                                  // Handle dropdown value change
-                                },
-                                items: <String>[
-                                  'All',
-                                  'Completed',
-                                  'Incomplete Booking',
-                                  'Pending Payment',
-                                ].map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
+                      ElevationContainer(
+                        child: Scrollbar(
+                          controller: _scrollController1,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            controller: _scrollController1,
+                            child: Container(
+                              width: 1070,
+                              height:
+                                  100, // Increased height to accommodate button
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    'Booking ID  XXXXX',
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontFamily: 'SFProText',
+                                        color: Color.fromRGBO(92, 86, 86, 1)),
+                                  ),
+                                  Text(
+                                    'Booking Value : SAR xxxxxx',
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontFamily: 'SFProText',
+                                        color:
+                                            Color.fromRGBO(149, 143, 143, 1)),
+                                  ),
+                                  Text(
+                                    'Paid : SAR xxxxx',
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontFamily: 'SFProText',
+                                        color:
+                                            Color.fromRGBO(149, 143, 143, 1)),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Balance',
                                         style: TextStyle(
-                                            fontFamily: 'Colfax', fontSize: 16),
+                                            fontSize: 17.0,
+                                            fontFamily: 'SFProText'),
                                       ),
-                                    );
-                                  },
-                                ).toList(),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Add your button functionality here
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Color.fromRGBO(98, 105, 254, 1),
+                                          foregroundColor: Colors.white,
+                                          minimumSize: Size(200, 35),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        child: Text('XXXXX SAR',
+                                            style: TextStyle(
+                                                fontSize: 17.0,
+                                                fontFamily: 'SFProText')),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                border: Border.all(
+                                  color: Color.fromRGBO(112, 112, 112, 1)
+                                      .withOpacity(0.3),
+                                ),
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Scrollbar(
-                                  controller: _paymentScroll,
-                                  thumbVisibility:
-                                      true, // Set to true to always show the scrollbar
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    controller: _paymentScroll,
-                                    child: Container(
-                                      height: 300,
-                                      width: 1200,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(
-                                                0.5), // Adjust the shadow color and opacity
-                                            blurRadius:
-                                                5.0, // Adjust the blur radius for a more visible shadow
+                      SizedBox(height: 50),
+                      ElevationContainer(
+                        //width:300; // Set width to match screen width
+
+                        child: Scrollbar(
+                          controller: _scrollController2,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            controller: _scrollController2,
+                            child: SizedBox(
+                              width: 1070,
+                              child: DataTable(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(8),
+                                      bottomRight: Radius.circular(8)),
+                                  border: Border.all(
+                                    color: Color.fromRGBO(112, 112, 112, 1)
+                                        .withOpacity(0.3),
+                                  ),
+                                ),
+                                headingRowColor: MaterialStateColor.resolveWith(
+                                    (states) => Color.fromRGBO(75, 61, 82, 1)),
+                                dividerThickness: 1.0,
+                                dataRowHeight: 65,
+                                headingRowHeight: 70,
+                                columns: <DataColumn>[
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Mode',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Booking ID',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Date',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Unit Type',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Payment',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                  DataColumn(
+                                      label: Expanded(
+                                          child: Text(
+                                    'Payment Status',
+                                    style: BookingHistoryText.sfpro20white,
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                ],
+                                rows: <DataRow>[
+                                  DataRow(
+                                    cells: <DataCell>[
+                                      for (var item in [
+                                        'Trip',
+                                        '#456789231',
+                                        '18.2.2022',
+                                        'Box truck',
+                                        'XXXX SAR',
+                                        'Completed'
+                                      ])
+                                        DataCell(
+                                          Container(
+                                            height:
+                                                65, // Adjust height as needed
+                                            alignment: Alignment.center,
+                                            child: Text(item,
+                                                style: BookingHistoryText
+                                                    .sfpro20black),
                                           ),
-                                        ],
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      child: SizedBox(
-                                        height: 220,
-                                        child: ListView(
-                                          children: [_createDataTable()],
                                         ),
-                                      ),
-                                    ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 150,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 110),
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Container(
-                                      height: 10, // Adjust the height as needed
-                                      // Set the desired length of the scroll bar
-                                      color: Colors
-                                          .grey, // Background color of the scrollable area
-                                    ),
+                                  DataRow(
+                                    cells: <DataCell>[
+                                      for (var item in [
+                                        'Bus Trip',
+                                        '#456789231',
+                                        '13.6.2022',
+                                        'Sleeper',
+                                        'XXXX SAR',
+                                        'Completed'
+                                      ])
+                                        DataCell(
+                                          Container(
+                                            height:
+                                                65, // Adjust height as needed
+                                            alignment: Alignment.center,
+                                            child: Text(item,
+                                                style: BookingHistoryText
+                                                    .sfpro20black),
+                                          ),
+                                        ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                  DataRow(
+                                    cells: <DataCell>[
+                                      for (var item in [
+                                        'Equipment hire',
+                                        '#456789231',
+                                        '12.5.2022',
+                                        'Crane',
+                                        'XXXX SAR',
+                                        'Completed'
+                                      ])
+                                        DataCell(
+                                          Container(
+                                            height:
+                                                65, // Adjust height as needed
+                                            alignment: Alignment.center,
+                                            child: Text(item,
+                                                style: BookingHistoryText
+                                                    .sfpro20black),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-          );
+          ));
         }
       });
     });

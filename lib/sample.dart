@@ -1,156 +1,106 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_calendar_week/flutter_calendar_week.dart';
+import 'package:intl/intl.dart';
 
-import 'Widgets/customButton.dart';
+void main() => runApp(MyApp());
 
-class Sample extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'CalendarWeek Example',
+        home: HomePage(),
+      );
+}
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final CalendarWeekController _controller = CalendarWeekController();
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _controller.jumpToDate(DateTime.now());
+            setState(() {});
+          },
+          child: Icon(Icons.today),
+        ),
         appBar: AppBar(
-          title: Text('Firestore Collection/Subcollection Example'),
+          elevation: 0,
+          backgroundColor: Colors.blue,
+          title: Text('CalendarWeek'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomButton(
-                onPressed: () async {
-                  try {
-                    final FirebaseAuth _auth = FirebaseAuth.instance;
-                    UserCredential userCredential =
-                        await _auth.createUserWithEmailAndPassword(
-                      email: "controller@gmail.com",
-                      password: "controller@3",
-                    );
-
-                    // Extract UID from the userCredential.user object
-                    String userId = userCredential.user!.uid;
-
-                    // Gather admin user fields
-                    String adminEmail = 'controller.adnEmail.text';
-                    // Add other admin fields as needed
-
-                    // Gather fields for subcollection documents
-                    String firstName = 'controller.fiName.text';
-                    String lastName = 'controller.laName.text';
-                    String email = 'controller.ail.text';
-                    String password = 'controller.pasord.text';
-                    String contactNumber = 'controller.contaNumber.text';
-                    String address = 'controller.adess.text';
-                    String accountType = 'controller.selectedAccoutype.text';
-
-                    // Call functions to create documents in collection and subcollection
-                    await createCollectionAndSubcollection(
-                        userId,
-                        adminEmail,
-                        firstName,
-                        lastName,
-                        email,
-                        password,
-                        contactNumber,
-                        address,
-                        accountType);
-                  } catch (e) {
-                    print("Error creating user: $e");
-                  }
+        body: Column(children: [
+          Container(
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 10,
+                    spreadRadius: 1)
+              ]),
+              child: CalendarWeek(
+                controller: _controller,
+                height: 100,
+                showMonth: true,
+                minDate: DateTime.now().add(
+                  Duration(days: -365),
+                ),
+                maxDate: DateTime.now().add(
+                  Duration(days: 365),
+                ),
+                onDatePressed: (DateTime datetime) {
+                  // Do something
+                  setState(() {});
                 },
-                text: 'Confirm Booking',
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  String? subcollectionResult = await createSubcollection();
-                  print(subcollectionResult);
+                onDateLongPressed: (DateTime datetime) {
+                  // Do something
                 },
-                child: Text('Create Subcollection'),
+                onWeekChanged: () {
+                  // Do something
+                },
+                monthViewBuilder: (DateTime time) => Align(
+                  alignment: FractionalOffset.center,
+                  child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        DateFormat.yMMMM().format(time),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.w600),
+                      )),
+                ),
+                decorations: [
+                  DecorationItem(
+                      decorationAlignment: FractionalOffset.bottomRight,
+                      date: DateTime.now(),
+                      decoration: Icon(
+                        Icons.today,
+                        color: Colors.blue,
+                      )),
+                  DecorationItem(
+                      date: DateTime.now().add(Duration(days: 3)),
+                      decoration: Text(
+                        'Holiday',
+                        style: TextStyle(
+                          color: Colors.brown,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )),
+                ],
+              )),
+          Expanded(
+            child: Center(
+              child: Text(
+                '${_controller.selectedDate.day}/${_controller.selectedDate.month}/${_controller.selectedDate.year}',
+                style: TextStyle(fontSize: 30),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-Future<void> createCollectionAndSubcollection(
-  String userId,
-  String adminEmail,
-  String firstName,
-  String lastName,
-  String email,
-  String password,
-  String contactNumber,
-  String address,
-  String accountType,
-) async {
-  try {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    // Reference to the user's document
-    DocumentReference userDocRef =
-        firestore.collection('enterprisedummy').doc(userId);
-
-    // Reference to the subcollection 'enterpriseUsers' under the user's document
-    CollectionReference enterpriseUsersCollectionRef =
-        userDocRef.collection('enterpriseUsers');
-
-    // Data for top-level document
-    Map<String, dynamic> adminUserData = {
-      'adminEmail': adminEmail,
-      // Add other admin fields as needed
-    };
-
-    // Data for subcollection document
-    Map<String, dynamic> subcollectionUserData = {
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'password': password,
-      'contactNumber': contactNumber,
-      'address': address,
-      'accountType': accountType,
-      'createdTime': Timestamp.now(),
-    };
-
-    // Add top-level document
-    await userDocRef.set(adminUserData);
-
-    // Add document to subcollection
-    await enterpriseUsersCollectionRef.add(subcollectionUserData);
-
-    print('Collection and subcollection documents created successfully!');
-  } catch (error) {
-    print('Error creating documents: $error');
-  }
-}
-
-Future<String?> createSubcollection() async {
-  try {
-    String userId = "user123"; // Replace with actual user UID
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    // Reference to the user's document
-    DocumentReference userDocRef = firestore.collection('userssss').doc(userId);
-
-    // Reference to the subcollection 'posts' under the user's document
-    CollectionReference postsCollectionRef = userDocRef.collection('posts');
-
-    // Data to be saved in the subcollection
-    Map<String, dynamic> postData = {
-      'title': 'Sample Post Title',
-      'content': 'This is a sample post content.',
-      'timestamp': Timestamp.now(),
-    };
-
-    // Add data to the subcollection
-    await postsCollectionRef.add(postData);
-
-    return 'Subcollection created successfully!';
-  } catch (error) {
-    print('Error creating subcollection: $error');
-    return null;
-  }
+            ),
+          )
+        ]),
+      );
 }

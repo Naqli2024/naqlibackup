@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,14 +14,17 @@ import '../../Widgets/formText.dart';
 import '../../classes/language.dart';
 import '../../classes/language_constants.dart';
 import '../../main.dart';
-import 'bookings.dart';
-import 'dashboard.dart';
-import 'payments.dart';
-import 'bookingHistory.dart';
+import 'package:flutter_application_1/Users/SingleUser/bookingHistory.dart';
+import 'package:flutter_application_1/Users/SingleUser/bookings.dart';
+import 'package:flutter_application_1/Users/SingleUser/dashboard.dart';
+import 'package:flutter_application_1/Users/SingleUser/payments.dart';
 
 class SingleUserDashboardPage extends StatefulWidget {
-  final User user;
-  const SingleUserDashboardPage({required this.user});
+  final String? user;
+  final String? bookingId;
+  final String? unitType;
+  const SingleUserDashboardPage(
+      {required this.user, this.unitType, this.bookingId});
 
   @override
   State<SingleUserDashboardPage> createState() => _MyHomePageState();
@@ -42,39 +46,73 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
   int? selectedRadioValue2;
   bool payNowButtonEnabled = false;
   String? selectedValue;
-  Widget _currentContent = Bookings(); // Initial content
+  late Widget _currentContent;
+
+  Future<Map<String, dynamic>?> fetchData(String userId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await FirebaseFirestore.instance.collection('user').doc(userId).get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> userData = documentSnapshot.data()!;
+        String firstName = userData['firstName'];
+        String lastName = userData['lastName'];
+        return {'firstName': firstName, 'lastName': lastName};
+      } else {
+        print('Document does not exist for userId: $userId');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching data for userId $userId: $e');
+      return null;
+    }
+  }
 
   void _handleItem1Tap() {
     setState(() {
-      _currentContent = Bookings();
+      _currentContent = Bookings(
+        unitType: widget.unitType,
+        user: widget.user,
+        bookingId: widget.bookingId,
+      );
     });
     Navigator.pop(context);
   }
 
   void _handleItem2Tap() {
     setState(() {
-      _currentContent = BookingHistroy();
+      _currentContent = BookingHistroy(
+        user: widget.user,
+      );
     });
     Navigator.pop(context);
   }
 
   void _handleItem3Tap() {
     setState(() {
-      _currentContent = SingleUserPayment();
+      _currentContent = SingleUserPayment(
+        unitType: widget.unitType,
+        user: widget.user,
+      );
     });
     Navigator.pop(context);
   }
 
   void _handleItem4Tap() {
     setState(() {
-      _currentContent = SingleUserPayment();
+      _currentContent = SingleUserPayment(
+        user: widget.user,
+        unitType: widget.unitType,
+      );
     });
     Navigator.pop(context);
   }
 
   void _handleItem5Tap() {
     setState(() {
-      _currentContent = BookingHistroy();
+      _currentContent = BookingHistroy(
+        user: widget.user,
+      );
     });
     Navigator.pop(context);
   }
@@ -92,6 +130,11 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
       page.jumpToPage(p0);
     });
     super.initState();
+    _currentContent = Bookings(
+      unitType: widget.unitType,
+      user: widget.user,
+      bookingId: widget.bookingId,
+    );
   }
 
   void enablePayNowButton() {
@@ -138,17 +181,19 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
         if (constraints.maxWidth >= 850) {
           return Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(75),
+              preferredSize: Size.fromHeight(90),
               child: Material(
                 elevation: 3,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(5.w, 0, 2.5.w, 0),
+                  padding: EdgeInsets.fromLTRB(13.w, 0, 15.w, 0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        'naqlilogo.png',
-                        width: 10.w,
+                      Padding(
+                        padding: EdgeInsets.only(top: 12, bottom: 6),
+                        child: Image.asset(
+                          'naqlilogo.png',
+                        ),
                       ),
                       Row(
                         children: [
@@ -178,7 +223,7 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                             child: Text(
                               'Partner',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 20,
                                 fontFamily: "HelveticaNeueRegular",
                                 color: Color.fromRGBO(206, 203, 203, 1),
                               ),
@@ -295,16 +340,39 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                             padding: const EdgeInsets.only(
                               left: 5,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Hello Faizal!",
-                                    style: TabelText.helvetica11),
-                                Text("Admin", style: TabelText.usertext),
-                                Text("Faizal industries",
-                                    style: TabelText.usertext),
-                              ],
+                            child: FutureBuilder<Map<String, dynamic>?>(
+                              future: fetchData(widget
+                                  .user!), // Pass the userId to fetchData method
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator(); // Show a loading indicator while data is being fetched
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (snapshot.hasData) {
+                                  // Extract first name and last name from snapshot data
+                                  String firstName =
+                                      snapshot.data?['firstName'] ?? '';
+                                  String lastName =
+                                      snapshot.data?['lastName'] ?? '';
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Hello $firstName $lastName!",
+                                          style: TabelText.helvetica11),
+                                      Text("Admin", style: TabelText.usertext),
+                                      Text("Faizal industries",
+                                          style: TabelText.usertext),
+                                    ],
+                                  );
+                                } else {
+                                  return Text(
+                                      'No data available'); // Handle case when snapshot has no data
+                                }
+                              },
                             ),
                           ),
                           Icon(
@@ -318,61 +386,112 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                 ),
               ),
             ),
-            body: Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(6.w, 6.h, 6.w, 6.h),
+            body: Padding(
+              padding: EdgeInsets.fromLTRB(6.w, 4.h, 6.w, 4.h),
+              child: Expanded(
                 child: Container(
-                  color: Color.fromRGBO(245, 243, 255, 1).withOpacity(0.5),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.1),
+                    ),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color:
+                            Color.fromARGB(255, 199, 198, 198).withOpacity(0.3),
+                        blurRadius: 5,
+                        spreadRadius: 5,
+                        offset: Offset(0, 0), // Bottom side shadow
+                      ),
+                      BoxShadow(
+                        color:
+                            Color.fromARGB(255, 255, 255, 255).withOpacity(0.2),
+                        blurRadius: 1,
+                        spreadRadius: 0, // Bottom side shadow
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(3),
+                    color: Color.fromRGBO(247, 246, 255, 1).withOpacity(1),
+                  ),
                   child: Row(
                     children: [
                       Container(
                         height: 850,
                         width: 360,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color.fromARGB(255, 216, 214, 214)
-                                .withOpacity(0.5),
-                          ),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: Color.fromARGB(255, 199, 198, 198)
-                                  .withOpacity(0.5),
-                              blurRadius: 10,
-                              spreadRadius: 4,
-                              offset: Offset(0, 0.5), // Bottom side shadow
-                            ),
-                            BoxShadow(
-                              color: Color.fromARGB(255, 255, 255, 255)
-                                  .withOpacity(0.1),
-                              blurRadius: 1,
-                              spreadRadius: 0, // Bottom side shadow
-                            ),
-                          ],
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(13),
-                            bottomLeft: Radius.circular(13),
-                            topRight: Radius.circular(0),
-                            bottomRight: Radius.circular(13),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(13),
                           ),
                           color: Color.fromRGBO(236, 233, 250, 1),
                         ),
                         child: Column(
                           children: [
                             Container(
-                              height: 370,
+                              height: 330,
                               decoration: BoxDecoration(
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(7),
-                                  bottomLeft: Radius.circular(7),
-                                  topRight: Radius.circular(0),
-                                  bottomRight: Radius.circular(7),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage(
+                                    'Circleavatar.png',
+                                  ),
+                                ),
+                                // color: Color.fromRGBO(255, 255, 255, 1),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(7),
                                 ),
                               ),
-                              child: Image.asset(
-                                'Circleavatar.png',
-                                width: 550, // Adjust the height as needed
-                                fit: BoxFit.cover,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text('Faizal Khan',
+                                      style: DashboardText.acre),
+                                  Text('Location',
+                                      style: DashboardText.sfpro19),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor:
+                                        Color.fromRGBO(127, 106, 255, 1),
+                                    maxRadius: 76,
+                                    minRadius: 72,
+                                    child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        maxRadius: 70,
+                                        minRadius: 67,
+                                        child: CircleAvatar(
+                                          backgroundImage:
+                                              AssetImage('uploadimage.png'),
+                                          maxRadius: 65,
+                                          minRadius: 65,
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text('ID No : xxxxxxxxxx',
+                                      style: DashboardText.sfpro12),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Image.asset(
+                                            'editicon.png',
+                                            width: 16,
+                                            height: 16,
+                                          )),
+                                      Text('Edit Profile',
+                                          style: DashboardText.sfpro12black),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
                               ),
                             ),
                             Container(
@@ -403,7 +522,11 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                                     title: 'Booking',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = Bookings();
+                                        _currentContent = Bookings(
+                                          unitType: widget.unitType,
+                                          user: widget.user,
+                                          bookingId: widget.bookingId,
+                                        );
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -413,7 +536,9 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                                     title: 'Booking History',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = BookingHistroy();
+                                        _currentContent = BookingHistroy(
+                                          user: widget.user,
+                                        );
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -423,7 +548,10 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                                     title: 'Payments',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = SingleUserPayment();
+                                        _currentContent = SingleUserPayment(
+                                          unitType: widget.unitType,
+                                          user: widget.user,
+                                        );
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -434,7 +562,10 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                                     title: 'Report',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = SingleUserPayment();
+                                        _currentContent = SingleUserPayment(
+                                          unitType: widget.unitType,
+                                          user: widget.user,
+                                        );
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -460,13 +591,13 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                       Expanded(
                         child: SingleChildScrollView(
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(4.w, 4.5.h, 3.w, 2.h),
+                            padding: EdgeInsets.fromLTRB(4.w, 2.h, 4.w, 2.h),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Container(
-                                  height: 630,
+                                  height: 680,
                                   decoration: BoxDecoration(
                                     boxShadow: <BoxShadow>[
                                       BoxShadow(
@@ -482,20 +613,6 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                                   child: PageView(
                                       controller: page,
                                       children: [_currentContent]),
-                                ),
-                                SizedBox(
-                                  height: 2.h,
-                                ),
-                                CustomButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return BookingDialog();
-                                      },
-                                    );
-                                  },
-                                  text: 'Confirm Booking',
                                 ),
                               ],
                             ),
@@ -542,7 +659,11 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = Bookings();
+                            _currentContent = Bookings(
+                              user: widget.user,
+                              unitType: widget.unitType,
+                              bookingId: widget.bookingId,
+                            );
                           });
                           Navigator.pop(context);
                         }),
@@ -557,7 +678,9 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = BookingHistroy();
+                            _currentContent = BookingHistroy(
+                              user: widget.user,
+                            );
                           });
                           Navigator.pop(context);
                         }),
@@ -572,7 +695,10 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = SingleUserPayment();
+                            _currentContent = SingleUserPayment(
+                              unitType: widget.unitType,
+                              user: widget.user,
+                            );
                           });
                           Navigator.pop(context);
                         }),
@@ -587,7 +713,10 @@ class _MyHomePageState extends State<SingleUserDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = SingleUserPayment();
+                            _currentContent = SingleUserPayment(
+                              unitType: widget.unitType,
+                              user: widget.user,
+                            );
                           });
                           Navigator.pop(context);
                         }),

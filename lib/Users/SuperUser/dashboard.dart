@@ -1,12 +1,15 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
 import 'package:flutter_application_1/Widgets/colorContainer.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
+import 'package:flutter_application_1/Users/SuperUser/homePageSuperUser.dart';
 import 'package:flutter_application_1/pieChart/app_colors.dart';
 import 'package:flutter_application_1/pieChart/indicator.dart';
 import 'package:flutter_application_1/Widgets/customButton.dart';
@@ -15,7 +18,9 @@ import 'package:graphic/graphic.dart';
 import 'package:sizer/sizer.dart';
 
 class Dashboard extends StatefulWidget {
-  Dashboard();
+  final String user;
+
+  Dashboard({required this.user});
   @override
   State<Dashboard> createState() => _DashboardState();
 }
@@ -25,91 +30,8 @@ class _DashboardState extends State<Dashboard> {
   final ScrollController _pendingbookScroll = ScrollController();
   String month = '';
   int touchedIndex = -1;
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: AppColors.contentColorBlue,
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: AppColors.contentColorYellow,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: AppColors.contentColorPurple,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: AppColors.contentColorGreen,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
-  }
-
-  void tapOnPieChart(FlTouchEvent event, PieTouchResponse? response) {
-    if (response != null) {
-      final sectionIndex = response.touchedSection!.touchedSectionIndex;
-      final value = response.touchedSection!.touchedSection!.value;
-      if (sectionIndex == 0) {
-        month = 'January - $value';
-      } else if (sectionIndex == 1) {
-        month = 'February - $value';
-      } else if (sectionIndex == 2) {
-        month = 'March - $value';
-      } else if (sectionIndex == 3) {
-        month = 'April - $value';
-      } else if (sectionIndex == 4) {
-        month = 'May - $value';
-      }
-      setState(() {});
-      print('Tapped on section: $sectionIndex');
-      // You can add your custom logic here to respond to the tap on the Pie Chart
-    }
-  }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  AllUsersFormController controller = AllUsersFormController();
 
   @override
   Widget build(BuildContext context) {
@@ -147,32 +69,49 @@ class _DashboardState extends State<Dashboard> {
                       child: Expanded(
                         child: Column(
                           children: [
-                            SizedBox(
+                            ElevationContainer(
                               height: 250,
                               child: Stack(
                                 children: [
                                   PieChart(
                                     PieChartData(
-                                      startDegreeOffset: 250,
+                                      startDegreeOffset: 110,
                                       sectionsSpace: 0,
-                                      centerSpaceRadius: 100,
+                                      centerSpaceRadius: 60,
                                       sections: [
                                         PieChartSectionData(
-                                          value: 45,
-                                          color: Colors.greenAccent,
-                                          radius: 45,
-                                          showTitle: false,
-                                        ),
-                                        PieChartSectionData(
-                                          value: 35,
-                                          color: Colors.blue.shade900,
-                                          radius: 25,
+                                          value: 49,
+                                          color:
+                                              Color.fromRGBO(127, 106, 255, 1),
+                                          radius: 50,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 20,
-                                          color: Colors.grey.shade400,
-                                          radius: 20,
+                                          color:
+                                              Color.fromRGBO(112, 207, 151, 1),
+                                          radius: 45,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 24,
+                                          color:
+                                              Color.fromRGBO(133, 232, 245, 1),
+                                          radius: 40,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 20,
+                                          color:
+                                              Color.fromRGBO(237, 90, 107, 1),
+                                          radius: 35,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 15,
+                                          color:
+                                              Color.fromRGBO(201, 104, 255, 1),
+                                          radius: 30,
                                           showTitle: false,
                                         ),
                                       ],
@@ -184,25 +123,33 @@ class _DashboardState extends State<Dashboard> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: 160,
-                                          width: 160,
+                                          height: 120,
+                                          width: 120,
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey.shade200,
-                                                blurRadius: 10.0,
-                                                spreadRadius: 10.0,
-                                                offset: const Offset(3.0, 3.0),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "29 %",
+                                                style: TextStyle(
+                                                  fontSize: 22,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Completed",
+                                                style:
+                                                    DashboardText.helvetica10,
+                                              ),
+                                              Text(
+                                                "Sucessfully",
+                                                style:
+                                                    DashboardText.helvetica10,
                                               ),
                                             ],
-                                          ),
-                                          child: const Center(
-                                            child: Text(
-                                              "2305",
-                                              style: TextStyle(fontSize: 20),
-                                            ),
                                           ),
                                         )
                                       ],
@@ -221,25 +168,7 @@ class _DashboardState extends State<Dashboard> {
                               child: SingleChildScrollView(
                                 controller: _bookScroll,
                                 scrollDirection: Axis.horizontal,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(240, 240, 240, 1)
-                                            .withOpacity(0.1),
-                                        offset: Offset(0, 0),
-                                        spreadRadius: 2.0,
-                                        blurRadius:
-                                            0.01, // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(0),
-                                        topRight: Radius.circular(0),
-                                        bottomLeft: Radius.circular(12),
-                                        bottomRight: Radius.circular(12)),
-                                  ),
+                                child: ElevationContainer(
                                   width: 370,
                                   child: Column(
                                     children: [
@@ -290,21 +219,7 @@ class _DashboardState extends State<Dashboard> {
                           Row(
                             children: [
                               Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(240, 240, 240, 1)
-                                            .withOpacity(0.1),
-                                        offset: Offset(0, 0),
-                                        spreadRadius: 2.0,
-                                        blurRadius:
-                                            0.01, // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
+                                child: ElevationContainer(
                                   height: 250,
                                   child: Chart(
                                     data: lineMarkerData,
@@ -471,23 +386,11 @@ class _DashboardState extends State<Dashboard> {
                               SizedBox(
                                 width: 5.w,
                               ),
-                              Container(
+                              ElevationContainer(
+                                bottomleft: 20,
+                                bottomright: 20,
                                 height: 250,
                                 width: 180,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(240, 240, 240, 1)
-                                          .withOpacity(0.1),
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 2.0,
-                                      blurRadius:
-                                          0.01, // changes position of shadow
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
                                 child: Expanded(
                                   child: Column(
                                     mainAxisAlignment:
@@ -503,18 +406,31 @@ class _DashboardState extends State<Dashboard> {
                                               style: TabelText.headerText),
                                         ),
                                       ),
-                                      Container(
-                                        height: 70,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        child: Image.asset(
-                                          color:
-                                              Color.fromRGBO(143, 142, 151, 1),
-                                          'add.png',
-                                          width: 120,
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyHomePagesuper(
+                                                user: widget.user,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 70,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          child: Image.asset(
+                                            'assets/add.png', // Make sure to provide the correct path to your image asset
+                                            color: Color.fromRGBO(
+                                                143, 142, 151, 1),
+                                            width: 120,
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
@@ -536,26 +452,10 @@ class _DashboardState extends State<Dashboard> {
                             child: SingleChildScrollView(
                               controller: _pendingbookScroll,
                               scrollDirection: Axis.horizontal,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(240, 240, 240, 1)
-                                          .withOpacity(0.1),
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 2.0,
-                                      blurRadius:
-                                          0.01, // changes position of shadow
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0),
-                                      bottomLeft: Radius.circular(12),
-                                      bottomRight: Radius.circular(12)),
-                                ),
-                                width: 730,
+                              child: ElevationContainer(
+                                bottomleft: 20,
+                                bottomright: 20,
+                                width: 715,
                                 child: Column(
                                   children: [
                                     Container(
@@ -636,26 +536,43 @@ class _DashboardState extends State<Dashboard> {
                                 children: [
                                   PieChart(
                                     PieChartData(
-                                      startDegreeOffset: 250,
+                                      startDegreeOffset: 110,
                                       sectionsSpace: 0,
-                                      centerSpaceRadius: 100,
+                                      centerSpaceRadius: 60,
                                       sections: [
                                         PieChartSectionData(
-                                          value: 45,
-                                          color: Colors.greenAccent,
-                                          radius: 45,
-                                          showTitle: false,
-                                        ),
-                                        PieChartSectionData(
-                                          value: 35,
-                                          color: Colors.blue.shade900,
-                                          radius: 25,
+                                          value: 49,
+                                          color:
+                                              Color.fromRGBO(127, 106, 255, 1),
+                                          radius: 50,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 20,
-                                          color: Colors.grey.shade400,
-                                          radius: 20,
+                                          color:
+                                              Color.fromRGBO(112, 207, 151, 1),
+                                          radius: 45,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 24,
+                                          color:
+                                              Color.fromRGBO(133, 232, 245, 1),
+                                          radius: 40,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 20,
+                                          color:
+                                              Color.fromRGBO(237, 90, 107, 1),
+                                          radius: 35,
+                                          showTitle: false,
+                                        ),
+                                        PieChartSectionData(
+                                          value: 15,
+                                          color:
+                                              Color.fromRGBO(201, 104, 255, 1),
+                                          radius: 30,
                                           showTitle: false,
                                         ),
                                       ],
@@ -667,25 +584,33 @@ class _DashboardState extends State<Dashboard> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          height: 160,
-                                          width: 160,
+                                          height: 120,
+                                          width: 120,
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey.shade200,
-                                                blurRadius: 10.0,
-                                                spreadRadius: 10.0,
-                                                offset: const Offset(3.0, 3.0),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "29 %",
+                                                style: TextStyle(
+                                                  fontSize: 22,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Completed",
+                                                style:
+                                                    DashboardText.helvetica10,
+                                              ),
+                                              Text(
+                                                "Sucessfully",
+                                                style:
+                                                    DashboardText.helvetica10,
                                               ),
                                             ],
-                                          ),
-                                          child: const Center(
-                                            child: Text(
-                                              "2305",
-                                              style: TextStyle(fontSize: 20),
-                                            ),
                                           ),
                                         )
                                       ],
@@ -697,22 +622,8 @@ class _DashboardState extends State<Dashboard> {
                             SizedBox(
                               height: 5.h,
                             ),
-                            Container(
+                            ElevationContainer(
                               height: 250,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color.fromRGBO(240, 240, 240, 1)
-                                        .withOpacity(0.1),
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 2.0,
-                                    blurRadius:
-                                        0.01, // changes position of shadow
-                                  ),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
                               child: Expanded(
                                 child: Column(
                                   mainAxisAlignment:

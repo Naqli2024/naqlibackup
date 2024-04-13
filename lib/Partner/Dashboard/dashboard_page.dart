@@ -1,23 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_application_1/Partner/Dashboard/dashboard.dart';
+import 'package:flutter_application_1/Partner/Dashboard/bookings.dart';
+import 'package:flutter_application_1/Partner/Dashboard/payments.dart';
+import 'package:flutter_application_1/classes/language.dart';
 
 import 'package:sizer/sizer.dart';
-import 'bookings.dart';
-import 'payments.dart';
-import 'trigger_booking.dart';
+import '../../Widgets/customButton.dart';
+import '../../Widgets/formText.dart';
+import '../../classes/language_constants.dart';
+import '../../main.dart';
 
-class partnerDashboardPage extends StatefulWidget {
-  const partnerDashboardPage({Key? key}) : super(key: key);
+class PartnerDashboardPage extends StatefulWidget {
+  final String? user;
+  PartnerDashboardPage({required this.user});
 
   @override
-  State<partnerDashboardPage> createState() => _MyHomePageState();
+  State<PartnerDashboardPage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<partnerDashboardPage> {
+class _MyHomePageState extends State<PartnerDashboardPage> {
   PageController page = PageController();
   SideMenuController sideMenu = SideMenuController();
   bool value = false;
@@ -32,50 +37,9 @@ class _MyHomePageState extends State<partnerDashboardPage> {
   int? selectedRadioValue1;
   int? selectedRadioValue2;
   bool payNowButtonEnabled = false;
+  bool expandWork = false;
   String? selectedValue;
-  Widget _currentContent = Dashboard(); // Initial content
-
-  void _handleItem1Tap() {
-    setState(() {
-      _currentContent = Dashboard();
-    });
-    Navigator.pop(context);
-  }
-
-  void _handleItem2Tap() {
-    setState(() {
-      _currentContent = TriggerBooking();
-    });
-    Navigator.pop(context);
-  }
-
-  void _handleItem3Tap() {
-    setState(() {
-      _currentContent = Bookings();
-    });
-    Navigator.pop(context);
-  }
-
-  void _handleItem4Tap() {
-    setState(() {
-      _currentContent = Payments();
-    });
-    Navigator.pop(context);
-  }
-
-  void _handleItem5Tap() {
-    setState(() {
-      _currentContent = TriggerBooking();
-    });
-    Navigator.pop(context);
-  }
-
-  void _handleItem6Tap() {
-    setState(() {
-      _currentContent = TriggerBooking();
-    });
-    Navigator.pop(context);
-  }
+  Widget _currentContent = Bookings(); // Initial content
 
   void handleRadioValueChanged(String? newValue) {
     setState(() {
@@ -96,6 +60,29 @@ class _MyHomePageState extends State<partnerDashboardPage> {
     setState(() {
       payNowButtonEnabled = true;
     });
+  }
+
+  Future<Map<String, dynamic>?> fetchData(String userId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await FirebaseFirestore.instance
+              .collection('enterpriseuser')
+              .doc(userId)
+              .get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> userData = documentSnapshot.data()!;
+        String firstName = userData['firstName'];
+        String lastName = userData['lastName'];
+        return {'firstName': firstName, 'lastName': lastName};
+      } else {
+        print('Document does not exist for userId: $userId');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching data for userId $userId: $e');
+      return null;
+    }
   }
 
   void disablePayNowButton() {
@@ -184,53 +171,155 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                           ),
                         ],
                       ),
-                      Container(
-                        padding: EdgeInsets.only(left: 20.0, top: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.notifications,
-                              color: Color.fromRGBO(106, 102, 209, 1),
-                            ),
-                            SizedBox(
-                              height: 30,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 15, top: 5),
-                                child: Text(
-                                  "Contact Us",
-                                  style: TextStyle(
-                                    fontFamily: 'Colfax',
-                                    fontSize: 16,
+                      Row(
+                        children: [
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton2<Language>(
+                              isExpanded: true,
+                              hint: Row(
+                                children: [
+                                  Text(
+                                    translation(context).english,
+                                    style: TabelText.helvetica11,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
+                                  Expanded(child: SizedBox()),
+                                  Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.black,
+                                    size: 25,
+                                  )
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              height: 30,
-                              child: VerticalDivider(
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30,
-                              width: 170,
-                              child: Padding(
+                              onChanged: (Language? language) async {
+                                if (language != null) {
+                                  Locale _locale =
+                                      await setLocale(language.languageCode);
+                                  MyApp.setLocale(context, _locale);
+                                } else {
+                                  language;
+                                }
+                              },
+                              items: Language.languageList()
+                                  .map<DropdownMenuItem<Language>>(
+                                    (e) => DropdownMenuItem<Language>(
+                                      value: e,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: <Widget>[
+                                          Text(
+                                            e.flag,
+                                            style: TabelText.helvetica11,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            e.langname,
+                                            style: TabelText.helvetica11,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              buttonStyleData: ButtonStyleData(
+                                height: 30,
+                                width: 130,
                                 padding:
-                                    const EdgeInsets.only(left: 13, top: 5),
-                                child: Text(
-                                  "Hello Faizal!",
-                                  style: TextStyle(
-                                    fontFamily: 'Colfax',
-                                    fontSize: 16,
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Colors.black26,
                                   ),
+                                  color: Colors.white,
                                 ),
                               ),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(
+                                  Icons.arrow_drop_down_sharp,
+                                ),
+                                iconSize: 25,
+                                iconEnabledColor: Colors.white,
+                                iconDisabledColor: null,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 210,
+                                padding: EdgeInsets.only(
+                                    left: 10, right: 10, top: 5, bottom: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.black26),
+                                  color: Colors.white,
+                                ),
+                                scrollPadding: EdgeInsets.all(5),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                      MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 25,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: VerticalDivider(
+                              color: Colors.black,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 5,
+                            ),
+                            child: FutureBuilder<Map<String, dynamic>?>(
+                              future: fetchData(widget
+                                  .user!), // Pass the userId to fetchData method
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator(); // Show a loading indicator while data is being fetched
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (snapshot.hasData) {
+                                  // Extract first name and last name from snapshot data
+                                  String firstName =
+                                      snapshot.data?['firstName'] ?? '';
+                                  String lastName =
+                                      snapshot.data?['lastName'] ?? '';
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Hello $firstName $lastName!",
+                                          style: TabelText.helvetica11),
+                                      Text("Admin", style: TabelText.usertext),
+                                      Text("Faizal industries",
+                                          style: TabelText.usertext),
+                                    ],
+                                  );
+                                } else {
+                                  return Text(
+                                      'No data available'); // Handle case when snapshot has no data
+                                }
+                              },
+                            ),
+                          ),
+                          Icon(
+                            Icons.notifications,
+                            color: Color.fromRGBO(106, 102, 209, 1),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -238,158 +327,211 @@ class _MyHomePageState extends State<partnerDashboardPage> {
               ),
             ),
             body: Padding(
-              padding: EdgeInsets.fromLTRB(1.w, 2.h, 1.w, 2.h),
+              padding: EdgeInsets.fromLTRB(6.w, 4.h, 6.w, 4.h),
               child: Expanded(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(3.w, 6.h, 3.w, 6.h),
-                  child: Container(
-                    color: Color.fromRGBO(245, 243, 255, 1),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 330,
-                          decoration: BoxDecoration(
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Color.fromARGB(255, 216, 214, 214),
-                                  blurRadius: 10,
-                                  spreadRadius: 5,
-                                  offset: Offset(1, 0.75))
-                            ],
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: Color.fromRGBO(236, 233, 250, 1),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.1),
+                    ),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color:
+                            Color.fromARGB(255, 199, 198, 198).withOpacity(0.3),
+                        blurRadius: 5,
+                        spreadRadius: 5,
+                        offset: Offset(0, 0), // Bottom side shadow
+                      ),
+                      BoxShadow(
+                        color:
+                            Color.fromARGB(255, 255, 255, 255).withOpacity(0.2),
+                        blurRadius: 1,
+                        spreadRadius: 0, // Bottom side shadow
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(3),
+                    color: Color.fromRGBO(247, 246, 255, 1).withOpacity(1),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 850,
+                        width: 360,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(13),
                           ),
-                          child: Column(
-                            children: [
-                              Card(
-                                elevation: 1,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                color: Color.fromARGB(255, 240, 237, 250),
-                                child: Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          30.0), // Adjust the radius as needed
-                                      child: Image.asset(
-                                        'Circleavatar.png',
-                                        width:
-                                            550, // Adjust the height as needed
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                          color: Color.fromRGBO(236, 233, 250, 1),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 330,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage(
+                                    'Circleavatar.png',
                                   ),
                                 ),
+                                // color: Color.fromRGBO(255, 255, 255, 1),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(7),
+                                ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 1.5, top: 20),
-                                child: SizedBox(
-                                  height: 30.h,
-                                  child: SideMenu(
-                                    controller: sideMenu,
-                                    style: SideMenuStyle(
-                                      displayMode: SideMenuDisplayMode.auto,
-                                      selectedColor:
-                                          Color.fromRGBO(98, 105, 254, 1),
-                                      unselectedTitleTextStyle: const TextStyle(
-                                        fontFamily: 'SFProText',
-                                        fontSize: 14,
-                                        color: Color.fromRGBO(128, 118, 118, 1),
-                                      ),
-                                      selectedTitleTextStyle: const TextStyle(
-                                          fontFamily: 'SFProText',
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
-                                      unselectedIconColor:
-                                          Color.fromRGBO(128, 118, 118, 1),
-                                      selectedIconColor: Colors.white,
-                                    ),
-                                    items: [
-                                      SideMenuItem(
-                                        title: 'Dashboard',
-                                        onTap: (page, _) {
-                                          sideMenu.changePage(page);
-                                        },
-                                        icon: const Icon(Icons.login_outlined),
-                                      ),
-                                      SideMenuItem(
-                                        title: 'Trigger Booking',
-                                        onTap: (page, _) {
-                                          sideMenu.changePage(page);
-                                        },
-                                        icon:
-                                            const Icon(Icons.person_2_outlined),
-                                      ),
-                                      SideMenuItem(
-                                        title: 'Bookings',
-                                        onTap: (page, _) {
-                                          sideMenu.changePage(page);
-                                        },
-                                        icon:
-                                            const Icon(Icons.person_2_outlined),
-                                        // Set the style property to change the text size
-                                      ),
-                                      SideMenuItem(
-                                        title: 'Payments',
-                                        onTap: (page, _) {
-                                          sideMenu.changePage(page);
-                                        },
-                                        icon: const Icon(
-                                            Icons.mode_comment_outlined),
-                                      ),
-                                      SideMenuItem(
-                                        title: 'Help',
-                                        onTap: (page, _) {
-                                          sideMenu.changePage(page);
-                                        },
-                                        icon: const Icon(Icons.inbox_outlined),
-                                      ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text('Faizal Khan',
+                                      style: DashboardText.acre),
+                                  Text('Location',
+                                      style: DashboardText.sfpro19),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor:
+                                        Color.fromRGBO(127, 106, 255, 1),
+                                    maxRadius: 76,
+                                    minRadius: 72,
+                                    child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        maxRadius: 70,
+                                        minRadius: 67,
+                                        child: CircleAvatar(
+                                          backgroundImage:
+                                              AssetImage('uploadimage.png'),
+                                          maxRadius: 65,
+                                          minRadius: 65,
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text('ID No : xxxxxxxxxx',
+                                      style: DashboardText.sfpro12),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Image.asset(
+                                            'editicon.png',
+                                            width: 16,
+                                            height: 16,
+                                          )),
+                                      Text('Edit Profile',
+                                          style: DashboardText.sfpro12black),
                                     ],
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 5.h),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    color: Color.fromARGB(255, 202, 200, 200),
-                                    blurRadius: 25,
-                                    spreadRadius: 5,
-                                  )
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                 ],
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Color.fromRGBO(255, 255, 255, 0.00),
                               ),
-                              child: PageView(controller: page, children: [
-                                Dashboard(),
-                                TriggerBooking(),
-                                Bookings(),
-                                Payments(),
-                                Container(
-                                  color: Colors.pink,
-                                ),
-                                Container(
-                                  color: Colors.deepOrangeAccent,
-                                ),
-                              ]),
                             ),
+                            Container(
+                              height: 37.h,
+                              padding: EdgeInsets.only(left: 1.5.w, top: 20),
+                              child: SideMenu(
+                                controller: sideMenu,
+                                style: SideMenuStyle(
+                                  displayMode: SideMenuDisplayMode.auto,
+                                  selectedColor:
+                                      Color.fromRGBO(98, 105, 254, 1),
+                                  unselectedTitleTextStyle: const TextStyle(
+                                    fontFamily: 'SFProText',
+                                    fontSize: 18,
+                                    color: Color.fromRGBO(128, 118, 118, 1),
+                                  ),
+                                  selectedTitleTextStyle: const TextStyle(
+                                      fontFamily: 'SFProText',
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600),
+                                  unselectedIconColor:
+                                      Color.fromRGBO(128, 118, 118, 1),
+                                  selectedIconColor: Colors.white,
+                                ),
+                                items: [
+                                  SideMenuItem(
+                                    title: 'Booking',
+                                    onTap: (page, _) {
+                                      setState(() {
+                                        _currentContent = Bookings();
+                                      });
+                                      sideMenu.changePage(page);
+                                    },
+                                    icon: const Icon(Icons.person_2_outlined),
+                                    // Set the style property to change the text size
+                                  ),
+                                  SideMenuItem(
+                                    title: 'Payments',
+                                    onTap: (page, _) {
+                                      setState(() {
+                                        _currentContent = Payments();
+                                      });
+                                      sideMenu.changePage(page);
+                                    },
+                                    icon:
+                                        const Icon(Icons.mode_comment_outlined),
+                                  ),
+                                  SideMenuItem(
+                                    title: 'Report',
+                                    onTap: (page, _) {
+                                      setState(() {
+                                        _currentContent = Bookings();
+                                      });
+                                      sideMenu.changePage(page);
+                                    },
+                                    icon:
+                                        const Icon(Icons.mode_comment_outlined),
+                                  ),
+                                  SideMenuItem(
+                                    title: 'Help',
+                                    onTap: (page, _) {
+                                      setState(() {
+                                        _currentContent = Bookings();
+                                      });
+                                      sideMenu.changePage(page);
+                                    },
+                                    icon: const Icon(Icons.inbox_outlined),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                          child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(4.w, 2.h, 3.w, 2.h),
+                          child: Container(
+                            height: 650,
+                            decoration: BoxDecoration(
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  color: Color.fromRGBO(199, 199, 199, 1)
+                                      .withOpacity(0.5),
+                                  blurRadius: 15,
+                                  spreadRadius: 3,
+                                )
+                              ],
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Color.fromRGBO(255, 255, 255, 0.00),
+                            ),
+                            child: PageView(controller: page, children: [
+                              _currentContent,
+                            ]),
                           ),
                         ),
-                      ],
-                    ),
+                      )),
+                    ],
                   ),
                 ),
               ),
@@ -424,30 +566,15 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                     ListTile(
                         hoverColor: Colors.indigo.shade100,
                         title: Text(
-                          'Dashboard',
+                          'Booking',
                           style: TextStyle(color: Colors.black),
                         ),
-                        onTap: _handleItem1Tap),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    ListTile(
-                        hoverColor: Colors.indigo.shade100,
-                        title: Text(
-                          'Trigger Booking',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onTap: _handleItem2Tap),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    ListTile(
-                        hoverColor: Colors.indigo.shade100,
-                        title: Text(
-                          'Bookings',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onTap: _handleItem3Tap),
+                        onTap: () {
+                          setState(() {
+                            _currentContent = Bookings();
+                          });
+                          Navigator.pop(context);
+                        }),
                     SizedBox(
                       height: 2.h,
                     ),
@@ -457,7 +584,27 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                           'Payments',
                           style: TextStyle(color: Colors.black),
                         ),
-                        onTap: _handleItem4Tap),
+                        onTap: () {
+                          setState(() {
+                            _currentContent = Payments();
+                          });
+                          Navigator.pop(context);
+                        }),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    ListTile(
+                        hoverColor: Colors.indigo.shade100,
+                        title: Text(
+                          'Users',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            _currentContent = Bookings();
+                          });
+                          Navigator.pop(context);
+                        }),
                     SizedBox(
                       height: 2.h,
                     ),
@@ -467,7 +614,12 @@ class _MyHomePageState extends State<partnerDashboardPage> {
                           'Help',
                           style: TextStyle(color: Colors.black),
                         ),
-                        onTap: _handleItem6Tap),
+                        onTap: () {
+                          setState(() {
+                            _currentContent = Bookings();
+                          });
+                          Navigator.pop(context);
+                        }),
                   ]),
             ),
             appBar: PreferredSize(

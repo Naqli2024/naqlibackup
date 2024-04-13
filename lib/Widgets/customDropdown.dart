@@ -37,7 +37,7 @@ class CustomDropDown extends StatelessWidget {
           onChanged: onChanged,
           buttonStyleData: ButtonStyleData(
             height: 45,
-            padding: EdgeInsets.only(left: 9, right: 9),
+            padding: EdgeInsets.only(right: 9),
             decoration: BoxDecoration(
               border: Border.all(color: Color.fromRGBO(112, 112, 112, 1)),
               borderRadius: BorderRadius.all(Radius.circular(5)),

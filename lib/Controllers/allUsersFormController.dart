@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/cupertino.dart';
 
 import 'allUsers.dart';
@@ -18,17 +19,35 @@ class AllUsersFormController {
   final address2 = TextEditingController();
   final idNumber = TextEditingController();
   final selectedCity = TextEditingController();
+  final fromDate = TextEditingController();
+  final toDate = TextEditingController();
+  final truck = TextEditingController();
+  final load = TextEditingController();
+  final size = TextEditingController();
+  final time = TextEditingController();
+  final booking = TextEditingController();
   final companyidNumber = TextEditingController();
   final selectedAccounttype = TextEditingController();
+  TextEditingController contactNumberError = TextEditingController();
+  final selectedTypeName = TextEditingController();
+  final selectedTypeName1 = TextEditingController();
+  final selectedTypeName2 = TextEditingController();
+  final selectedTypeName3 = TextEditingController();
+  final selectedTypeName4 = TextEditingController();
+  final selectedTypeName5 = TextEditingController();
+  final selectedTypeName6 = TextEditingController();
+  final selectedTypeName7 = TextEditingController();
+  final selectedTypeName8 = TextEditingController();
   final otp = TextEditingController();
+  final equip = TextEditingController();
+  final date = TextEditingController();
 
   // String get newDocId => FirebaseFirestore.instance.collection('AllUserss').doc().id;
 
   DocumentReference? _reference;
 
   DocumentReference get reference {
-    _reference ??=
-        FirebaseFirestore.instance.collection('enterprisedummy').doc();
+    _reference ??= FirebaseFirestore.instance.collection('enterprise').doc();
     return _reference!;
   }
 

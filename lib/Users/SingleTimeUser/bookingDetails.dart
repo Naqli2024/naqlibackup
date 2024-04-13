@@ -12,9 +12,7 @@ import '../../DialogBox/SingleTimeUser/paymentSuccessDialog.dart';
 import '../../Widgets/formText.dart';
 
 class BookingDetails extends StatefulWidget {
-  const BookingDetails({
-    Key? key,
-  }) : super(key: key);
+  BookingDetails();
 
   @override
   State<BookingDetails> createState() => _BookingDetailsState();
@@ -62,401 +60,242 @@ class _BookingDetailsState extends State<BookingDetails> {
       return LayoutBuilder(
           builder: (BuildContext ctx, BoxConstraints constraints) {
         if (constraints.maxWidth >= 720) {
-          return Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(75),
-              child: Material(
-                elevation: 3,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(17.w, 0, 17.w, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        'naqlilogo.png',
-                        height: 75,
-                        width: 100,
-                      ),
-                      Row(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: TextButton(
-                              onPressed: () {
-                                // Handle the first button press
-                              },
-                              child: Text(
-                                'User',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "Helvetica",
-                                  color: Color.fromRGBO(112, 112, 112, 1),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                            child: VerticalDivider(
-                              color: Color.fromRGBO(206, 203, 203, 1),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              // Handle the third button press
-                            },
-                            child: Text(
-                              'Partner',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: "Helvetica",
-                                color: Color.fromRGBO(206, 203, 203, 1),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.notifications,
-                            color: Color.fromRGBO(106, 102, 209, 1),
-                          ),
-                          Text("Contact Us ", style: TabelText.helvetica11),
-                          SizedBox(
-                            height: 20,
-                            child: VerticalDivider(
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text("Hello Customer!", style: TabelText.helvetica11),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+          return SingleChildScrollView(
+            child: Container(
+              height: 680,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Color.fromRGBO(255, 255, 255, 0.925),
               ),
-            ),
-            body: Padding(
-              padding: EdgeInsets.fromLTRB(4.w, 4.h, 4.w, 4.h),
-              child: Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(4.w, 8.h, 3.w, 8.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.1),
-                    ),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color:
-                            Color.fromARGB(255, 199, 198, 198).withOpacity(0.3),
-                        blurRadius: 5,
-                        spreadRadius: 5,
-                        offset: Offset(0, 0), // Bottom side shadow
-                      ),
-                      BoxShadow(
-                        color:
-                            Color.fromARGB(255, 255, 255, 255).withOpacity(0.2),
-                        blurRadius: 1,
-                        spreadRadius: 0, // Bottom side shadow
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(3),
-                    color: Color.fromRGBO(247, 246, 255, 1).withOpacity(1),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
+              padding: EdgeInsets.fromLTRB(6.w, 10.h, 4.w, 10.h),
+              child: Row(
+                children: [
+                  Expanded(
                     child: Container(
-                      width: 1000,
-                      height: 700,
-                      padding: EdgeInsets.fromLTRB(1.w, 2.h, 1.w, 2.h),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color.fromARGB(255, 216, 214, 214)
-                              .withOpacity(0.2),
-                        ),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                            color: Color.fromARGB(255, 199, 198, 198)
-                                .withOpacity(0.3),
-                            blurRadius: 10,
-                            spreadRadius: 10,
-                            offset: Offset(0, 0.5), // Bottom side shadow
-                          ),
-                          BoxShadow(
-                            color: Color.fromARGB(255, 255, 255, 255)
-                                .withOpacity(0.2),
-                            blurRadius: 1,
-                            spreadRadius: 0, // Bottom side shadow
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(25),
-                        color: Colors.white,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Container(
-                          height: 605,
-                          padding: EdgeInsets.fromLTRB(1.w, 1.h, 1.w, 1.h),
-                          child: Row(
+                      padding: EdgeInsets.only(right: 3.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 1.w, 0),
-                                child: Expanded(
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            'Group1787.png',
-                                            width: 62,
-                                            height: 61,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            "Booking Id #1345789345",
-                                            style: TabelText.helveticablack16,
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        height: 404,
-                                        width: 456,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12)),
-                                        child: GoogleMap(
-                                            onMapCreated: (controller) {
-                                              setState(() {
-                                                mapController = controller;
-                                              });
-                                            },
-                                            markers: Set<Marker>.of(_markers),
-                                            mapType: MapType.normal,
-                                            initialCameraPosition:
-                                                CameraPosition(
-                                                    target: LatLng(
-                                                        24.755562, 46.589584),
-                                                    zoom: 13)),
-                                      ),
-                                      Container(
-                                        width: 20.w,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "Pick up truck",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontFamily: "Helvetica",
-                                                      color: Color.fromRGBO(
-                                                          16, 3, 3, 1)),
-                                                ),
-                                                Text(
-                                                  "Toyota Hilux",
-                                                  style: TabelText.tableText5,
-                                                )
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 63,
-                                              child: VerticalDivider(
-                                                color: Color.fromRGBO(
-                                                    204, 195, 195, 1),
-                                                thickness: 2,
-                                              ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "Load",
-                                                  style: TabelText.tableText5,
-                                                ),
-                                                Text(
-                                                  "Woods",
-                                                  style: TabelText.tableText5,
-                                                )
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "Size",
-                                                  style: TabelText.tableText5,
-                                                ),
-                                                Text(
-                                                  " 1 to 1.5",
-                                                  style: TabelText.tableText5,
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                              Image.asset(
+                                'Group1787.png',
+                                width: 62,
+                                height: 61,
                               ),
-                              VerticalDivider(
-                                color: Color.fromRGBO(204, 195, 195, 1),
-                                thickness: 2,
+                              SizedBox(
+                                width: 10,
                               ),
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.fromLTRB(2.w, 2.h, 1.w, 2.h),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Vendor Name',
-                                            style: TabelText.tableText4,
-                                          ),
-                                          Text(
-                                            'Kamado',
-                                            style: TabelText.tableText5,
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(
-                                        color: Color.fromRGBO(204, 195, 195, 1),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Operator id',
-                                            style: TabelText.tableText4,
-                                          ),
-                                          Text(
-                                            '#456789142',
-                                            style: TabelText.tableText5,
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(
-                                        color: Color.fromRGBO(204, 195, 195, 1),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Operator name',
-                                            style: TabelText.tableText4,
-                                          ),
-                                          Text(
-                                            'Tanjiro',
-                                            style: TabelText.tableText5,
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(
-                                        color: Color.fromRGBO(204, 195, 195, 1),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Mode',
-                                            style: TabelText.tableText4,
-                                          ),
-                                          Text(
-                                            'Box truck',
-                                            style: TabelText.tableText5,
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(
-                                        color: Color.fromRGBO(204, 195, 195, 1),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'No.of units',
-                                            style: TabelText.tableText4,
-                                          ),
-                                          Text(
-                                            '2',
-                                            style: TabelText.tableText5,
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(
-                                        color: Color.fromRGBO(204, 195, 195, 1),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Booking status',
-                                            style: TabelText.tableText4,
-                                          ),
-                                          Text(
-                                            'Completed',
-                                            style: TabelText.tableText5,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 40,
-                                      ),
-                                      Text(
-                                        'Pending Amount',
-                                        style: TabelText.helveticablack16,
-                                      ),
-                                      Text(
-                                        'XXXXX SAR',
-                                        style: TextStyle(
-                                            color:
-                                                Color.fromRGBO(145, 79, 157, 1),
-                                            fontFamily: 'Helvetica',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 40,
-                                      ),
-                                      CustomButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            barrierColor:
-                                                Colors.grey.withOpacity(0.5),
-                                            context: context,
-                                            builder: (context) {
-                                              return BookingSuccessDialog();
-                                            },
-                                          );
-                                        },
-                                        text: 'Pay Now',
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
+                              Text(
+                                "Booking Id #1345789345",
+                                style: TabelText.helveticablack16,
+                              ),
                             ],
                           ),
-                        ),
+                          Container(
+                            height: 380,
+                            width: 750,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12)),
+                            child: GoogleMap(
+                                onMapCreated: (controller) {
+                                  setState(() {
+                                    mapController = controller;
+                                  });
+                                },
+                                markers: Set<Marker>.of(_markers),
+                                mapType: MapType.normal,
+                                initialCameraPosition: CameraPosition(
+                                    target: LatLng(24.755562, 46.589584),
+                                    zoom: 13)),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: 4.w, left: 4.w, top: 1.w, bottom: 2.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text("Pick up truck",
+                                        style: DialogText.helvetica25black),
+                                    Text("Toyota Hilux",
+                                        style: BookingText.helveticablack)
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 63,
+                                  child: VerticalDivider(
+                                    color: Color.fromRGBO(112, 112, 112, 1),
+                                    thickness: 2,
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Text("Load",
+                                        style: BookingText.helveticablack),
+                                    Text("Woods",
+                                        style: HomepageText.helvetica16black)
+                                  ],
+                                ),
+                                SizedBox(
+                                  child: Column(
+                                    children: [
+                                      Text("Size",
+                                          style: BookingText.helveticablack),
+                                      Text(" 1 to 1.5",
+                                          style: HomepageText.helvetica16black)
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
-                ),
+                  VerticalDivider(
+                    color: Color.fromRGBO(204, 195, 195, 1),
+                    thickness: 2,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(4.w, 2.h, 1.w, 2.h),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Vendor Name',
+                                style: TabelText.tableText4,
+                              ),
+                              Text(
+                                'Kamado',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Operator id',
+                                style: TabelText.tableText4,
+                              ),
+                              Text(
+                                '#456789142',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Operator name',
+                                style: TabelText.tableText4,
+                              ),
+                              Text(
+                                'Tanjiro',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Mode',
+                                style: TabelText.tableText4,
+                              ),
+                              Text(
+                                'Box truck',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'No.of units',
+                                style: TabelText.tableText4,
+                              ),
+                              Text(
+                                '2',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Booking status',
+                                style: TabelText.tableText4,
+                              ),
+                              Text(
+                                'Completed',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Text(
+                            'Pending Amount',
+                            style: TabelText.helveticablack16,
+                          ),
+                          Text(
+                            'XXXXX SAR',
+                            style: TextStyle(
+                                color: Color.fromRGBO(145, 79, 157, 1),
+                                fontFamily: 'Helvetica',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          CustomButton(
+                            onPressed: () {
+                              showDialog(
+                                barrierColor: Colors.grey.withOpacity(0.5),
+                                context: context,
+                                builder: (context) {
+                                  return Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(15.w, 0, 15.w, 0),
+                                      child: BookingSuccessDialog());
+                                },
+                              );
+                            },
+                            text: 'Pay Now',
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           );

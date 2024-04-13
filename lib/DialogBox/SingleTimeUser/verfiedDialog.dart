@@ -8,7 +8,7 @@ import 'package:flutter_application_1/Users/SuperUser/dashboard_page.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../Users/SingleTimeUser/availableUnits.dart';
+import '../../availableVehicle.dart';
 import '../../homePage.dart';
 
 class VerifiedDialog extends StatefulWidget {
@@ -99,15 +99,15 @@ class _VerifiedDialogState extends State<VerifiedDialog> {
       };
 
       if (selectedType == 'Enterprise') {
-        userCollection = 'enterprisedummy';
+        userCollection = 'enterpriseuser';
         userData['legalName'] = controller.legalName.text;
         userData['companyidNumber'] = controller.companyidNumber.text;
       } else if (selectedType == 'User') {
-        userCollection = 'userdummy';
+        userCollection = 'user';
         userData['govtId'] = controller.selectedGovtId.text;
         userData['idNumber'] = controller.idNumber.text;
       } else if (selectedType == 'Super User') {
-        userCollection = 'superuserdummy';
+        userCollection = 'superuser';
         userData['govtId'] = controller.selectedGovtId.text;
         userData['idNumber'] = controller.idNumber.text;
       } else {
@@ -294,7 +294,7 @@ class _VerifiedDialogState extends State<VerifiedDialog> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     EnterDashboardPage(
-                                                        adminUid: userId),
+                                                        user: userId),
                                               ),
                                             );
                                           } else if (accountType ==
@@ -304,8 +304,7 @@ class _VerifiedDialogState extends State<VerifiedDialog> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     SuperUserDashboardPage(
-                                                        user: userCredential
-                                                            .user!),
+                                                        user: userId),
                                               ),
                                             );
                                           } else if (accountType == 'User') {
@@ -314,8 +313,7 @@ class _VerifiedDialogState extends State<VerifiedDialog> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     SingleUserDashboardPage(
-                                                        user: userCredential
-                                                            .user!),
+                                                        user: userId),
                                               ),
                                             );
                                           } else {

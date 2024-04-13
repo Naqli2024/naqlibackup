@@ -331,56 +331,53 @@ class _BookingPageState extends State<BookingPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       CustomRadio1(
-                                          onChanged: (val) {
-                                            setState(() {
-                                              selectedRadioValue =
-                                                  val; // Unselect if already selected
-                                              isButtonEnabled = true;
-                                            });
-                                          },
-                                          groupValue: selectedRadioValue,
-                                          value: 1,
-                                          text1: 'Vendor 1',
-                                          colors: Colors.white,
-                                          textcolor1: Colors.black54,
-                                          text2: "XXXX SAR",
-                                          textcolor2: Colors.black38),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            selectedRadioValue =
+                                                val; // Unselect if already selected
+                                            isButtonEnabled = true;
+                                          });
+                                        },
+                                        groupValue: selectedRadioValue,
+                                        value: 1,
+                                        text1: 'Vendor 1',
+                                        colors: Colors.white,
+                                        text2: "XXXX SAR",
+                                      ),
                                       SizedBox(
                                         height: 20,
                                       ),
                                       CustomRadio1(
-                                          onChanged: (val) {
-                                            setState(() {
-                                              selectedRadioValue =
-                                                  val; // Unselect if already selected
-                                              isButtonEnabled = true;
-                                            });
-                                          },
-                                          groupValue: selectedRadioValue,
-                                          value: 2,
-                                          text1: 'Vendor 2',
-                                          colors: Colors.white,
-                                          textcolor1: Colors.black54,
-                                          text2: "XXXX SAR",
-                                          textcolor2: Colors.black38),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            selectedRadioValue =
+                                                val; // Unselect if already selected
+                                            isButtonEnabled = true;
+                                          });
+                                        },
+                                        groupValue: selectedRadioValue,
+                                        value: 2,
+                                        text1: 'Vendor 2',
+                                        colors: Colors.white,
+                                        text2: "XXXX SAR",
+                                      ),
                                       SizedBox(
                                         height: 20,
                                       ),
                                       CustomRadio1(
-                                          onChanged: (val) {
-                                            setState(() {
-                                              selectedRadioValue =
-                                                  val; // Unselect if already selected
-                                              isButtonEnabled = true;
-                                            });
-                                          },
-                                          groupValue: selectedRadioValue,
-                                          value: 3,
-                                          text1: 'Vendor 3',
-                                          colors: Colors.white,
-                                          textcolor1: Colors.black54,
-                                          text2: "XXXX SAR",
-                                          textcolor2: Colors.black38),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            selectedRadioValue =
+                                                val; // Unselect if already selected
+                                            isButtonEnabled = true;
+                                          });
+                                        },
+                                        groupValue: selectedRadioValue,
+                                        value: 3,
+                                        text1: 'Vendor 3',
+                                        colors: Colors.white,
+                                        text2: "XXXX SAR",
+                                      ),
                                       SizedBox(
                                         height: 40,
                                       ),

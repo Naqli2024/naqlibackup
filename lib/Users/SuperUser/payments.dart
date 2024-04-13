@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Widgets/colorContainer.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
 
@@ -275,21 +276,9 @@ class _PaymentsState extends State<Payments> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 controller: _paymentScroll,
-                                child: Container(
+                                child: ElevationContainer(
                                   height: 300,
                                   width: 1100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(
-                                            0.5), // Adjust the shadow color and opacity
-                                        blurRadius:
-                                            5.0, // Adjust the blur radius for a more visible shadow
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
                                   child: SizedBox(
                                     height: 220,
                                     child: ListView(
@@ -398,22 +387,9 @@ class _PaymentsState extends State<Payments> {
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           controller: _paymentScroll,
-                                          child: Container(
+                                          child: ElevationContainer(
                                             height: 300,
                                             width: 1100,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey.withOpacity(
-                                                      0.5), // Adjust the shadow color and opacity
-                                                  blurRadius:
-                                                      5.0, // Adjust the blur radius for a more visible shadow
-                                                ),
-                                              ],
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                            ),
                                             child: SizedBox(
                                               height: 220,
                                               child: ListView(

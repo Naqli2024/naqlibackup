@@ -158,14 +158,14 @@ class _CreateAccountState extends State<CreateAccount> {
                             height: 10,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('First Name ',
+                                  Text('First Name',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text('Email Address',
                                       style: HomepageText.helvetica16black),
@@ -215,22 +215,22 @@ class _CreateAccountState extends State<CreateAccount> {
                                   Text('Password',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text('Contact Number',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text('Address 1',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text('City',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text(
                                       enterpriseSelect == 'Enterprise'
@@ -342,22 +342,22 @@ class _CreateAccountState extends State<CreateAccount> {
                                   Text('Confirm Password',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text('Alternate Number',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text('Address 2',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text('Account Type',
                                       style: HomepageText.helvetica16black),
                                   SizedBox(
-                                    height: 40,
+                                    height: 45,
                                   ),
                                   Text(
                                       enterpriseSelect == 'Enterprise'
@@ -502,22 +502,23 @@ class _CreateAccountState extends State<CreateAccount> {
                                       context: context,
                                       builder: (context) {
                                         return MblNoDialog(
-                                          email,
-                                          password,
-                                          selectedAccounttype,
-                                          firstName,
-                                          legalName,
-                                          lastName,
-                                          confirmPassword,
-                                          contactNumber,
-                                          address2,
-                                          address,
-                                          govtId,
-                                          alternateNumber,
-                                          idNumber,
-                                          city,
-                                          companyidNumber,
-                                          adminUid!,
+                                          email: email,
+                                          password: password,
+                                          selectedAccounttype:
+                                              selectedAccounttype,
+                                          firstName: firstName,
+                                          legalName: legalName,
+                                          lastName: legalName,
+                                          confirmPassword: confirmPassword,
+                                          contactNumber: contactNumber,
+                                          address2: address2,
+                                          address: address,
+                                          govtId: govtId,
+                                          alternateNumber: alternateNumber,
+                                          idNumber: idNumber,
+                                          city: city,
+                                          companyidNumber: companyidNumber,
+                                          adminUid: adminUid,
                                         );
                                       },
                                     );
@@ -1113,15 +1114,15 @@ class _CreateAccountState extends State<CreateAccount> {
       };
 
       if (selectedType == 'Enterprise') {
-        userCollection = 'enterprisedummy';
+        userCollection = 'enterpriseuser';
         userData['legalName'] = controller.legalName.text;
         userData['companyidNumber'] = controller.companyidNumber.text;
       } else if (selectedType == 'User') {
-        userCollection = 'userdummy';
+        userCollection = 'user';
         userData['govtId'] = controller.selectedGovtId.text;
         userData['idNumber'] = controller.idNumber.text;
       } else if (selectedType == 'Super User') {
-        userCollection = 'superuserdummy';
+        userCollection = 'superuser';
         userData['govtId'] = controller.selectedGovtId.text;
         userData['idNumber'] = controller.idNumber.text;
       } else {

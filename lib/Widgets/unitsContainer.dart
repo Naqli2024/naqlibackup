@@ -1,126 +1,192 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
 
 @immutable
-final class UnitsContainer extends StatelessWidget {
-  final String? text;
-  String? value;
-  List<String>? items;
-  void Function(String?)? onChanged;
+class UnitsContainer extends StatefulWidget {
+  final String? buttonText;
+  final void Function()? onPressed;
+  final GlobalKey<CustomContainerState>? buttonKey;
+  final List<Map<String, String>> unitNames;
+  String? selectedTypeName;
+  final ValueChanged<String>? onSelectionChanged;
+  final ValueChanged<String>? onSelectionChanged1;
+  String? size;
 
   UnitsContainer({
-    super.key,
-    this.text,
-    this.value,
-    this.items,
-    this.onChanged,
-  });
+    Key? key,
+    this.buttonText,
+    this.selectedTypeName,
+    this.onPressed,
+    required this.unitNames,
+    this.buttonKey,
+    this.size,
+    this.onSelectionChanged,
+    this.onSelectionChanged1,
+  }) : super(key: key);
+
+  @override
+  CustomContainerState createState() => CustomContainerState();
+}
+
+class CustomContainerState extends State<UnitsContainer> {
+  late OverlayEntry _overlayEntry;
+  bool _overlayVisible = false;
+  bool expand = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  OverlayEntry _createOverlayEntry(
+      GlobalKey key, String selectedTypeName, String size) {
+    RenderBox? renderBox = key.currentContext?.findRenderObject() as RenderBox?;
+    final position = renderBox!.localToGlobal(Offset.zero);
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        right: position.dx + 7.5.w,
+        top: position.dy + 50,
+        child: Material(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 0.4,
+              color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.2),
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: SizedBox(
+            width: 480,
+            height: widget.unitNames.length *
+                70.0, // Assuming each ListTile has a height of 70
+            child: Container(
+              padding: EdgeInsets.fromLTRB(5, 15, 0, 15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  width: 0.4,
+                  color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.2),
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: ListView.builder(
+                itemCount: widget.unitNames.length,
+                itemExtent: 65, // Height of each ListTile
+                itemBuilder: (context, index) {
+                  String image = widget.unitNames[index]['image']!;
+                  String name = widget.unitNames[index]['name']!;
+                  String size = widget.unitNames[index]['size']!;
+                  return ListTile(
+                    onTap: () {
+                      setState(() {
+                        widget.onSelectionChanged!(name);
+                        widget.onSelectionChanged1!(size);
+                        expand = false;
+                      });
+                      _hideOverlay();
+                    },
+                    leading: Image.asset(
+                      image,
+                      width: 120,
+                      height: 70,
+                    ),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(name, style: BookingManagerText.sfpro20black),
+                        Text(size, style: TriggerBookingText.sfpro16)
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showOverlay(GlobalKey<CustomContainerState> key,
+      String selectedTypeName, String size) {
+    _overlayEntry = _createOverlayEntry(key, selectedTypeName, size);
+    Overlay.of(context)!.insert(_overlayEntry);
+    setState(() {
+      _overlayVisible = true;
+    });
+  }
+
+  void _hideOverlay() {
+    _overlayEntry.remove();
+    setState(() {
+      _overlayVisible = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.fromLTRB(1.w, 0, 1.w, 0),
+    return Container(
+      width: 500,
+      child: Column(
+        children: [
+          Container(
             height: 50,
+            width: 500,
             decoration: BoxDecoration(
               border: Border.all(color: Color.fromRGBO(183, 183, 183, 1)),
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(0),
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(0),
+              borderRadius: BorderRadius.all(
+                Radius.circular(8),
               ),
+              color: Colors.white,
             ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset(
                   'delivery-truck.png',
-                  width: 50,
-                  height: 50,
+                  width: 100,
+                  height: 100,
                 ),
+                Text(widget.buttonText!, style: AvailableText.helvetica17black),
                 SizedBox(
-                  width: 1.5.w,
+                  height: double.infinity,
+                  child: VerticalDivider(),
                 ),
-                SizedBox(
-                    width: 6.w,
-                    child: Text(text!, style: AvailableText.helvetica17black)),
+                Text(
+                  widget.selectedTypeName ?? 'Select Type',
+                  style: AvailableText.helvetica,
+                ),
+                IconButton(
+                  key: widget.buttonKey,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    size: 25,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    if (!_overlayVisible) {
+                      _showOverlay(
+                          widget.buttonKey!,
+                          widget.selectedTypeName ?? 'Select Type',
+                          widget.size ?? '-');
+                    } else {
+                      _hideOverlay();
+                    }
+                  },
+                ),
               ],
             ),
           ),
-        ),
-        Expanded(
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
-              value: value, // Use value from the list
-              items: items!.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value, style: AvailableText.helvetica),
-                );
-              }).toList(),
-              onChanged: onChanged,
-              buttonStyleData: ButtonStyleData(
-                height: 50,
-                padding: EdgeInsets.only(left: 9, right: 9),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
-                    right: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
-                    top: BorderSide(color: Color.fromRGBO(183, 183, 183, 1)),
-                  ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(0),
-                    topRight: Radius.circular(8),
-                    bottomLeft: Radius.circular(0),
-                    bottomRight: Radius.circular(8),
-                  ),
-                  color: Colors.white,
-                ),
-              ),
-              iconStyleData: const IconStyleData(
-                icon: Icon(
-                  Icons.arrow_drop_down_sharp,
-                ),
-                iconSize: 25,
-                iconEnabledColor: Colors.black,
-                iconDisabledColor: null,
-              ),
-              dropdownStyleData: DropdownStyleData(
-                elevation: 0,
-                maxHeight: 200,
-                padding: EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color.fromRGBO(112, 112, 112, 1)),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(0),
-                    topRight: Radius.circular(0),
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5),
-                  ),
-                  color: Colors.white,
-                ),
-                scrollPadding: EdgeInsets.all(5),
-                scrollbarTheme: ScrollbarThemeData(
-                  thickness: MaterialStateProperty.all<double>(6),
-                  thumbVisibility: MaterialStateProperty.all<bool>(true),
-                ),
-              ),
-              menuItemStyleData: MenuItemStyleData(
-                height: 30,
-                padding: EdgeInsets.only(left: 9, right: 9),
-              ),
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

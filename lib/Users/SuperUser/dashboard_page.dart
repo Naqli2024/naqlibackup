@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,13 +14,13 @@ import '../../Widgets/formText.dart';
 import '../../classes/language.dart';
 import '../../classes/language_constants.dart';
 import '../../main.dart';
-import 'bookings.dart';
-import 'dashboard.dart';
-import 'payments.dart';
-import 'trigger_booking.dart';
+import 'package:flutter_application_1/Users/SuperUser/booking_manager.dart';
+import 'package:flutter_application_1/Users/SuperUser/dashboard.dart';
+import 'package:flutter_application_1/Users/SuperUser/payments.dart';
+import 'package:flutter_application_1/Users/SuperUser/trigger_booking.dart';
 
 class SuperUserDashboardPage extends StatefulWidget {
-  final User user;
+  final String user;
   SuperUserDashboardPage({required this.user});
 
   @override
@@ -42,11 +43,63 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
   int? selectedRadioValue2;
   bool payNowButtonEnabled = false;
   String? selectedValue;
-  Widget _currentContent = Dashboard(); // Initial content
+
+  String userId = '';
+
+  Widget _currentContent = TriggerBooking();
+
+  Future<void> fetchData1(String userId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await FirebaseFirestore.instance
+              .collection('superuser')
+              .doc(userId)
+              .get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> userData = documentSnapshot.data()!;
+        String firstName = userData['firstName'];
+        String lastName = userData['lastName'];
+        setState(() {
+          userId = userId;
+          _currentContent = Dashboard(
+            user: widget.user,
+          );
+        });
+      } else {
+        print('Document does not exist for userId: $userId');
+      }
+    } catch (e) {
+      print('Error fetching data for userId $userId: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>?> fetchData(String userId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await FirebaseFirestore.instance
+              .collection('superuser')
+              .doc(userId)
+              .get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> userData = documentSnapshot.data()!;
+        String firstName = userData['firstName'];
+        String lastName = userData['lastName'];
+        return {'firstName': firstName, 'lastName': lastName};
+      } else {
+        print('Document does not exist for userId: $userId');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching data for userId $userId: $e');
+      return null;
+    }
+  } // Initial content
 
   void _handleItem1Tap() {
     setState(() {
-      _currentContent = Dashboard();
+      _currentContent = Dashboard(user: widget.user);
     });
     Navigator.pop(context);
   }
@@ -60,7 +113,7 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
 
   void _handleItem3Tap() {
     setState(() {
-      _currentContent = Bookings();
+      _currentContent = Bookings(user: widget.user);
     });
     Navigator.pop(context);
   }
@@ -92,6 +145,7 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
       page.jumpToPage(p0);
     });
     super.initState();
+    fetchData(widget.user);
   }
 
   void enablePayNowButton() {
@@ -295,16 +349,39 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
                             padding: const EdgeInsets.only(
                               left: 5,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Hello Faizal!",
-                                    style: TabelText.helvetica11),
-                                Text("Admin", style: TabelText.usertext),
-                                Text("Faizal industries",
-                                    style: TabelText.usertext),
-                              ],
+                            child: FutureBuilder<Map<String, dynamic>?>(
+                              future: fetchData(widget
+                                  .user!), // Pass the userId to fetchData method
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator(); // Show a loading indicator while data is being fetched
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (snapshot.hasData) {
+                                  // Extract first name and last name from snapshot data
+                                  String firstName =
+                                      snapshot.data?['firstName'] ?? '';
+                                  String lastName =
+                                      snapshot.data?['lastName'] ?? '';
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Hello $firstName $lastName!",
+                                          style: TabelText.helvetica11),
+                                      Text("Admin", style: TabelText.usertext),
+                                      Text("Faizal industries",
+                                          style: TabelText.usertext),
+                                    ],
+                                  );
+                                } else {
+                                  return Text(
+                                      'No data available'); // Handle case when snapshot has no data
+                                }
+                              },
                             ),
                           ),
                           Icon(
@@ -318,61 +395,112 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
                 ),
               ),
             ),
-            body: Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(6.w, 6.h, 6.w, 6.h),
+            body: Padding(
+              padding: EdgeInsets.fromLTRB(6.w, 4.h, 6.w, 4.h),
+              child: Expanded(
                 child: Container(
-                  color: Color.fromRGBO(245, 243, 255, 1).withOpacity(0.5),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.1),
+                    ),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color:
+                            Color.fromARGB(255, 199, 198, 198).withOpacity(0.3),
+                        blurRadius: 5,
+                        spreadRadius: 5,
+                        offset: Offset(0, 0), // Bottom side shadow
+                      ),
+                      BoxShadow(
+                        color:
+                            Color.fromARGB(255, 255, 255, 255).withOpacity(0.2),
+                        blurRadius: 1,
+                        spreadRadius: 0, // Bottom side shadow
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(3),
+                    color: Color.fromRGBO(247, 246, 255, 1).withOpacity(1),
+                  ),
                   child: Row(
                     children: [
                       Container(
                         height: 850,
                         width: 360,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color.fromARGB(255, 216, 214, 214)
-                                .withOpacity(0.5),
-                          ),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: Color.fromARGB(255, 199, 198, 198)
-                                  .withOpacity(0.5),
-                              blurRadius: 10,
-                              spreadRadius: 4,
-                              offset: Offset(0, 0.5), // Bottom side shadow
-                            ),
-                            BoxShadow(
-                              color: Color.fromARGB(255, 255, 255, 255)
-                                  .withOpacity(0.1),
-                              blurRadius: 1,
-                              spreadRadius: 0, // Bottom side shadow
-                            ),
-                          ],
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(13),
-                            bottomLeft: Radius.circular(13),
-                            topRight: Radius.circular(0),
-                            bottomRight: Radius.circular(13),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(13),
                           ),
                           color: Color.fromRGBO(236, 233, 250, 1),
                         ),
                         child: Column(
                           children: [
                             Container(
-                              height: 370,
+                              height: 330,
                               decoration: BoxDecoration(
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(7),
-                                  bottomLeft: Radius.circular(7),
-                                  topRight: Radius.circular(0),
-                                  bottomRight: Radius.circular(7),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage(
+                                    'Circleavatar.png',
+                                  ),
+                                ),
+                                // color: Color.fromRGBO(255, 255, 255, 1),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(7),
                                 ),
                               ),
-                              child: Image.asset(
-                                'Circleavatar.png',
-                                width: 550, // Adjust the height as needed
-                                fit: BoxFit.cover,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text('Faizal Khan',
+                                      style: DashboardText.acre),
+                                  Text('Location',
+                                      style: DashboardText.sfpro19),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor:
+                                        Color.fromRGBO(127, 106, 255, 1),
+                                    maxRadius: 76,
+                                    minRadius: 72,
+                                    child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        maxRadius: 70,
+                                        minRadius: 67,
+                                        child: CircleAvatar(
+                                          backgroundImage:
+                                              AssetImage('uploadimage.png'),
+                                          maxRadius: 65,
+                                          minRadius: 65,
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text('ID No : xxxxxxxxxx',
+                                      style: DashboardText.sfpro12),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Image.asset(
+                                            'editicon.png',
+                                            width: 16,
+                                            height: 16,
+                                          )),
+                                      Text('Edit Profile',
+                                          style: DashboardText.sfpro12black),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
                               ),
                             ),
                             Container(
@@ -403,7 +531,9 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
                                     title: 'Dashboard',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = Dashboard();
+                                        _currentContent = Dashboard(
+                                          user: widget.user,
+                                        );
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -423,7 +553,9 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
                                     title: 'Booking Manager',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = Bookings();
+                                        _currentContent = Bookings(
+                                          user: widget.user,
+                                        );
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -445,7 +577,9 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
                                     title: 'Help',
                                     onTap: (page, _) {
                                       setState(() {
-                                        _currentContent = Dashboard();
+                                        _currentContent = Dashboard(
+                                          user: widget.user,
+                                        );
                                       });
                                       sideMenu.changePage(page);
                                     },
@@ -542,7 +676,9 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = Dashboard();
+                            _currentContent = Dashboard(
+                              user: widget.user,
+                            );
                           });
                           Navigator.pop(context);
                         }),
@@ -572,7 +708,9 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = Bookings();
+                            _currentContent = Bookings(
+                              user: widget.user,
+                            );
                           });
                           Navigator.pop(context);
                         }),
@@ -602,7 +740,9 @@ class _MyHomePageState extends State<SuperUserDashboardPage> {
                         ),
                         onTap: () {
                           setState(() {
-                            _currentContent = Dashboard();
+                            _currentContent = Dashboard(
+                              user: widget.user,
+                            );
                           });
                           Navigator.pop(context);
                         }),

@@ -5,6 +5,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/Widgets/colorContainer.dart';
 import 'package:flutter_application_1/Widgets/customTextField.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
@@ -13,8 +14,8 @@ import '../../Controllers/allUsersFormController.dart';
 import '../../Widgets/customButton.dart';
 
 class Users extends StatefulWidget {
-  String? adminUid;
-  Users({this.adminUid});
+  String? user;
+  Users({this.user});
   @override
   State<Users> createState() => _UsersState();
 }
@@ -133,304 +134,293 @@ class _UsersState extends State<Users> {
               borderRadius: BorderRadius.circular(20.0),
               color: Color.fromRGBO(255, 255, 255, 0.925),
             ),
-            child: Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(3.w, 1.5.h, 1.5.w, 1.5.h),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              Color.fromRGBO(240, 240, 240, 1).withOpacity(0.1),
-                          offset: Offset(0, 0),
-                          spreadRadius: 2.0,
-                          blurRadius: 0.01, // changes position of shadow
-                        ),
-                      ],
-                      color: Color.fromRGBO(75, 61, 82, 1),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(0)),
-                    ),
-                    height: 80, // Brown color
-                    child: Row(
-                      children: [
-                        Text(
-                          addUser ? 'New User' : 'Users',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontFamily: "Helvetica",
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(75, 61, 82, 1),
+                          border: Border.all(
+                            width: 1.0,
+                            color: Color.fromRGBO(75, 61, 82, 1),
+                          ),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
                           ),
                         ),
-                      ],
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 80, top: 20),
+                          child: Text(addUser ? 'New User' : 'Users',
+                              style: BookingHistoryText.helvetica40),
+                        ),
+                      ),
                     ),
-                  ),
-                  addUser
-                      ? Padding(
-                          padding: EdgeInsets.fromLTRB(7.w, 7.h, 7.w, 7.h),
-                          child: Expanded(
-                            child: Container(
+                  ],
+                ),
+                addUser
+                    ? Padding(
+                        padding: EdgeInsets.fromLTRB(8.w, 6.h, 8.w, 6.h),
+                        child: Expanded(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                    color: Color.fromRGBO(199, 199, 199, 1)
+                                        .withOpacity(0.5),
+                                    blurRadius: 15,
+                                    spreadRadius: 3,
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: Color.fromRGBO(255, 255, 255, 0.00),
+                              ),
+                              child: Container(
+                                padding:
+                                    EdgeInsets.fromLTRB(4.w, 8.h, 4.w, 8.h),
                                 decoration: BoxDecoration(
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                      color: Color.fromRGBO(199, 199, 199, 1)
-                                          .withOpacity(0.5),
-                                      blurRadius: 15,
-                                      spreadRadius: 3,
+                                  borderRadius: BorderRadius.circular(22.0),
+                                  color: Color.fromRGBO(255, 255, 255, 0.925),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                            width: 9.w,
+                                            child: Text('Name',
+                                                style: TabelText.helvetica)),
+                                        Expanded(
+                                            child: CustomTextfield(
+                                          controller: controller.firstName,
+                                          text: 'Enter name',
+                                        )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                            width: 9.w,
+                                            child: Text('Address',
+                                                style: TabelText.helvetica)),
+                                        Expanded(
+                                            child: CustomTextfield(
+                                          controller: controller.address,
+                                          text: 'Enter address',
+                                        )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                            width: 9.w,
+                                            child: Text('Email ID',
+                                                style: TabelText.helvetica)),
+                                        Expanded(
+                                            child: CustomTextfield(
+                                          text: 'Enter email address',
+                                          controller: controller.email,
+                                        )),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        SizedBox(
+                                            width: 9.w,
+                                            child: Text('Password',
+                                                style: TabelText.helvetica)),
+                                        Expanded(
+                                            child: CustomTextfield(
+                                          text: 'Enter password',
+                                          controller: controller.password,
+                                        )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                            width: 9.w,
+                                            child: Text('Mobile No',
+                                                style: TabelText.helvetica)),
+                                        Expanded(
+                                            child: CustomTextfield(
+                                          text: 'Enter mobile no',
+                                          controller: controller.contactNumber,
+                                        )),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        SizedBox(
+                                            width: 9.w,
+                                            child: Text('User Photo',
+                                                style: TabelText.helvetica)),
+                                        Expanded(child: CustomTextfield()),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                                width: 9.w,
+                                                child: Text('Access to',
+                                                    style:
+                                                        TabelText.helvetica)),
+                                            Row(
+                                              children: [
+                                                for (int i = 0;
+                                                    i < dropdownValues.length;
+                                                    i++)
+                                                  _buildDropdown(i),
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        dropdownValues.add(
+                                                            'None'); // Add a new dropdown value
+                                                      });
+                                                    },
+                                                    icon: Icon(Icons
+                                                        .add_circle_outline_sharp)),
+                                                Text(
+                                                  'Add Access',
+                                                  style: TabelText.helvetica,
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        CustomButton(
+                                          onPressed: () async {
+                                            try {
+                                              String? adminUid = widget.user;
+                                              final FirebaseAuth _auth =
+                                                  FirebaseAuth.instance;
+                                              UserCredential userCredential =
+                                                  await _auth
+                                                      .createUserWithEmailAndPassword(
+                                                email: controller.email.text,
+                                                password:
+                                                    controller.password.text,
+                                              );
+
+                                              // Extract UID from the userCredential.user object
+                                              String userId =
+                                                  userCredential.user!.uid;
+
+                                              // Gather admin user fields
+                                              String adminEmail =
+                                                  'controller.adnEmail.text';
+                                              // Add other admin fields as needed
+
+                                              // Gather fields for subcollection documents
+                                              String firstName =
+                                                  controller.firstName.text;
+                                              String lastName =
+                                                  controller.lastName.text;
+                                              String email =
+                                                  controller.email.text;
+                                              String password =
+                                                  controller.password.text;
+                                              String contactNumber =
+                                                  controller.contactNumber.text;
+                                              String address =
+                                                  controller.address.text;
+                                              String accounttype = controller
+                                                  .selectedAccounttype.text;
+
+                                              // Call functions to create documents in collection and subcollection
+                                              await createCollectionAndSubcollection(
+                                                  userId,
+                                                  adminEmail,
+                                                  adminUid!,
+                                                  firstName,
+                                                  lastName,
+                                                  email,
+                                                  password,
+                                                  contactNumber,
+                                                  address,
+                                                  accounttype);
+                                            } catch (e) {
+                                              print("Error creating user: $e");
+                                            }
+                                          },
+                                          text: 'Confirm',
+                                        ),
+                                      ],
                                     ),
                                   ],
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  color: Color.fromRGBO(255, 255, 255, 0.00),
                                 ),
-                                child: Container(
-                                  padding:
-                                      EdgeInsets.fromLTRB(8.w, 8.h, 8.w, 8.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(22.0),
-                                    color: Color.fromRGBO(255, 255, 255, 0.925),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 9.w,
-                                              child: Text('Name',
-                                                  style: TabelText.helvetica)),
-                                          Expanded(
-                                              child: CustomTextfield(
-                                            controller: controller.firstName,
-                                            text: 'Enter name',
-                                          )),
-                                        ],
+                              )),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.fromLTRB(4.w, 8.h, 4.w, 2.h),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: SizedBox(
+                                width: 127,
+                                height: 45,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    setState(() {
+                                      addUser = !addUser;
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        color: Color.fromRGBO(98, 84, 84, 1),
                                       ),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 9.w,
-                                              child: Text('Address',
-                                                  style: TabelText.helvetica)),
-                                          Expanded(
-                                              child: CustomTextfield(
-                                            controller: controller.address,
-                                            text: 'Enter address',
-                                          )),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 9.w,
-                                              child: Text('Email ID',
-                                                  style: TabelText.helvetica)),
-                                          Expanded(
-                                              child: CustomTextfield(
-                                            text: 'Enter email address',
-                                            controller: controller.email,
-                                          )),
-                                          SizedBox(
-                                            width: 2.w,
-                                          ),
-                                          SizedBox(
-                                              width: 9.w,
-                                              child: Text('Password',
-                                                  style: TabelText.helvetica)),
-                                          Expanded(
-                                              child: CustomTextfield(
-                                            text: 'Enter password',
-                                            controller: controller.password,
-                                          )),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 9.w,
-                                              child: Text('Mobile No',
-                                                  style: TabelText.helvetica)),
-                                          Expanded(
-                                              child: CustomTextfield(
-                                            text: 'Enter mobile no',
-                                            controller:
-                                                controller.contactNumber,
-                                          )),
-                                          SizedBox(
-                                            width: 2.w,
-                                          ),
-                                          SizedBox(
-                                              width: 9.w,
-                                              child: Text('User Photo',
-                                                  style: TabelText.helvetica)),
-                                          Expanded(child: CustomTextfield()),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: 9.w,
-                                              child: Text('Access to',
-                                                  style: TabelText.helvetica)),
-                                          Row(
-                                            children: [
-                                              for (int i = 0;
-                                                  i < dropdownValues.length;
-                                                  i++)
-                                                _buildDropdown(i),
-                                            ],
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      dropdownValues.add(
-                                                          'None'); // Add a new dropdown value
-                                                    });
-                                                  },
-                                                  icon: Icon(Icons
-                                                      .add_circle_outline_sharp)),
-                                              Text(
-                                                'Add Access',
-                                                style: TabelText.helvetica,
-                                              )
-                                            ],
-                                          ),
-                                          CustomButton(
-                                            onPressed: () async {
-                                              try {
-                                                String? adminUid =
-                                                    widget.adminUid;
-                                                final FirebaseAuth _auth =
-                                                    FirebaseAuth.instance;
-                                                UserCredential userCredential =
-                                                    await _auth
-                                                        .createUserWithEmailAndPassword(
-                                                  email: controller.email.text,
-                                                  password:
-                                                      controller.password.text,
-                                                );
-
-                                                // Extract UID from the userCredential.user object
-                                                String userId =
-                                                    userCredential.user!.uid;
-
-                                                // Gather admin user fields
-                                                String adminEmail =
-                                                    'controller.adnEmail.text';
-                                                // Add other admin fields as needed
-
-                                                // Gather fields for subcollection documents
-                                                String firstName =
-                                                    controller.firstName.text;
-                                                String lastName =
-                                                    controller.lastName.text;
-                                                String email =
-                                                    controller.email.text;
-                                                String password =
-                                                    controller.password.text;
-                                                String contactNumber =
-                                                    controller
-                                                        .contactNumber.text;
-                                                String address =
-                                                    controller.address.text;
-                                                String accounttype = controller
-                                                    .selectedAccounttype.text;
-
-                                                // Call functions to create documents in collection and subcollection
-                                                await createCollectionAndSubcollection(
-                                                    userId,
-                                                    adminEmail,
-                                                    adminUid!,
-                                                    firstName,
-                                                    lastName,
-                                                    email,
-                                                    password,
-                                                    contactNumber,
-                                                    address,
-                                                    accounttype);
-                                              } catch (e) {
-                                                print(
-                                                    "Error creating user: $e");
-                                              }
-                                            },
-                                            text: 'Confirm Booking',
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                          ),
-                        )
-                      : Container(
-                          padding: EdgeInsets.fromLTRB(2.w, 1.h, 2.w, 1.h),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 25,
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: SizedBox(
-                                  width: 127,
-                                  height: 45,
-                                  child: ElevatedButton.icon(
-                                    onPressed: () {
-                                      setState(() {
-                                        addUser = !addUser;
-                                      });
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      backgroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                          color: Color.fromRGBO(98, 84, 84, 1),
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                            15), // Adjust border radius as needed
-                                      ),
+                                      borderRadius: BorderRadius.circular(
+                                          15), // Adjust border radius as needed
                                     ),
-                                    icon: Icon(
-                                      Icons.add,
-                                      size: 15,
-                                    ),
-                                    label: Text('Add user',
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(98, 84, 84, 1),
-                                          fontFamily: 'Helvetica',
-                                          fontSize: 15,
-                                        )),
                                   ),
+                                  icon: Icon(
+                                    Icons.add,
+                                    size: 15,
+                                  ),
+                                  label: Text('Add user',
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(98, 84, 84, 1),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 15,
+                                      )),
                                 ),
                               ),
-                              SizedBox(
-                                height: 25,
-                              ),
-                              Scrollbar(
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            ElevationContainer(
+                              child: Scrollbar(
                                 controller: _Scroll,
                                 thumbVisibility:
                                     true, // Set to true to always show the scrollbar
@@ -438,50 +428,30 @@ class _UsersState extends State<Users> {
                                   scrollDirection: Axis.horizontal,
                                   controller: _Scroll,
                                   child: Container(
-                                    width: 1120,
+                                    height: 370,
+                                    width: 1090,
                                     decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color:
-                                              Color.fromRGBO(158, 157, 157, 1)
-                                                  .withOpacity(0.5),
-                                          offset: Offset(0, 0),
-                                          spreadRadius: 2.0,
-                                          blurRadius:
-                                              2, // changes position of shadow
-                                        ),
-                                        BoxShadow(
-                                          color: Colors.white,
-                                          offset: Offset(0, -1),
-                                          spreadRadius: 0,
-                                          blurRadius:
-                                              0, // changes position of shadow
-                                        ),
-                                      ],
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
                                       border: Border.all(
                                         color: Color.fromRGBO(112, 112, 112, 1)
-                                            .withOpacity(0.5),
+                                            .withOpacity(0.3),
                                       ),
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(0),
-                                          topRight: Radius.circular(0),
-                                          bottomLeft: Radius.circular(0),
-                                          bottomRight: Radius.circular(0)),
                                     ),
                                     child: SizedBox(
-                                      height: 350,
+                                      height: 220,
                                       child: ListView(
                                         children: [_booking1Table()],
                                       ),
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        )
-                ],
-              ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+              ],
             ),
           ));
         } else {
@@ -493,274 +463,334 @@ class _UsersState extends State<Users> {
             ),
             child: SingleChildScrollView(
                 child: Container(
-                    padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 1.5.h),
-                      color: Color.fromRGBO(255, 255, 255, 157),
-                      child: Expanded(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.fromLTRB(
-                                    3.w, 1.5.h, 1.5.w, 1.5.h),
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(240, 240, 240, 1)
-                                          .withOpacity(0.1),
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 2.0,
-                                      blurRadius:
-                                          0.01, // changes position of shadow
-                                    ),
-                                  ],
-                                  color: Color.fromRGBO(75, 61, 82, 1),
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(12),
-                                      topRight: Radius.circular(12),
-                                      bottomLeft: Radius.circular(0),
-                                      bottomRight: Radius.circular(0)),
-                                ),
-                                height: 80, // Brown color
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      addUser ? 'New User' : 'Users',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontFamily: "Helvetica",
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                    color: Color.fromRGBO(255, 255, 255, 157),
+                    child: Expanded(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding:
+                                  EdgeInsets.fromLTRB(3.w, 1.5.h, 1.5.w, 1.5.h),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(240, 240, 240, 1)
+                                        .withOpacity(0.1),
+                                    offset: Offset(0, 0),
+                                    spreadRadius: 2.0,
+                                    blurRadius:
+                                        0.01, // changes position of shadow
+                                  ),
+                                ],
+                                color: Color.fromRGBO(75, 61, 82, 1),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    topRight: Radius.circular(12),
+                                    bottomLeft: Radius.circular(0),
+                                    bottomRight: Radius.circular(0)),
                               ),
-                              addUser
-                                  ? Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                          7.w, 7.h, 7.w, 7.h),
-                                      child: Expanded(
-                                        child: Container(
+                              height: 80, // Brown color
+                              child: Row(
+                                children: [
+                                  Text(
+                                    addUser ? 'New User' : 'Users',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontFamily: "Helvetica",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            addUser
+                                ? Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(7.w, 7.h, 7.w, 7.h),
+                                    child: Expanded(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            boxShadow: <BoxShadow>[
+                                              BoxShadow(
+                                                color: Color.fromRGBO(
+                                                        199, 199, 199, 1)
+                                                    .withOpacity(0.5),
+                                                blurRadius: 15,
+                                                spreadRadius: 3,
+                                              ),
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            color: Color.fromRGBO(
+                                                255, 255, 255, 0.00),
+                                          ),
+                                          child: Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                8.w, 8.h, 8.w, 8.h),
                                             decoration: BoxDecoration(
-                                              boxShadow: <BoxShadow>[
-                                                BoxShadow(
-                                                  color: Color.fromRGBO(
-                                                          199, 199, 199, 1)
-                                                      .withOpacity(0.5),
-                                                  blurRadius: 15,
-                                                  spreadRadius: 3,
+                                              borderRadius:
+                                                  BorderRadius.circular(22.0),
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 0.925),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                        width: 100,
+                                                        child: Text('Name',
+                                                            style: TabelText
+                                                                .helvetica)),
+                                                    Expanded(
+                                                        child: CustomTextfield(
+                                                      text: 'Enter name',
+                                                      controller:
+                                                          controller.firstName,
+                                                    )),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 25,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                        width: 100,
+                                                        child: Text('Email ID',
+                                                            style: TabelText
+                                                                .helvetica)),
+                                                    Expanded(
+                                                        child: CustomTextfield(
+                                                      text:
+                                                          'Enter email address',
+                                                      controller:
+                                                          controller.email,
+                                                    )),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 25,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                        width: 100,
+                                                        child: Text('Address',
+                                                            style: TabelText
+                                                                .helvetica)),
+                                                    Expanded(
+                                                        child: CustomTextfield(
+                                                      text: 'Enter address',
+                                                      controller:
+                                                          controller.address,
+                                                    )),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 25,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                        width: 100,
+                                                        child: Text('Mobile No',
+                                                            style: TabelText
+                                                                .helvetica)),
+                                                    Expanded(
+                                                        child: CustomTextfield(
+                                                      text: 'Enter mobile no',
+                                                      controller: controller
+                                                          .companyidNumber,
+                                                    )),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                        width: 100,
+                                                        child: Text(
+                                                            'User Photo',
+                                                            style: TabelText
+                                                                .helvetica)),
+                                                    Expanded(
+                                                        child:
+                                                            CustomTextfield()),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 25,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                        width: 100,
+                                                        child: Text('Access to',
+                                                            style: TabelText
+                                                                .helvetica)),
+                                                    Row(
+                                                      children: [
+                                                        for (int i = 0;
+                                                            i <
+                                                                dropdownValues
+                                                                    .length;
+                                                            i++)
+                                                          _buildDropdown(i),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                dropdownValues.add(
+                                                                    'None'); // Add a new dropdown value
+                                                              });
+                                                            },
+                                                            icon: Icon(Icons
+                                                                .add_circle_outline_sharp)),
+                                                        Text(
+                                                          'Add Access',
+                                                          style: TabelText
+                                                              .helvetica,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Expanded(child: SizedBox()),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 25,
+                                                ),
+                                                CustomButton(
+                                                  onPressed: () async {
+                                                    try {
+                                                      String? adminUid =
+                                                          widget.user;
+                                                      final FirebaseAuth _auth =
+                                                          FirebaseAuth.instance;
+                                                      UserCredential
+                                                          userCredential =
+                                                          await _auth
+                                                              .createUserWithEmailAndPassword(
+                                                        email: controller
+                                                            .email.text,
+                                                        password: controller
+                                                            .password.text,
+                                                      );
+
+                                                      // Extract UID from the userCredential.user object
+                                                      String userId =
+                                                          userCredential
+                                                              .user!.uid;
+
+                                                      // Gather admin user fields
+                                                      String adminEmail =
+                                                          'controller.adnEmail.text';
+                                                      // Add other admin fields as needed
+
+                                                      // Gather fields for subcollection documents
+                                                      String firstName =
+                                                          controller
+                                                              .firstName.text;
+                                                      String lastName =
+                                                          controller
+                                                              .lastName.text;
+                                                      String email =
+                                                          controller.email.text;
+                                                      String password =
+                                                          controller
+                                                              .password.text;
+                                                      String contactNumber =
+                                                          controller
+                                                              .contactNumber
+                                                              .text;
+                                                      String address =
+                                                          controller
+                                                              .address.text;
+                                                      String accounttype =
+                                                          controller
+                                                              .selectedAccounttype
+                                                              .text;
+
+                                                      // Call functions to create documents in collection and subcollection
+                                                      await createCollectionAndSubcollection(
+                                                          userId,
+                                                          adminEmail,
+                                                          adminUid!,
+                                                          firstName,
+                                                          lastName,
+                                                          email,
+                                                          password,
+                                                          contactNumber,
+                                                          address,
+                                                          accounttype);
+                                                    } catch (e) {
+                                                      print(
+                                                          "Error creating user: $e");
+                                                    }
+                                                  },
+                                                  text: 'Confirm',
                                                 ),
                                               ],
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                              color: Color.fromRGBO(
-                                                  255, 255, 255, 0.00),
                                             ),
-                                            child: Container(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  8.w, 8.h, 8.w, 8.h),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(22.0),
-                                                color: Color.fromRGBO(
-                                                    255, 255, 255, 0.925),
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                          width: 9.w,
-                                                          child: Text('Name',
-                                                              style: TabelText
-                                                                  .helvetica)),
-                                                      Expanded(
-                                                          child:
-                                                              CustomTextfield(
-                                                        text: 'Enter name',
-                                                        controller: controller
-                                                            .firstName,
-                                                      )),
-                                                    ],
+                                          )),
+                                    ),
+                                  )
+                                : Container(
+                                    padding:
+                                        EdgeInsets.fromLTRB(4.w, 8.h, 4.w, 2.h),
+                                    child: Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: SizedBox(
+                                            width: 127,
+                                            height: 45,
+                                            child: ElevatedButton.icon(
+                                              onPressed: () {
+                                                setState(() {
+                                                  addUser = !addUser;
+                                                });
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                elevation: 0,
+                                                backgroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                    color: Color.fromRGBO(
+                                                        98, 84, 84, 1),
                                                   ),
-                                                  SizedBox(
-                                                    height: 25,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                          width: 9.w,
-                                                          child: Text(
-                                                              'Email ID',
-                                                              style: TabelText
-                                                                  .helvetica)),
-                                                      Expanded(
-                                                          child:
-                                                              CustomTextfield(
-                                                        text:
-                                                            'Enter email address',
-                                                        controller:
-                                                            controller.email,
-                                                      )),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 25,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                          width: 9.w,
-                                                          child: Text('Address',
-                                                              style: TabelText
-                                                                  .helvetica)),
-                                                      Expanded(
-                                                          child:
-                                                              CustomTextfield(
-                                                        text: 'Enter address',
-                                                        controller:
-                                                            controller.address,
-                                                      )),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 25,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                          width: 9.w,
-                                                          child: Text(
-                                                              'Mobile No',
-                                                              style: TabelText
-                                                                  .helvetica)),
-                                                      Expanded(
-                                                          child:
-                                                              CustomTextfield(
-                                                        text: 'Enter mobile no',
-                                                        controller: controller
-                                                            .companyidNumber,
-                                                      )),
-                                                      SizedBox(
-                                                        width: 2.w,
-                                                      ),
-                                                      SizedBox(
-                                                          width: 9.w,
-                                                          child: Text(
-                                                              'User Photo',
-                                                              style: TabelText
-                                                                  .helvetica)),
-                                                      Expanded(
-                                                          child:
-                                                              CustomTextfield()),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 25,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                          width: 9.w,
-                                                          child: Text(
-                                                              'Access to',
-                                                              style: TabelText
-                                                                  .helvetica)),
-                                                      Row(
-                                                        children: [
-                                                          for (int i = 0;
-                                                              i <
-                                                                  dropdownValues
-                                                                      .length;
-                                                              i++)
-                                                            _buildDropdown(i),
-                                                        ],
-                                                      ),
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  dropdownValues
-                                                                      .add(
-                                                                          'None'); // Add a new dropdown value
-                                                                });
-                                                              },
-                                                              icon: Icon(Icons
-                                                                  .add_circle_outline_sharp)),
-                                                          Text(
-                                                            'Add Access',
-                                                            style: TabelText
-                                                                .helvetica,
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Expanded(
-                                                          child: SizedBox()),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            )),
-                                      ),
-                                    )
-                                  : Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          2.w, 1.h, 2.w, 1.h),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 25,
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerRight,
-                                            child: SizedBox(
-                                              width: 127,
-                                              height: 45,
-                                              child: ElevatedButton.icon(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    addUser = !addUser;
-                                                  });
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  elevation: 0,
-                                                  backgroundColor: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    side: BorderSide(
-                                                      color: Color.fromRGBO(
-                                                          98, 84, 84, 1),
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15), // Adjust border radius as needed
-                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15), // Adjust border radius as needed
                                                 ),
-                                                icon: Icon(
-                                                  Icons.add,
-                                                  size: 15,
-                                                ),
-                                                label: Text('Add user',
-                                                    style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          98, 84, 84, 1),
-                                                      fontFamily: 'Helvetica',
-                                                      fontSize: 15,
-                                                    )),
                                               ),
+                                              icon: Icon(
+                                                Icons.add,
+                                                size: 15,
+                                              ),
+                                              label: Text('Add user',
+                                                  style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        98, 84, 84, 1),
+                                                    fontFamily: 'Helvetica',
+                                                    fontSize: 15,
+                                                  )),
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 25,
-                                          ),
-                                          Scrollbar(
+                                        ),
+                                        SizedBox(
+                                          height: 25,
+                                        ),
+                                        ElevationContainer(
+                                          child: Scrollbar(
                                             controller: _Scroll,
                                             thumbVisibility:
                                                 true, // Set to true to always show the scrollbar
@@ -768,47 +798,20 @@ class _UsersState extends State<Users> {
                                               scrollDirection: Axis.horizontal,
                                               controller: _Scroll,
                                               child: Container(
-                                                width: 1120,
+                                                height: 370,
+                                                width: 1090,
                                                 decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Color.fromRGBO(
-                                                              158, 157, 157, 1)
-                                                          .withOpacity(0.5),
-                                                      offset: Offset(0, 0),
-                                                      spreadRadius: 2.0,
-                                                      blurRadius:
-                                                          2, // changes position of shadow
-                                                    ),
-                                                    BoxShadow(
-                                                      color: Colors.white,
-                                                      offset: Offset(0, -1),
-                                                      spreadRadius: 0,
-                                                      blurRadius:
-                                                          0, // changes position of shadow
-                                                    ),
-                                                  ],
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(8)),
                                                   border: Border.all(
                                                     color: Color.fromRGBO(
                                                             112, 112, 112, 1)
-                                                        .withOpacity(0.5),
+                                                        .withOpacity(0.3),
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                          topLeft: Radius
-                                                              .circular(0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  0),
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  0)),
                                                 ),
                                                 child: SizedBox(
-                                                  height: 350,
+                                                  height: 220,
                                                   child: ListView(
                                                     children: [
                                                       _booking1Table()
@@ -817,12 +820,12 @@ class _UsersState extends State<Users> {
                                                 ),
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                            ]),
-                      ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                          ]),
                     ))),
           );
         }
@@ -920,11 +923,11 @@ class _UsersState extends State<Users> {
 
       // Reference to the user's document
       DocumentReference userDocRef =
-          firestore.collection('enterprisedummy').doc(adminUid);
+          firestore.collection('enterpriseuser').doc(adminUid);
 
       // Reference to the subcollection 'enterpriseUsers' under the user's document
       CollectionReference enterpriseUsersCollectionRef =
-          userDocRef.collection('enterpriseUsers');
+          userDocRef.collection('userEnterprise');
 
       // Data for top-level document
       // Map<String, dynamic> adminUserData = {
@@ -1085,7 +1088,7 @@ class _UsersState extends State<Users> {
         DataCell(Text('XXXXXXXXX', style: TabelText.helvetica)),
         DataCell(Text('XXXXXXXXX', style: TabelText.helvetica)),
         DataCell(SizedBox(
-            width: 60, child: Text('Contracts', style: TabelText.helvetica))),
+            width: 72, child: Text('Contracts', style: TabelText.helvetica))),
         DataCell(Row(
           children: [
             IconButton(
@@ -1121,7 +1124,7 @@ class _UsersState extends State<Users> {
         DataCell(Text('XXXXXXXXX', style: TabelText.helvetica)),
         DataCell(Text('XXXXXXXXX', style: TabelText.helvetica)),
         DataCell(SizedBox(
-            width: 60,
+            width: 70,
             child: Text('Booking Manager', style: TabelText.helvetica))),
         DataCell(Row(
           children: [

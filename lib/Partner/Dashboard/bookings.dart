@@ -1,715 +1,1034 @@
+// ignore_for_file: dead_code
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_application_1/Partner/homepage.dart';
 import 'package:flutter_application_1/Widgets/customButton.dart';
-import 'package:flutter_application_1/Widgets/formText.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../DialogBox/SingleTimeUser/paymentSuccessDialog.dart';
+import '../../Widgets/formText.dart';
 
 class Bookings extends StatefulWidget {
   Bookings();
+
   @override
-  State<Bookings> createState() => _BookingsState();
+  State<Bookings> createState() => _BookingDetailsState();
 }
 
-class _BookingsState extends State<Bookings> {
-  final ScrollController _book1Scroll = ScrollController();
-  final ScrollController _book2Scroll = ScrollController();
-  final ScrollController _book3Scroll = ScrollController();
-  final ScrollController _scrollController = ScrollController();
+class _BookingDetailsState extends State<Bookings> {
+  String _selectedValue = '1';
+  String categoryValue = '1';
+  bool isClicked = false;
+  GoogleMapController? mapController;
+  List<Marker> _markers = [];
+  bool value = false;
+  int? groupValue = 1;
+  bool checkbox1 = false;
+  bool showmaps = true;
+  String trailer = 'Select Type';
+  String six = 'Select Type';
+  String lorry = 'Select Type';
+  String lorry7 = 'Select Type';
+  String diana = 'Select Type';
+  String pickup = 'Select Type';
+  String towtruck = 'Select Type';
+  String dropdownValues = 'Load Type';
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (_markers.isNotEmpty) {
+      _markers.add(const Marker(
+        markerId: MarkerId("Mylocation"),
+        position: LatLng(59.948680, 11.010630),
+      ));
+      setState(() {
+        showmaps = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
       return LayoutBuilder(
           builder: (BuildContext ctx, BoxConstraints constraints) {
-        if (constraints.maxWidth >= 950) {
+        if (constraints.maxWidth >= 720) {
           return SingleChildScrollView(
             child: Container(
-              height: 100.h,
+              height: 650,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color: Color.fromRGBO(255, 255, 255, 0.925),
               ),
-              padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding: EdgeInsets.fromLTRB(6.w, 6.h, 4.w, 6.h),
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(0),
-                                topRight: Radius.circular(0),
-                                bottomLeft: Radius.circular(12),
-                                bottomRight: Radius.circular(12)),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(right: 3.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                'Group1787.png',
+                                width: 62,
+                                height: 61,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Booking Id: NAQ########",
+                                  style: BookingText.helvetica21),
+                            ],
                           ),
-                          child: Expanded(
-                            child: Column(
+                          Container(
+                            height: 380,
+                            width: 750,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12)),
+                            child: GoogleMap(
+                                onMapCreated: (controller) {
+                                  setState(() {
+                                    mapController = controller;
+                                  });
+                                },
+                                markers: Set<Marker>.of(_markers),
+                                mapType: MapType.normal,
+                                initialCameraPosition: CameraPosition(
+                                    target: LatLng(24.755562, 46.589584),
+                                    zoom: 13)),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: 4.w, left: 4.w, top: 1.w, bottom: 2.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  height: 55,
-                                  color: Color.fromRGBO(
-                                      75, 61, 82, 1), // Brown color
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                        1.5.w, 1.5.h, 1.5.w, 1.5.h),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Booking 1',
-                                            style: TabelText.headerText),
-                                        Text("Booking iD XXXXXX",
-                                            style: TabelText.text3),
-                                      ],
-                                    ),
+                                Column(
+                                  children: [
+                                    Text("Box truck",
+                                        style: DialogText.helvetica25black),
+                                    Text("Toyota Hilux",
+                                        style: BookingText.helveticablack)
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 63,
+                                  child: VerticalDivider(
+                                    color: Color.fromRGBO(112, 112, 112, 1),
+                                    thickness: 2,
                                   ),
                                 ),
-                                // Add spacing between the brown container and the white container
-
+                                Column(
+                                  children: [
+                                    Text("Load",
+                                        style: BookingText.helveticablack),
+                                    Text("Electronics ",
+                                        style: HomepageText.helvetica16black)
+                                  ],
+                                ),
                                 SizedBox(
-                                  height: 200,
-                                  child: ListView(
-                                    children: [_booking1Table()],
+                                  child: Column(
+                                    children: [
+                                      Text("Size",
+                                          style: BookingText.helveticablack),
+                                      Text(" 1 to 1.5",
+                                          style: HomepageText.helvetica16black)
+                                    ],
                                   ),
-                                )
+                                ),
                               ],
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 4.5.w,
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(0),
-                                topRight: Radius.circular(0),
-                                bottomLeft: Radius.circular(12),
-                                bottomRight: Radius.circular(12)),
-                          ),
-                          child: Expanded(
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 55,
-                                  color: Color.fromRGBO(
-                                      75, 61, 82, 1), // Brown color
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                        1.5.w, 1.5.h, 1.5.w, 1.5.h),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Booking 2',
-                                            style: TabelText.headerText),
-                                        Text("Booking iD XXXXXX",
-                                            style: TabelText.text3),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                // Add spacing between the brown container and the white container
-
-                                SizedBox(
-                                  height: 200,
-                                  child: ListView(
-                                    children: [_booking1Table()],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 4.5.w,
-                      ),
-                      Container(
-                        width: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(0),
-                              topRight: Radius.circular(0),
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(12)),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 55,
-
-                              color:
-                                  Color.fromRGBO(75, 61, 82, 1), // Brown color
-                              child: Center(
-                                child: Text('New Booking',
-                                    style: TabelText.headerText),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomePagePartner(),
-                                  ),
-                                );
-                              },
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Container(
-                                  height: 195,
-                                  child: Image.asset(
-                                    color: Color.fromRGBO(225, 225, 225, 1),
-                                    'add.png',
-                                    width: 60,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  Scrollbar(
-                    controller: _book3Scroll,
-                    thumbVisibility:
-                        true, // Set to true to always show the scrollbar
-                    child: SingleChildScrollView(
-                      controller: _book3Scroll,
-                      scrollDirection: Axis.horizontal,
-                      child: Container(
-                        width: 1150,
-                        height: 210,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: ListView(
-                          children: [_createDataTable()],
-                        ),
+                          )
+                        ],
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 10.h, 0, 5.h),
+                    child: VerticalDivider(
+                      color: Color.fromRGBO(204, 195, 195, 1).withOpacity(0.5),
+                      thickness: 2,
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(4.w, 10.h, 1.w, 2.h),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'User Name',
+                                style: BookingText.helvetica16bold,
+                              ),
+                              Text(
+                                'Muzan',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1)
+                                .withOpacity(0.5),
+                            thickness: 1,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('User id',
+                                  style: BookingText.helvetica16bold),
+                              Text(
+                                '#456789142',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1)
+                                .withOpacity(0.5),
+                            thickness: 1,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Mode', style: BookingText.helvetica16bold),
+                              Text(
+                                'Box truck',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1)
+                                .withOpacity(0.5),
+                            thickness: 1,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('No.of units',
+                                  style: BookingText.helvetica16bold),
+                              Text(
+                                '2',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            color: Color.fromRGBO(204, 195, 195, 1)
+                                .withOpacity(0.5),
+                            thickness: 1,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Booking status',
+                                  style: BookingText.helvetica16bold),
+                              Text(
+                                'Running',
+                                style: TabelText.tableText5,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          isClicked
+                              ? Container(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 70,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: ImageIcon(
+                                              AssetImage('Path1379.png'),
+                                              color: Color.fromRGBO(
+                                                  112, 207, 151, 1),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text('Payment Successful',
+                                              style: TextStyle(
+                                                letterSpacing: 1,
+                                                fontFamily: 'Helvetica',
+                                                color: Color.fromRGBO(
+                                                    116, 106, 106, 1),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 19,
+                                              )),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 70,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 40,
+                                      ),
+                                      Text('Pending Amount',
+                                          style: BookingText.helvetica21),
+                                      Text(
+                                        'XXXXX SAR',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(145, 79, 157, 1),
+                                            fontFamily: 'Helvetica',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 40,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: CustomButton3(
+                                              onPressed: () {
+                                                setState(() {
+                                                  isClicked = !isClicked;
+                                                });
+                                              },
+                                              color: Color.fromRGBO(
+                                                  98, 105, 254, 1),
+                                              text: 'Complete Payment',
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 2.w,
+                                          ),
+                                          Expanded(
+                                            child: CustomButton3(
+                                              onPressed: () {},
+                                              color: Color.fromRGBO(
+                                                  111, 24, 28, 1),
+                                              text: 'Terminate',
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
           );
         } else {
-          return Expanded(
-            child: Container(
-              color: Color.fromRGBO(255, 255, 255, 200),
-              padding: EdgeInsets.fromLTRB(3.w, 1.5.h, 3.w, 1.5.h),
-              child: Container(
-                height: 100.h,
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                decoration: BoxDecoration(
-                  color: Colors.deepPurple,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: SingleChildScrollView(
-                  child: Expanded(
-                    child: Column(
+          return Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(65),
+                child: Material(
+                  elevation: 3,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(5.w, 0, 8.w, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Scrollbar(
-                          controller: _book1Scroll,
-                          thumbVisibility:
-                              true, // Set to true to always show the scrollbar
-                          child: SingleChildScrollView(
-                            controller: _book1Scroll,
-                            scrollDirection: Axis.horizontal,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(0),
-                                    topRight: Radius.circular(0),
-                                    bottomLeft: Radius.circular(12),
-                                    bottomRight: Radius.circular(12)),
-                              ),
-                              width: 800,
-                              child: Expanded(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 55,
-                                      color: Color.fromRGBO(
-                                          75, 61, 82, 1), // Brown color
-                                      child: Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            1.5.w, 1.5.h, 1.5.w, 1.5.h),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('Booking 1',
-                                                style: TabelText.headerText),
-                                            Text("Booking iD XXXXXX",
-                                                style: TabelText.text3),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    // Add spacing between the brown container and the white container
-
-                                    SizedBox(
-                                      height: 220,
-                                      child: ListView(
-                                        children: [_booking1Table()],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                        PopupMenuButton<String>(
+                          icon: Icon(Icons.menu),
+                          onSelected: (String value) {
+                            setState(() {
+                              _selectedValue = value;
+                            });
+                          },
+                          itemBuilder: (BuildContext context) => [
+                            PopupMenuItem(
+                              value: '1',
+                              child: Text('User', style: TabelText.tableText),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4.h,
-                        ),
-                        Scrollbar(
-                          controller: _book2Scroll,
-                          thumbVisibility:
-                              true, // Set to true to always show the scrollbar
-                          child: SingleChildScrollView(
-                            controller: _book2Scroll,
-                            scrollDirection: Axis.horizontal,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(0),
-                                    topRight: Radius.circular(0),
-                                    bottomLeft: Radius.circular(12),
-                                    bottomRight: Radius.circular(12)),
-                              ),
-                              width: 800,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 55,
-                                    color: Color.fromRGBO(
-                                        75, 61, 82, 1), // Brown color
-                                    child: Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                          1.5.w, 1.5.h, 1.5.w, 1.5.h),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Booking 2',
-                                              style: TabelText.headerText),
-                                          Text("Booking iD XXXXXX",
-                                              style: TabelText.text3),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  // Add spacing between the brown container and the white container
-                                  SizedBox(
-                                    height: 220,
-                                    child: ListView(
-                                      children: [_booking1Table()],
-                                    ),
-                                  )
-                                ],
-                              ),
+                            PopupMenuItem(
+                              value: '2',
+                              child:
+                                  Text('Partner', style: TabelText.tableText),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4.h,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(0),
-                                topRight: Radius.circular(0),
-                                bottomLeft: Radius.circular(12),
-                                bottomRight: Radius.circular(12)),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 55,
-
-                                color: Color.fromRGBO(
-                                    75, 61, 82, 1), // Brown color
-                                child: Center(
-                                  child: Text('New Booking',
-                                      style: TabelText.headerText),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => HomePagePartner(),
-                                    ),
-                                  );
-                                },
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    height: 195,
-                                    child: Image.asset(
-                                      color: Color.fromRGBO(225, 225, 225, 1),
-                                      'add.png',
-                                      width: 60,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4.h,
-                        ),
-                        Scrollbar(
-                          controller: _book3Scroll,
-                          thumbVisibility:
-                              true, // Set to true to always show the scrollbar
-                          child: SingleChildScrollView(
-                            controller: _book3Scroll,
-                            scrollDirection: Axis.horizontal,
-                            child: Container(
-                              width: 950,
-                              height: 230,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: ListView(
-                                children: [_createDataTable()],
-                              ),
+                            PopupMenuItem(
+                              value: '3',
+                              child: Text("Contact Us",
+                                  style: TabelText.tableText),
                             ),
-                          ),
+                          ],
+                        ),
+                        Image.asset(
+                          'naqlilogo.png',
+                          width: 25.w,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Hello ", style: TabelText.helvetica11),
+                            Text("Customer!", style: TabelText.usertext),
+                          ],
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
-          );
+              body: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Column(
+                            children: [
+                              CarouselSlider(
+                                options: CarouselOptions(
+                                  height: 500,
+                                ),
+                                items: [
+                                  Container(
+                                    margin: EdgeInsets.all(6.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      image: DecorationImage(
+                                        image: AssetImage('truckslide.jpg'),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.all(6.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      image: DecorationImage(
+                                        image: AssetImage('truckslide.jpg'),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 450, right: 200, top: 200),
+                                child: Container(
+                                  height: 750,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                height: 400,
+                                padding: EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(1.0),
+                                  color: Color.fromARGB(255, 232, 229,
+                                      240), // Set the background color
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                color: Color.fromRGBO(13, 13, 255, 1),
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            top: 350,
+                            right: 7,
+                            left: 7,
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 450,
+                                    height: 700,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 232, 229, 240),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: ListView(
+                                      // Use ListView instead of Column
+                                      shrinkWrap: true,
+                                      children: [
+                                        SizedBox(height: 10),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              // Dropdown text field with location icon
+                                              SizedBox(width: 10),
+                                              // Vertical divider
+                                              SizedBox(width: 10),
+                                              // Location text
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.black,
+                                                        width: 1.0),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0),
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons
+                                                          .location_on_outlined),
+                                                      SizedBox(width: 5),
+                                                      Container(
+                                                        height: 30,
+                                                        width: 1,
+                                                        color: Colors.black,
+                                                      ),
+                                                      SizedBox(width: 5),
+                                                      // Replace the below DropdownButton with your actual dropdown widget
+                                                      DropdownButtonHideUnderline(
+                                                        child: DropdownButton<
+                                                            String>(
+                                                          value: 'Location',
+                                                          onChanged: (String?
+                                                              newValue) {
+                                                            // Handle dropdown value change
+                                                          },
+                                                          items: <String>[
+                                                            'Location',
+                                                            'Location1',
+                                                            'Location2'
+                                                          ].map<
+                                                              DropdownMenuItem<
+                                                                  String>>(
+                                                            (String value) {
+                                                              return DropdownMenuItem<
+                                                                  String>(
+                                                                value: value,
+                                                                child: Text(
+                                                                  value,
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          'Colfax',
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ).toList(),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: 145,
+                                                  height: 180,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
+                                                      color: Colors
+                                                          .black, // Change border color as needed
+                                                      width:
+                                                          2.0, // Increase border width
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Divider(
+                                                          color: Colors.black,
+                                                        ),
+                                                        SizedBox(height: 2),
+                                                        Text(
+                                                          'Vehicle',
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Colfax',
+                                                              fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 25,
+                                                ),
+                                                Container(
+                                                  width: 145,
+                                                  height: 180,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
+                                                      color: Colors
+                                                          .black, // Change border color as needed
+                                                      width:
+                                                          2.0, // Increase border width
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Divider(
+                                                          color: Colors.black,
+                                                        ),
+                                                        SizedBox(height: 2),
+                                                        Text(
+                                                          'Bus',
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Colfax',
+                                                              fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 25),
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 145,
+                                                    height: 180,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      border: Border.all(
+                                                        color: Colors
+                                                            .black, // Change border color as needed
+                                                        width:
+                                                            2.0, // Increase border width
+                                                      ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Divider(
+                                                            color: Colors.black,
+                                                          ),
+                                                          SizedBox(height: 2),
+                                                          Text(
+                                                            'Equipment-2',
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'Colfax',
+                                                                fontSize: 14),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 25,
+                                                  ),
+                                                  Container(
+                                                    width: 145,
+                                                    height: 180,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      border: Border.all(
+                                                        color: Colors
+                                                            .black, // Change border color as needed
+                                                        width:
+                                                            2.0, // Increase border width
+                                                      ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Divider(
+                                                            color: Colors.black,
+                                                          ),
+                                                          SizedBox(height: 2),
+                                                          Text(
+                                                            'Special',
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'Colfax',
+                                                                fontSize: 14),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ]),
+                                            SizedBox(height: 25),
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 150,
+                                                    height: 180,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      border: Border.all(
+                                                        color: Colors
+                                                            .black, // Change border color as needed
+                                                        width:
+                                                            2.0, // Increase border width
+                                                      ),
+                                                      color: Color.fromRGBO(
+                                                          106,
+                                                          102,
+                                                          209,
+                                                          1), // RGB color fill
+                                                    ),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              "Get an Estimate",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontFamily:
+                                                                      'Colfax',
+                                                                  fontSize: 14
+                                                                  // Add other text style properties as needed
+                                                                  ),
+                                                            ),
+                                                            SizedBox(
+                                                                height: 20),
+                                                            Image.asset(
+                                                              'right-arrow.png',
+                                                              width: 30,
+                                                              height: 30,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ])
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 30),
+                                            child: Image.asset(
+                                              'Rectangle.png', // Replace with your image path
+                                              width: 65,
+                                              height: 120,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+
+                                          SizedBox(
+                                              width:
+                                                  5), // Adjust this space as needed
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Naqli For Individuals",
+                                                style: TextStyle(
+                                                  fontFamily: 'Colfax',
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              SizedBox(
+                                                height: 112,
+                                                width: 250,
+                                                child: Text(
+                                                  "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad mini veniam  quis nostrud exercitation ullamco laboris nisi ut aliquip ex eacommodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum..",
+                                                  style: TextStyle(
+                                                      fontFamily: 'Colfax',
+                                                      fontSize: 8),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      // Repeat the above structure for other rows without unnecessary SizedBox
+                                      SizedBox(height: 2),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 30),
+                                            child: Image.asset(
+                                              'Rectangle.png', // Replace with your image path
+                                              width: 65,
+                                              height: 110,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              width:
+                                                  5), // Adjust this space as needed
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Naqli For Business",
+                                                style: TextStyle(
+                                                  fontFamily: 'Colfax',
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              SizedBox(
+                                                height: 112,
+                                                width: 250,
+                                                child: Text(
+                                                  "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad mini veniam  quis nostrud exercitation ullamco laboris nisi ut aliquip ex eacommodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum..",
+                                                  style: TextStyle(
+                                                      fontFamily: 'Colfax',
+                                                      fontSize: 8),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 2),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 30),
+                                            child: Image.asset(
+                                              'Rectangle.png', // Replace with your image path
+                                              width: 65,
+                                              height: 110,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              width:
+                                                  5), // Adjust this space as needed
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Naqli For Partner",
+                                                style: TextStyle(
+                                                  fontFamily: 'Colfax',
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              SizedBox(
+                                                height: 112,
+                                                width: 250,
+                                                child: Text(
+                                                  "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad mini veniam  quis nostrud exercitation ullamco laboris nisi ut aliquip ex eacommodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum..",
+                                                  style: TextStyle(
+                                                      fontFamily: 'Colfax',
+                                                      fontSize: 8),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // First Column - Image
+
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'Phone.png', // Replace with your image path
+                                              width: 160,
+                                              height: 160,
+                                            ),
+                                          ],
+                                        ),
+
+                                        // Second Column - Text
+                                        SizedBox(height: 10),
+
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'How to get Naqli in Action',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Colfax',
+                                                  fontSize: 16),
+                                            ),
+                                          ],
+                                        ),
+
+                                        // Third Column - Text
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Lorem ipsum dolor sit amet,\n"
+                                              "consectetur adipiscing elit, sed\n"
+                                              "do eiusmod tempor incididunt ut\n"
+                                              "labore et dolore magna aliqua.\n"
+                                              "Ut enim ad minim veniam, quis\n"
+                                              "nostrud exercitation ullamco\n"
+                                              "laboris nisi ut aliquip ex ea\n"
+                                              "commodo consequat. Duis aute\n"
+                                              "irure dolor in",
+                                              style: TextStyle(
+                                                fontFamily: 'Colfax',
+                                                fontSize: 10,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ));
         }
       });
     });
-  }
-
-  DataTable _createDataTable() {
-    return DataTable(
-        headingRowHeight: 55,
-        headingRowColor: MaterialStateColor.resolveWith(
-          (states) => Color.fromRGBO(75, 61, 82, 1),
-        ),
-        columns: _createColumns(),
-        rows: _createRows());
-  }
-
-  List<DataColumn> _createColumns() {
-    return [
-      DataColumn(label: Text('Booking ID', style: TabelText.headerText)),
-      DataColumn(label: Text('Mode', style: TabelText.headerText)),
-      DataColumn(label: Text('Booking Type', style: TabelText.headerText)),
-      DataColumn(label: Text('Vendor', style: TabelText.headerText)),
-      DataColumn(label: Text('Payment Status', style: TabelText.headerText)),
-      DataColumn(label: Text('Status', style: TabelText.headerText)),
-      DataColumn(label: Text('Actions', style: TabelText.headerText)),
-    ];
-  }
-
-  // List<DataRow> _createRows() {
-  //   return _books
-  //       .map((book) => DataRow(cells: [
-  //             DataCell(Text('#' + book['id'].toString())),
-  //             DataCell(Text(book['title'])),
-  //             DataCell(Text(book['author']))
-  //           ]))
-  //       .toList();
-  // }
-  List<DataRow> _createRows() {
-    return [
-      DataRow(cells: [
-        DataCell(Text('NAQBOOK***', style: TabelText.tableText)),
-        DataCell(Text('Truck', style: TabelText.tableText)),
-        DataCell(Text('Single', style: TabelText.tableText)),
-        DataCell(Text('Vendor', style: TabelText.tableText)),
-        DataCell(Text('Bal XXXX', style: TabelText.tableText)),
-        DataCell(
-          Center(
-            child: Image.asset(
-              'Group268.png',
-              width: 50,
-              height: 30,
-            ),
-          ),
-        ),
-        DataCell(
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
-                  onPressed: null,
-                  icon: Icon(
-                    Icons.edit_document,
-                    color: Color.fromRGBO(74, 60, 81, 1),
-                  )),
-              IconButton(
-                  padding: EdgeInsets.zero,
-                  // constraints:
-                  //     BoxConstraints(),
-                  onPressed: null,
-                  icon: Icon(Icons.delete)),
-            ],
-          ),
-        ),
-      ]),
-      DataRow(cells: [
-        DataCell(Text('NAQBOOK***', style: TabelText.tableText)),
-        DataCell(Text('Truck', style: TabelText.tableText)),
-        DataCell(Text('Single', style: TabelText.tableText)),
-        DataCell(Text('Vendor', style: TabelText.tableText)),
-        DataCell(Text('Bal XXXX', style: TabelText.tableText)),
-        DataCell(
-          Center(
-            child: Image.asset(
-              'Group268.png',
-              width: 50,
-              height: 30,
-            ),
-          ),
-        ),
-        DataCell(
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
-                  onPressed: null,
-                  icon: Icon(
-                    Icons.edit_document,
-                    color: Color.fromRGBO(74, 60, 81, 1),
-                  )),
-              IconButton(
-                  padding: EdgeInsets.zero,
-                  // constraints:
-                  //     BoxConstraints(),
-                  onPressed: null,
-                  icon: Icon(Icons.delete)),
-            ],
-          ),
-        ),
-      ]),
-      DataRow(cells: [
-        DataCell(Text('NAQBOOK***', style: TabelText.tableText)),
-        DataCell(Text('Truck', style: TabelText.tableText)),
-        DataCell(Text('Single', style: TabelText.tableText)),
-        DataCell(Text('Vendor', style: TabelText.tableText)),
-        DataCell(Text('Bal XXXX', style: TabelText.tableText)),
-        DataCell(
-          Center(
-            child: Image.asset(
-              'Group268.png',
-              width: 50,
-              height: 30,
-            ),
-          ),
-        ),
-        DataCell(
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
-                  onPressed: null,
-                  icon: Icon(
-                    Icons.edit_document,
-                    color: Color.fromRGBO(74, 60, 81, 1),
-                  )),
-              IconButton(
-                  padding: EdgeInsets.zero,
-                  // constraints:
-                  //     BoxConstraints(),
-                  onPressed: null,
-                  icon: Icon(Icons.delete)),
-            ],
-          ),
-        ),
-      ]),
-    ];
-  }
-
-  DataTable _booking1Table() {
-    return DataTable(
-        columnSpacing: 15,
-        dataRowHeight: 65,
-        headingRowHeight: 0,
-        columns: _booking1Columns(),
-        rows: _booking1Rows());
-  }
-
-  List<DataColumn> _booking1Columns() {
-    return [
-      DataColumn(
-        label: SizedBox(),
-        numeric: true,
-      ),
-      DataColumn(label: SizedBox(), numeric: false),
-      DataColumn(label: SizedBox(), numeric: true),
-    ];
-  }
-
-  // List<DataRow> _createRows() {
-  //   return _books
-  //       .map((book) => DataRow(cells: [
-  //             DataCell(Text('#' + book['id'].toString())),
-  //             DataCell(Text(book['title'])),
-  //             DataCell(Text(book['author']))
-  //           ]))
-  //       .toList();
-  // }
-  List<DataRow> _booking1Rows() {
-    return [
-      DataRow(cells: [
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: SizedBox(
-              width: 35,
-              height: 35,
-              child: SizedBox(
-                width: 35,
-                height: 35,
-                child: CircleAvatar(),
-              ),
-            ),
-          ),
-        ),
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Truck', style: TabelText.text1),
-                SizedBox(height: 3),
-                Text("Truck no ******", style: TabelText.text2),
-              ],
-            ),
-          ),
-        ),
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: ViewButton(
-              text: 'View',
-              onPressed: () {},
-              colors: Color.fromRGBO(98, 106, 254, 1),
-            ),
-          ),
-        ),
-      ]),
-      DataRow(cells: [
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: SizedBox(
-              width: 35,
-              height: 35,
-              child: SizedBox(
-                width: 35,
-                height: 35,
-                child: CircleAvatar(),
-              ),
-            ),
-          ),
-        ),
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Pick Up Location', style: TabelText.text1),
-                SizedBox(height: 3),
-                Text("Destination Location", style: TabelText.text2),
-              ],
-            ),
-          ),
-        ),
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: ViewButton(
-              text: 'Edit',
-              onPressed: () {},
-              colors: Color.fromRGBO(98, 106, 254, 1),
-            ),
-          ),
-        ),
-      ]),
-      DataRow(cells: [
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: SizedBox(
-              width: 35,
-              height: 35,
-              child: SizedBox(
-                width: 35,
-                height: 35,
-                child: CircleAvatar(),
-              ),
-            ),
-          ),
-        ),
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Balance Amount', style: TabelText.text1),
-                SizedBox(height: 3),
-                Text("07.02.2022", style: TabelText.text2),
-              ],
-            ),
-          ),
-        ),
-        DataCell(
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.middle,
-            child: ViewButton(
-              text: 'Pay',
-              onPressed: () {},
-              colors: Color.fromRGBO(98, 106, 254, 1),
-            ),
-          ),
-        ),
-      ]),
-    ];
   }
 }

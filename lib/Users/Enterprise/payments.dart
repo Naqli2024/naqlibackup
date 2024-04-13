@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../Widgets/colorContainer.dart';
+
 class Payments extends StatefulWidget {
   Payments();
   @override
@@ -263,61 +265,45 @@ class _PaymentsState extends State<Payments> {
                   SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Scrollbar(
-                              controller: _paymentScroll,
-                              thumbVisibility:
-                                  true, // Set to true to always show the scrollbar
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                controller: _paymentScroll,
-                                child: Container(
-                                  height: 300,
-                                  width: 1100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(
-                                            0.5), // Adjust the shadow color and opacity
-                                        blurRadius:
-                                            5.0, // Adjust the blur radius for a more visible shadow
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  child: SizedBox(
-                                    height: 220,
-                                    child: ListView(
-                                      children: [_createDataTable()],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                  ElevationContainer(
+                    child: Scrollbar(
+                      controller: _paymentScroll,
+                      thumbVisibility:
+                          true, // Set to true to always show the scrollbar
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        controller: _paymentScroll,
+                        child: Container(
+                          height: 300,
+                          width: 1100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            border: Border.all(
+                              color: Color.fromRGBO(112, 112, 112, 1)
+                                  .withOpacity(0.3),
                             ),
-                            SizedBox(
-                              height: 150,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 110),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Container(
-                                  height: 10, // Adjust the height as needed
-                                  // Set the desired length of the scroll bar
-                                  color: Colors
-                                      .grey, // Background color of the scrollable area
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
+                          child: ListView(
+                            children: [_createDataTable()],
+                          ),
                         ),
                       ),
-                    ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 150,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 110),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        height: 10, // Adjust the height as needed
+                        // Set the desired length of the scroll bar
+                        color: Colors
+                            .grey, // Background color of the scrollable area
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -334,14 +320,14 @@ class _PaymentsState extends State<Payments> {
                 child: Container(
                     padding: EdgeInsets.fromLTRB(3.w, 3.h, 3.w, 3.h),
                     child: Container(
-                      padding: EdgeInsets.fromLTRB(5.w, 1.5.h, 5.w, 1.5.h),
+                      padding: EdgeInsets.fromLTRB(2.w, 1.5.h, 2.w, 1.5.h),
                       color: Color.fromRGBO(255, 255, 255, 157),
                       child: Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Container(
                                   height: 50,
@@ -386,64 +372,46 @@ class _PaymentsState extends State<Payments> {
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Scrollbar(
-                                        controller: _paymentScroll,
-                                        thumbVisibility:
-                                            true, // Set to true to always show the scrollbar
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          controller: _paymentScroll,
-                                          child: Container(
-                                            height: 300,
-                                            width: 1200,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey.withOpacity(
-                                                      0.5), // Adjust the shadow color and opacity
-                                                  blurRadius:
-                                                      5.0, // Adjust the blur radius for a more visible shadow
-                                                ),
-                                              ],
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                            ),
-                                            child: SizedBox(
-                                              height: 220,
-                                              child: ListView(
-                                                children: [_createDataTable()],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                            ElevationContainer(
+                              child: Scrollbar(
+                                controller: _paymentScroll,
+                                thumbVisibility:
+                                    true, // Set to true to always show the scrollbar
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  controller: _paymentScroll,
+                                  child: Container(
+                                    height: 300,
+                                    width: 1200,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                      border: Border.all(
+                                        color: Color.fromRGBO(112, 112, 112, 1)
+                                            .withOpacity(0.3),
                                       ),
-                                      SizedBox(
-                                        height: 150,
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 110),
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Container(
-                                            height:
-                                                10, // Adjust the height as needed
-                                            // Set the desired length of the scroll bar
-                                            color: Colors
-                                                .grey, // Background color of the scrollable area
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
+                                    child: ListView(
+                                      children: [_createDataTable()],
+                                    ),
                                   ),
                                 ),
-                              ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 150,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 110),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  height: 10, // Adjust the height as needed
+                                  // Set the desired length of the scroll bar
+                                  color: Colors
+                                      .grey, // Background color of the scrollable area
+                                ),
+                              ),
                             ),
                           ],
                         ),
