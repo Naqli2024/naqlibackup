@@ -91,7 +91,7 @@ class CustomContainerState extends State<UnitsContainer> {
                       });
                       _hideOverlay();
                     },
-                    leading: Image.asset(
+                    leading: Image.network(
                       image,
                       width: 120,
                       height: 70,
@@ -150,8 +150,8 @@ class CustomContainerState extends State<UnitsContainer> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  'delivery-truck.png',
+                Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/delivery-truck.png?alt=media&token=e352f9eb-3dfb-4680-85df-df6b6903b2a2',
                   width: 100,
                   height: 100,
                 ),

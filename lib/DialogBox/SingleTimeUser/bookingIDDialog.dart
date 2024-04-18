@@ -10,41 +10,45 @@ import 'dart:math';
 
 class BookingIDDialog extends StatefulWidget {
   final String? user;
-  final String? newBookingId;
+  final String? bookingId;
   final String? unitType;
-  const BookingIDDialog({this.user, this.unitType, this.newBookingId});
+  const BookingIDDialog({this.user, this.unitType, this.bookingId});
   @override
   _BookingIDDialogState createState() => _BookingIDDialogState();
 }
 
 class _BookingIDDialogState extends State<BookingIDDialog> {
-  String _generateBookingID() {
-    Random random = Random();
+  // String _generateBookingID() {
+  //   Random random = Random();
 
-    String bookingID = '';
-    for (int i = 0; i < 10; i++) {
-      bookingID += random.nextInt(10).toString();
-    }
-    String userCollection;
-    if (widget.unitType == 'Vehicle') {
-      userCollection = 'vehicleBooking';
-    } else if (widget.unitType == 'Equipment') {
-      userCollection = 'equipmentBookings';
-    } else {
-      throw Exception('Invalid selected type');
-    }
-    FirebaseFirestore.instance
-        .collection('user')
-        .doc(widget.user)
-        .collection(
-            userCollection) // Replace 'subcollectionName' with your subcollection name
-        .doc(widget
-            .newBookingId) // Replace 'subdocId' with the ID of the document in the subcollection
-        .update({
-      "bookingid": bookingID,
-    });
-    return bookingID;
-  }
+  //   String bookingID = '';
+  //   for (int i = 0; i < 10; i++) {
+  //     bookingID += random.nextInt(10).toString();
+  //   }
+  //   String userCollection;
+  //   if (widget.unitType == 'Vehicle') {
+  //     userCollection = 'vehicleBooking';
+  //   } else if (widget.unitType == 'Equipment') {
+  //     userCollection = 'equipmentBookings';
+  //   } else if (widget.unitType == 'Bus') {
+  //     userCollection = 'busBookings';
+  //   } else if (widget.unitType == 'Special/Others') {
+  //     userCollection = 'specialothersBookings';
+  //   } else {
+  //     throw Exception('Invalid selected type');
+  //   }
+  //   FirebaseFirestore.instance
+  //       .collection('user')
+  //       .doc(widget.user)
+  //       .collection(
+  //           userCollection) // Replace 'subcollectionName' with your subcollection name
+  //       .doc(widget
+  //           .newBookingId) // Replace 'subdocId' with the ID of the document in the subcollection
+  //       .update({
+  //     "bookingid": bookingID,
+  //   });
+  //   return bookingID;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text(
-                                'Booking ID ${_generateBookingID()}',
+                                'Booking ID ${widget.bookingId}',
                                 style: DialogText.helvetica21,
                               ),
                             ),
@@ -104,6 +108,7 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                                   builder: (context) => SingleUserDashboardPage(
                                         unitType: unitType,
                                         user: widget.user,
+                                        bookingId: widget.bookingId,
                                       )),
                             );
                           },
@@ -196,7 +201,7 @@ class _BookingIDDialogState extends State<BookingIDDialog> {
                         Padding(
                           padding: EdgeInsets.only(left: 8.0),
                           child: Text(
-                            _generateBookingID(),
+                            ' ${widget.bookingId}',
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             style: TextStyle(

@@ -124,7 +124,7 @@ final class ElevationUnitsContainer extends StatelessWidget {
       shadowColor: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.6),
       child: Container(
         width: 155,
-        height: 155,
+        height: 156,
         decoration: BoxDecoration(
           border: Border.all(
               color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.3)),
@@ -139,7 +139,7 @@ final class ElevationUnitsContainer extends StatelessWidget {
               Image(
                 width: 150,
                 height: 100,
-                image: AssetImage(imgpath!),
+                image: NetworkImage(imgpath!),
               ),
               Divider(
                 color: Color.fromRGBO(112, 112, 112, 1),
@@ -192,7 +192,7 @@ final class ElevationUnitContainer extends StatelessWidget {
               Image(
                 width: 160,
                 height: 80,
-                image: AssetImage(imgpath!),
+                image: NetworkImage(imgpath!),
               ),
               SizedBox(width: 75),
               Text(

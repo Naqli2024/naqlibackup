@@ -78,7 +78,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                         children: [
                           Row(
                             children: [
-                              Image.asset(
+                              Image.network(
                                 'Group1787.png',
                                 width: 62,
                                 height: 61,
@@ -334,8 +334,8 @@ class _BookingDetailsState extends State<BookingDetails> {
                             ),
                           ],
                         ),
-                        Image.asset(
-                          'naqlilogo.png',
+                        Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                           width: 25.w,
                         ),
                         Column(
@@ -371,7 +371,8 @@ class _BookingDetailsState extends State<BookingDetails> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.0),
                                       image: DecorationImage(
-                                        image: AssetImage('truckslide.jpg'),
+                                        image: NetworkImage(
+                                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -381,7 +382,8 @@ class _BookingDetailsState extends State<BookingDetails> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.0),
                                       image: DecorationImage(
-                                        image: AssetImage('truckslide.jpg'),
+                                        image: NetworkImage(
+                                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -734,7 +736,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                                                             ),
                                                             SizedBox(
                                                                 height: 20),
-                                                            Image.asset(
+                                                            Image.network(
                                                               'right-arrow.png',
                                                               width: 30,
                                                               height: 30,
@@ -764,7 +766,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 30),
-                                            child: Image.asset(
+                                            child: Image.network(
                                               'Rectangle.png', // Replace with your image path
                                               width: 65,
                                               height: 120,
@@ -813,7 +815,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 30),
-                                            child: Image.asset(
+                                            child: Image.network(
                                               'Rectangle.png', // Replace with your image path
                                               width: 65,
                                               height: 110,
@@ -862,7 +864,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 30),
-                                            child: Image.asset(
+                                            child: Image.network(
                                               'Rectangle.png', // Replace with your image path
                                               width: 65,
                                               height: 110,
@@ -915,7 +917,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Image.asset(
+                                            Image.network(
                                               'Phone.png', // Replace with your image path
                                               width: 160,
                                               height: 160,

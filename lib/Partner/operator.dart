@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
 import 'package:sizer/sizer.dart';
 
 class Operator extends StatefulWidget {
@@ -20,6 +21,7 @@ class _OperatorState extends State<Operator> {
   List<String> cities = ['City 1', 'City 2', 'City 3', 'City 4'];
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  AllUsersFormController controller = AllUsersFormController();
   String? selectedCity;
   String? selectedType;
   String? selectedUnitOption;
@@ -61,8 +63,18 @@ class _OperatorState extends State<Operator> {
     operatorID = _generateBookingID();
   }
 
-  Future<void> createNewBooking(
+  Future<String> createOperator(
+    String unit,
+    String sub,
+    String plateNo,
+    String istimaraNo,
     String name,
+    String email,
+    String mblNo,
+    String iqamaNo,
+    String dob,
+    String plateinfo,
+    String operName,
     String operatorid,
     String user,
   ) async {
@@ -71,25 +83,40 @@ class _OperatorState extends State<Operator> {
 
       // Reference to the user's document
       DocumentReference partneruserDocRef =
-          firestore.collection('partneruserfinal').doc(user);
+          firestore.collection('partneruser').doc(user);
 
       // Reference to the subcollection 'userBooking' under the user's document
       CollectionReference partneruserRegCollectionRef =
           partneruserDocRef.collection('operatorReg');
 
       // Add document to subcollection and get the document reference
-      DocumentReference newBookingDocRef = await partneruserRegCollectionRef
-          .add({'name': name, 'operatorid': operatorID});
+      DocumentReference newOperatorDocRef =
+          await partneruserRegCollectionRef.add({
+        'unit': unit,
+        'sub': sub,
+        'plateNo': plateNo,
+        'istimara': istimaraNo,
+        'name': name,
+        'email': email,
+        'mblno': mblNo,
+        'iqamaNo': iqamaNo,
+        'dob': dob,
+        'plateinfo': plateinfo,
+        'operName': operName,
+        'operId': operatorID,
+      });
 
       // Store the auto-generated ID
-      String newBookingId = newBookingDocRef.id;
+      String newOperatorId = newOperatorDocRef.id;
 
       // Update the document with the stored ID
       // await newBookingDocRef.update({'id': newBookingId});
 
-      print('New booking added successfully with ID: $newBookingId');
+      print('New booking added successfully with ID: $newOperatorId');
+      return newOperatorId;
     } catch (error) {
       print('Error creating new booking: $error');
+      return '';
     }
   }
 
@@ -109,32 +136,6 @@ class _OperatorState extends State<Operator> {
         ],
       ),
     );
-  }
-
-  Future<void> _saveUserDataToFirestore() async {
-    print("track2");
-    try {
-      CollectionReference usersCollection =
-          _firestore.collection('partneroperatoruser');
-
-      await usersCollection.add({
-        'UnitClassification': unitController.text,
-        'SubClassification': subController.text,
-        'PlateInformation': plateController.text,
-        'IstimaraNo': istimaraController.text,
-        'operatorName':
-            '${opfirstNameController.text} ${oplastNameController.text}',
-        'EmailId': emailController.text,
-        'MobileNo': mobilenoController.text,
-        'IqamaNo': iqamaController.text,
-        'DateOfBirth': dobController.text,
-        'PanelInformation': panelinfoController.text,
-      });
-
-      print('User data saved to Firestore successfully!');
-    } catch (e) {
-      print('Error saving user data to Firestore: $e');
-    }
   }
 
   Future<void> _startPhoneAuth(String phoneNumber) async {
@@ -394,7 +395,7 @@ class _OperatorState extends State<Operator> {
                           Row(
                             children: [
                               Radio(
-                                value: 1,
+                                value: 2,
                                 groupValue: _selectedValue,
                                 onChanged: (int? value) {
                                   setState(() {
@@ -410,7 +411,7 @@ class _OperatorState extends State<Operator> {
                           Row(
                             children: [
                               Radio(
-                                value: 1,
+                                value: 3,
                                 groupValue: _selectedValue,
                                 onChanged: (int? value) {
                                   setState(() {
@@ -426,7 +427,7 @@ class _OperatorState extends State<Operator> {
                           Row(
                             children: [
                               Radio(
-                                value: 1,
+                                value: 4,
                                 groupValue: _selectedValue,
                                 onChanged: (int? value) {
                                   setState(() {
@@ -442,7 +443,7 @@ class _OperatorState extends State<Operator> {
                           Row(
                             children: [
                               Radio(
-                                value: 1,
+                                value: 5,
                                 groupValue: _selectedValue,
                                 onChanged: (int? value) {
                                   setState(() {
@@ -476,8 +477,8 @@ class _OperatorState extends State<Operator> {
                                 height: 45,
                                 width: 275,
                                 child: DropdownButtonFormField<String>(
-                                  value: unitController.text.isNotEmpty
-                                      ? unitController.text
+                                  value: controller.unitClassi.text.isNotEmpty
+                                      ? controller.unitClassi.text
                                       : 'Vehicle',
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(
@@ -489,7 +490,7 @@ class _OperatorState extends State<Operator> {
                                   ),
                                   onChanged: (String? newValue) {
                                     setState(() {
-                                      unitController.text = newValue!;
+                                      controller.unitClassi.text = newValue!;
                                     });
                                   },
                                   items: [
@@ -527,8 +528,8 @@ class _OperatorState extends State<Operator> {
                                 height: 45,
                                 width: 275,
                                 child: DropdownButtonFormField<String>(
-                                  value: subController.text.isNotEmpty
-                                      ? subController.text
+                                  value: controller.subClassi.text.isNotEmpty
+                                      ? controller.subClassi.text
                                       : 'Vehicle',
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(
@@ -540,7 +541,7 @@ class _OperatorState extends State<Operator> {
                                   ),
                                   onChanged: (String? newValue) {
                                     setState(() {
-                                      subController.text = newValue!;
+                                      controller.subClassi.text = newValue!;
                                     });
                                   },
                                   items: [
@@ -580,7 +581,7 @@ class _OperatorState extends State<Operator> {
                             height: 45,
                             width: 275,
                             child: TextFormField(
-                              controller: plateController,
+                              controller: controller.plateInfo,
                               validator: validatePassword,
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(
@@ -614,7 +615,7 @@ class _OperatorState extends State<Operator> {
                                 height: 45,
                                 width: 275,
                                 child: TextFormField(
-                                  controller: istimaraController,
+                                  controller: controller.istimaraNo,
                                   validator: validatePassword,
                                   decoration: InputDecoration(
                                     hintStyle: TextStyle(
@@ -670,7 +671,7 @@ class _OperatorState extends State<Operator> {
                                       },
                                       child: Row(
                                         children: [
-                                          Image.asset(
+                                          Image.network(
                                             'assets/cancel.png', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
                                             width: 17,
                                             height: 17,
@@ -726,7 +727,7 @@ class _OperatorState extends State<Operator> {
                                           },
                                           child: Row(
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'assets/cancel.png', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
                                                 width: 17,
                                                 height: 17,
@@ -780,7 +781,7 @@ class _OperatorState extends State<Operator> {
                                 height: 45,
                                 width: 352,
                                 child: TextFormField(
-                                  controller: opfirstNameController,
+                                  controller: controller.firstName,
                                   validator: validatePassword,
                                   decoration: InputDecoration(
                                     hintStyle: TextStyle(
@@ -806,7 +807,7 @@ class _OperatorState extends State<Operator> {
                                 height: 45,
                                 width: 352,
                                 child: TextFormField(
-                                  controller: oplastNameController,
+                                  controller: controller.lastName,
                                   validator: validatePassword,
                                   decoration: InputDecoration(
                                     hintStyle: TextStyle(
@@ -845,7 +846,7 @@ class _OperatorState extends State<Operator> {
                             child: SizedBox(
                               height: 45,
                               child: TextFormField(
-                                controller: emailController,
+                                controller: controller.email,
                                 validator: emailValidator,
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(
@@ -884,7 +885,7 @@ class _OperatorState extends State<Operator> {
                             height: 45,
                             width: 275,
                             child: TextFormField(
-                              controller: mobilenoController,
+                              controller: controller.contactNumber,
                               validator: validatePassword,
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(
@@ -918,7 +919,7 @@ class _OperatorState extends State<Operator> {
                                 height: 45,
                                 width: 275,
                                 child: TextFormField(
-                                  controller: iqamaController,
+                                  controller: controller.iqamaNo,
                                   validator: validatePassword,
                                   decoration: InputDecoration(
                                     hintStyle: TextStyle(
@@ -958,7 +959,7 @@ class _OperatorState extends State<Operator> {
                             height: 45,
                             width: 275,
                             child: TextFormField(
-                              controller: dobController,
+                              controller: controller.dob,
                               validator: validatePassword,
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(
@@ -993,7 +994,7 @@ class _OperatorState extends State<Operator> {
                                 height: 45,
                                 width: 275,
                                 child: TextFormField(
-                                  controller: panelinfoController,
+                                  controller: controller.operPlatInfo,
                                   validator: validatePassword,
                                   decoration: InputDecoration(
                                     hintStyle: TextStyle(
@@ -1047,7 +1048,7 @@ class _OperatorState extends State<Operator> {
                                       },
                                       child: Row(
                                         children: [
-                                          Image.asset(
+                                          Image.network(
                                             'assets/cancel.png', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
                                             width: 17,
                                             height: 17,
@@ -1103,7 +1104,7 @@ class _OperatorState extends State<Operator> {
                                           },
                                           child: Row(
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'assets/cancel.png', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
                                                 width: 17,
                                                 height: 17,
@@ -1146,13 +1147,35 @@ class _OperatorState extends State<Operator> {
                                     contactNumberController.text);
                                 // _showOtpVerificationDialog();
                                 // Save user data and start phone authentication
-                                await _saveUserDataToFirestore();
+
+                                String unit = controller.unitClassi.text;
+                                String sub = controller.subClassi.text;
+                                String plateNo = controller.plateInfo.text;
+                                String istimaraNo = controller.istimaraNo.text;
+
                                 String name =
                                     '${opfirstNameController.text} ${oplastNameController.text}';
+                                String email = controller.email.text;
+                                String mblno = controller.contactNumber.text;
+                                String iqamaNo = controller.iqamaNo.text;
+                                String dob = controller.dob.text;
+                                String plateinfo = controller.operPlatInfo.text;
+                                String operName = controller.partnerName.text;
                                 String operatorid = operatorID;
-
-                                await createNewBooking(
-                                    name, operatorid, widget.user!);
+                                await createOperator(
+                                    unit,
+                                    sub,
+                                    plateNo,
+                                    istimaraNo,
+                                    name,
+                                    email,
+                                    mblno,
+                                    iqamaNo,
+                                    dob,
+                                    plateinfo,
+                                    operName,
+                                    operatorid,
+                                    widget.user!);
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
@@ -1628,7 +1651,36 @@ class _OperatorState extends State<Operator> {
                                       contactNumberController.text);
                                   // _showOtpVerificationDialog();
                                   // Save user data and start phone authentication
-                                  await _saveUserDataToFirestore();
+                                  String unit = controller.unitClassi.text;
+                                  String sub = controller.subClassi.text;
+                                  String plateNo = controller.plateInfo.text;
+                                  String istimaraNo =
+                                      controller.istimaraNo.text;
+
+                                  String name =
+                                      '${opfirstNameController.text} ${oplastNameController.text}';
+                                  String email = controller.email.text;
+                                  String mblno = controller.contactNumber.text;
+                                  String iqamaNo = controller.iqamaNo.text;
+                                  String dob = controller.dob.text;
+                                  String plateinfo =
+                                      controller.operPlatInfo.text;
+                                  String operName = controller.partnerName.text;
+                                  String operatorid = operatorID;
+                                  await createOperator(
+                                      unit,
+                                      sub,
+                                      plateNo,
+                                      istimaraNo,
+                                      name,
+                                      email,
+                                      mblno,
+                                      iqamaNo,
+                                      dob,
+                                      plateinfo,
+                                      operName,
+                                      operatorid,
+                                      widget.user!);
                                 }
                               },
                               style: ElevatedButton.styleFrom(

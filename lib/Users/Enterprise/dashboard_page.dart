@@ -138,8 +138,8 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Image.asset(
-                        'naqlilogo.png',
+                      Image.network(
+                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                         width: 10.w,
                       ),
                       Row(
@@ -377,7 +377,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   fit: BoxFit.fill,
-                                  image: AssetImage(
+                                  image: NetworkImage(
                                     'Circleavatar.png',
                                   ),
                                 ),
@@ -410,8 +410,8 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                                         maxRadius: 70,
                                         minRadius: 67,
                                         child: CircleAvatar(
-                                          backgroundImage:
-                                              AssetImage('uploadimage.png'),
+                                          backgroundImage: NetworkImage(
+                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/uploadimage.png?alt=media&token=1793876b-63ca-4730-831b-4fcf4e96da0a'),
                                           maxRadius: 65,
                                           minRadius: 65,
                                         )),
@@ -426,7 +426,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                                     children: [
                                       IconButton(
                                           onPressed: () {},
-                                          icon: Image.asset(
+                                          icon: Image.network(
                                             'editicon.png',
                                             width: 16,
                                             height: 16,
@@ -609,7 +609,7 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(
                             30.0), // Adjust the radius as needed
-                        child: Image.asset(
+                        child: Image.network(
                           'Circleavatar.png',
                           width: 550, // Adjust the height as needed
                           fit: BoxFit.cover,
@@ -750,8 +750,8 @@ class _MyHomePageState extends State<EnterDashboardPage> {
                                     color: Colors.indigo.shade900,
                                   ),
                                 )),
-                        Image.asset(
-                          'naqlilogo.png',
+                        Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                           width: 10.w,
                         ),
                         Padding(

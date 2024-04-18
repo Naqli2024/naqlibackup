@@ -154,7 +154,7 @@ class _BookingsState extends State<Bookings> {
                                 alignment: Alignment.center,
                                 child: Container(
                                   height: 195,
-                                  child: Image.asset(
+                                  child: Image.network(
                                     color: Color.fromRGBO(225, 225, 225, 1),
                                     'add.png',
                                     width: 60,
@@ -355,7 +355,7 @@ class _BookingsState extends State<Bookings> {
                                       alignment: Alignment.center,
                                       child: Container(
                                         height: 195,
-                                        child: Image.asset(
+                                        child: Image.network(
                                           color:
                                               Color.fromRGBO(225, 225, 225, 1),
                                           'add.png',
@@ -483,7 +483,7 @@ class _BookingsState extends State<Bookings> {
         ),
         DataCell(
           Center(
-            child: Image.asset(
+            child: Image.network(
               'Group268.png',
               width: 50,
               height: 30,
@@ -498,7 +498,7 @@ class _BookingsState extends State<Bookings> {
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                   onPressed: () {},
-                  icon: Image.asset('editicon.png')),
+                  icon: Image.network('editicon.png')),
               SizedBox(
                 width: 1.w,
               ),
@@ -506,7 +506,7 @@ class _BookingsState extends State<Bookings> {
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                   onPressed: () {},
-                  icon: Image.asset('deleteicon.png')),
+                  icon: Image.network('deleteicon.png')),
             ],
           ),
         ),
@@ -549,7 +549,7 @@ class _BookingsState extends State<Bookings> {
         ),
         DataCell(
           Center(
-            child: Image.asset(
+            child: Image.network(
               'Group300.png',
               width: 50,
               height: 30,
@@ -564,7 +564,7 @@ class _BookingsState extends State<Bookings> {
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                   onPressed: () {},
-                  icon: Image.asset('editicon.png')),
+                  icon: Image.network('editicon.png')),
               SizedBox(
                 width: 1.w,
               ),
@@ -572,7 +572,7 @@ class _BookingsState extends State<Bookings> {
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                   onPressed: () {},
-                  icon: Image.asset('deleteicon.png')),
+                  icon: Image.network('deleteicon.png')),
             ],
           ),
         ),
@@ -615,7 +615,7 @@ class _BookingsState extends State<Bookings> {
         ),
         DataCell(
           Center(
-            child: Image.asset(
+            child: Image.network(
               'Group353.png',
               width: 50,
               height: 30,
@@ -630,7 +630,7 @@ class _BookingsState extends State<Bookings> {
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                   onPressed: () {},
-                  icon: Image.asset('editicon.png')),
+                  icon: Image.network('editicon.png')),
               SizedBox(
                 width: 1.w,
               ),
@@ -638,7 +638,7 @@ class _BookingsState extends State<Bookings> {
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
                   onPressed: () {},
-                  icon: Image.asset('deleteicon.png')),
+                  icon: Image.network('deleteicon.png')),
             ],
           ),
         ),

@@ -239,7 +239,7 @@ class _VerifiedDialogState extends State<VerifiedDialog> {
                               child: Row(
                             children: [
                               ImageIcon(
-                                AssetImage(
+                                NetworkImage(
                                   'approved.png',
                                 ),
                                 color: Color.fromRGBO(60, 55, 148, 1),
@@ -380,7 +380,7 @@ class _VerifiedDialogState extends State<VerifiedDialog> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ImageIcon(
-                              AssetImage(
+                              NetworkImage(
                                 'approved.png',
                               ),
                               color: Color.fromRGBO(60, 55, 148, 1),

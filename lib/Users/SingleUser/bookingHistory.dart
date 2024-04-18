@@ -142,7 +142,7 @@ class _BookingHistroyState extends State<BookingHistroy> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(4.w, 12.h, 4.w, 2.h),
+                  padding: EdgeInsets.fromLTRB(1.w, 12.h, 1.w, 2.h),
                   child:
                       StreamBuilder<List<QuerySnapshot<Map<String, dynamic>>>>(
                     stream: _currentStream,
@@ -172,8 +172,8 @@ class _BookingHistroyState extends State<BookingHistroy> {
                               scrollDirection: Axis.horizontal,
                               controller: _scrollController,
                               child: SizedBox(
-                                width: 1070,
-                                height: 340,
+                                width: 1150,
+                                height: 350,
                                 child: DataTable(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -191,12 +191,9 @@ class _BookingHistroyState extends State<BookingHistroy> {
                                   dividerThickness: 1.0,
                                   dataRowHeight: 65,
                                   headingRowHeight: 70,
+                                  columnSpacing: 10.0,
                                   columns: DataSource.getColumns(context),
-                                  rows: blueSingleUsers.map((user) {
-                                    return DataRow(
-                                      cells: DataSource.getCells(user),
-                                    );
-                                  }).toList(),
+                                  rows: DataSource.getRows(context),
                                 ),
                               ),
                             ),
@@ -273,7 +270,7 @@ class _BookingHistroyState extends State<BookingHistroy> {
                               scrollDirection: Axis.horizontal,
                               controller: _scrollController,
                               child: SizedBox(
-                                width: 1070,
+                                width: 1040,
                                 child: DataTable(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -291,12 +288,9 @@ class _BookingHistroyState extends State<BookingHistroy> {
                                   dividerThickness: 1.0,
                                   dataRowHeight: 65,
                                   headingRowHeight: 70,
+                                  columnSpacing: 30.0,
                                   columns: DataSource.getColumns(context),
-                                  rows: blueSingleUsers.map((user) {
-                                    return DataRow(
-                                      cells: DataSource.getCells(user),
-                                    );
-                                  }).toList(),
+                                  rows: DataSource.getRows(context),
                                 ),
                               ),
                             ),
@@ -341,45 +335,183 @@ class DataSource extends DataTableSource {
   static List<DataColumn> getColumns(BuildContext context) {
     return [
       DataColumn(
-          label: Text(
-        'Mode',
+          label: Flexible(
+              child: Text(
+        'Booked',
         style: BookingHistoryText.sfpro20white,
         textAlign: TextAlign.center,
-      )),
+      ))),
       DataColumn(
-          label: Text(
-        'Booking ID',
+          label: Flexible(
+              child: Text(
+        'Booking No',
+        softWrap: true,
         style: BookingHistoryText.sfpro20white,
         textAlign: TextAlign.center,
-      )),
+      ))),
       DataColumn(
-          label: Text(
+          label: Flexible(
+              child: Text(
+        'Quote price',
+        softWrap: true,
+        style: BookingHistoryText.sfpro20white,
+        textAlign: TextAlign.center,
+      ))),
+      DataColumn(
+          label: Flexible(
+              child: Text(
         'Date',
         style: BookingHistoryText.sfpro20white,
         textAlign: TextAlign.center,
-      )),
+      ))),
       DataColumn(
-          label: Text(
-        'Unit Type',
+          label: Flexible(
+              child: Text(
+        'Time',
         style: BookingHistoryText.sfpro20white,
         textAlign: TextAlign.center,
-      )),
+      ))),
       DataColumn(
-          label: Text(
-        'Payment',
+          label: Flexible(
+              child: Text(
+        'Mode',
         style: BookingHistoryText.sfpro20white,
         textAlign: TextAlign.center,
-      )),
+      ))),
+      DataColumn(
+        label: Expanded(
+            child: Text(
+          'Location',
+          style: BookingHistoryText.sfpro20white,
+          textAlign: TextAlign.center,
+        )),
+        numeric: true,
+      ),
+      DataColumn(
+          label: Expanded(
+              child: Text(
+        'Action',
+        style: BookingHistoryText.sfpro20white,
+        textAlign: TextAlign.center,
+      ))),
     ];
   }
 
-  static List<DataCell> getCells(SingleUserBooking user) {
+  static List<DataRow> getRows(BuildContext context) {
     return [
-      DataCell(Text(user.truck?.toString() ?? 'nill')),
-      DataCell(Text(user.bookingid?.toString() ?? 'nill')),
-      DataCell(Text(user.date?.toString() ?? 'nill')),
-      DataCell(Text(user.load.toString())),
-      DataCell(Text(user.size?.toString() ?? 'nill')),
+      DataRow(cells: [
+        DataCell(Text("User",
+            style: TextStyle(fontSize: 17, fontFamily: 'SFProText'))),
+        DataCell(
+          Column(
+            children: [
+              SizedBox(height: 14),
+              Text(
+                '1345789345',
+                style: TextStyle(
+                  color: Color.fromRGBO(173, 28, 134, 1),
+                ),
+              ),
+              SizedBox(
+                width: 80,
+                child: Divider(
+                  color: Color.fromRGBO(92, 8, 92, 1),
+                  thickness: 1.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+        DataCell(
+          Container(
+            width: 120, // Set the desired width
+            height: 35, // Set the desired height
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black, // Set the border color here
+                width: 1.0, // Set the border width here
+              ),
+              borderRadius: BorderRadius.circular(
+                  10.0), // Set the border radius to create a circular border
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: '', // Add any hint text if needed
+                border: InputBorder
+                    .none, // Remove the border from the TextField itself
+              ),
+            ),
+          ),
+        ),
+        DataCell(
+          Container(
+            width: 60, // Adjust the width as needed
+            child: Text(
+              'Jun 10 2022',
+              style: TextStyle(
+                fontFamily: 'SFProText',
+                fontSize: 17,
+              ),
+              maxLines: 2,
+            ),
+          ),
+        ),
+        DataCell(Text("10:30 AM",
+            style: TextStyle(fontFamily: 'SFProText', fontSize: 17))),
+        DataCell(Text("Box truck",
+            style: TextStyle(fontFamily: 'SFProText', fontSize: 17))),
+        DataCell(Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.green,
+              radius: 5,
+            ),
+            SizedBox(width: 5),
+            Text('Xxxxxxxx',
+                style: TextStyle(fontFamily: 'SFProText', fontSize: 17)),
+            SizedBox(width: 30),
+            Image.network(
+              'assets/path 1514.png',
+              width: 24,
+              height: 20,
+            ),
+            SizedBox(width: 5),
+            Text('Xxxxxxxx',
+                style: TextStyle(fontFamily: 'SFProText', fontSize: 17)),
+          ],
+        )),
+        DataCell(
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // Add your onPressed functionality here
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Color.fromRGBO(99, 194, 109, 1), // Background color
+                  minimumSize: Size(100, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        10), // Adjust the radius as needed
+                  ),
+                ),
+                child: Text("Send",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'SFProText',
+                        fontSize: 13)),
+              ),
+              SizedBox(width: 10),
+              Image.network(
+                'assets/Group 1982.png',
+                width: 35,
+                height: 35,
+              ),
+            ],
+          ),
+        ),
+      ]),
     ];
   }
 

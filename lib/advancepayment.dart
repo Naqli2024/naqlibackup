@@ -96,7 +96,7 @@ class _AdvancePayment extends State<AdvancePayment> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'delivery-truck.png',
                                                 width: 80,
                                                 height: 80,

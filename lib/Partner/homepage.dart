@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Partner/Dashboard/dashboard.dart';
 import 'package:flutter_application_1/Partner/joinUs.dart';
+import 'package:flutter_application_1/Partner/loginPage.dart';
 
 import 'package:flutter_application_1/Partner/operator.dart';
 
@@ -103,8 +104,8 @@ class _MyHomePageState extends State<HomePagePartner> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Image.asset(
-                          'naqlilogo.png',
+                        Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                           width: 10.w,
                         ),
                         Row(
@@ -213,7 +214,8 @@ class _MyHomePageState extends State<HomePagePartner> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 image: DecorationImage(
-                                  image: AssetImage('Group716.png'),
+                                  image: NetworkImage(
+                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group716.png?alt=media&token=023be9e2-6405-499e-9e42-9165dd81e42e'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -223,7 +225,8 @@ class _MyHomePageState extends State<HomePagePartner> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 image: DecorationImage(
-                                  image: AssetImage('Group716.png'),
+                                  image: NetworkImage(
+                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group716.png?alt=media&token=023be9e2-6405-499e-9e42-9165dd81e42e'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -263,11 +266,18 @@ class _MyHomePageState extends State<HomePagePartner> {
                                               barrierDismissible: true,
                                               context: context,
                                               builder: (context) {
-                                                return (Operator(
-                                                  user: '',
-                                                ));
+                                                return Partner();
                                               },
-                                            ); // Add your onPressed functionality here
+                                            );
+                                            // showDialog(
+                                            //   barrierDismissible: true,
+                                            //   context: context,
+                                            //   builder: (context) {
+                                            //     return (Operator(
+                                            //       user: '',
+                                            //     ));
+                                            //   },
+                                            // ); // Add your onPressed functionality here
                                           },
                                         ),
                                       ],
@@ -321,7 +331,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                                               barrierDismissible: true,
                                               context: context,
                                               builder: (context) {
-                                                return (Partner());
+                                                return (LoginPage());
                                               },
                                             );
                                             print(
@@ -374,7 +384,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                               crossAxisAlignment: CrossAxisAlignment
                                   .center, // Adjust this line for proper alignment
                               children: [
-                                Image.asset(
+                                Image.network(
                                   'delivery.png',
                                 ),
                                 SizedBox(
@@ -407,7 +417,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                               crossAxisAlignment: CrossAxisAlignment
                                   .center, // Adjust this line for proper alignment
                               children: [
-                                Image.asset(
+                                Image.network(
                                   'stock.png',
                                 ),
                                 SizedBox(
@@ -443,7 +453,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                               crossAxisAlignment: CrossAxisAlignment
                                   .center, // Adjust this line for proper alignment
                               children: [
-                                Image.asset(
+                                Image.network(
                                   'payment.png',
                                 ),
                                 SizedBox(
@@ -492,8 +502,8 @@ class _MyHomePageState extends State<HomePagePartner> {
                     padding: EdgeInsets.fromLTRB(2.5.w, 0, 2.5.w, 0),
                     child: Row(
                       children: [
-                        Image.asset(
-                          'naqlilogo.png',
+                        Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                           width: 10.w,
                         ),
                         Padding(
@@ -599,7 +609,8 @@ class _MyHomePageState extends State<HomePagePartner> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
                         image: DecorationImage(
-                          image: AssetImage('Group716.png'),
+                          image: NetworkImage(
+                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group716.png?alt=media&token=023be9e2-6405-499e-9e42-9165dd81e42e'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -609,7 +620,8 @@ class _MyHomePageState extends State<HomePagePartner> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
                         image: DecorationImage(
-                          image: AssetImage('Group716.png'),
+                          image: NetworkImage(
+                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group716.png?alt=media&token=023be9e2-6405-499e-9e42-9165dd81e42e'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -734,7 +746,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                         crossAxisAlignment: CrossAxisAlignment
                             .center, // Adjust this line for proper alignment
                         children: [
-                          Image.asset(
+                          Image.network(
                             'delivery.png',
                             width: 50,
                             height: 50,
@@ -771,7 +783,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                           crossAxisAlignment: CrossAxisAlignment
                               .center, // Adjust this line for proper alignment
                           children: [
-                            Image.asset(
+                            Image.network(
                               'stock.png',
                               width: 50,
                               height: 50,
@@ -810,7 +822,7 @@ class _MyHomePageState extends State<HomePagePartner> {
                         crossAxisAlignment: CrossAxisAlignment
                             .center, // Adjust this line for proper alignment
                         children: [
-                          Image.asset(
+                          Image.network(
                             'payment.png',
                             width: 50,
                             height: 50,

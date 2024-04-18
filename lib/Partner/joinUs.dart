@@ -122,7 +122,8 @@ class _State extends State<Partner> {
                               Navigator.pop(context);
                             },
                             child: ImageIcon(
-                              AssetImage('cancel.png'),
+                              NetworkImage(
+                                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                               color: Colors.black,
                             ),
                           ),
@@ -150,8 +151,8 @@ class _State extends State<Partner> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (otpPin.length >= 6) {
-                              screenState = 1;
                               verifyOTP();
+                              screenState = 1;
                             } else {
                               SnackBar(
                                 content: Text('Enter OTP Correctly'),
@@ -206,21 +207,24 @@ class _State extends State<Partner> {
     );
   }
 
-  Future<void> _saveUserDataToFirestore() async {
+  Future<void> _saveUserDataToFirestore(String uid) async {
     print("track2");
-    try {
-      CollectionReference usersCollection =
-          _firestore.collection('partneruser');
 
-      await usersCollection.add({
+    try {
+      String userCollection;
+      Map<String, dynamic> userData = {
         'firstName': controller.firstName.text,
         'email': controller.email.text,
         'phoneNumber': controller.contactNumber.text,
-      });
-
-      print('User data saved to Firestore successfully!');
+        'password': controller.password.text
+      };
+      userCollection = 'partneruser';
+      await FirebaseFirestore.instance
+          .collection(userCollection)
+          .doc(uid)
+          .set(userData);
     } catch (e) {
-      print('Error saving user data to Firestore: $e');
+      print("Data doesn't store : $e");
     }
   }
 
@@ -553,18 +557,21 @@ class _State extends State<Partner> {
                                                 password:
                                                     controller.password.text,
                                               );
-                                              await _saveUserDataToFirestore();
                                               String userId =
                                                   userCredential.user!.uid;
+                                              await _saveUserDataToFirestore(
+                                                  userId);
 
                                               if (userCredential.user != null) {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Operator(
-                                                            user: userId,
-                                                          )),
+                                                showDialog(
+                                                  barrierColor:
+                                                      Colors.transparent,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Operator(
+                                                      user: userId,
+                                                    );
+                                                  },
                                                 );
                                               } else {
                                                 showErrorDialog(
@@ -604,8 +611,8 @@ class _State extends State<Partner> {
                       centerTitle: false,
                       title: Container(
                         padding: const EdgeInsets.only(left: 5, top: 5),
-                        child: Image.asset(
-                          'naqlilogo.png',
+                        child: Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                           width: 50,
                           height: 50,
                         ),

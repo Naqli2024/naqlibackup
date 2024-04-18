@@ -1,26 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Partner/Dashboard/dashboard_page.dart';
-import 'package:flutter_application_1/Partner/joinUs.dart';
-import 'package:flutter_application_1/Partner/operator.dart';
-import 'package:flutter_application_1/Users/SingleTimeUser/dashboard_page.dart';
-import 'package:flutter_application_1/Users/SingleUser/dashboard_page.dart';
-import 'package:flutter_application_1/Users/SuperUser/dashboard_page.dart';
-import 'package:flutter_application_1/availableEquipment.dart';
-import 'package:flutter_application_1/Partner/Dashboard/dashboard.dart';
-import 'package:flutter_application_1/availableBus.dart';
-import 'package:flutter_application_1/createAccount.dart';
-import 'package:flutter_application_1/loginPage.dart';
-import 'package:flutter_application_1/sample.dart';
-import 'package:flutter_application_1/test.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'Users/Enterprise/dashboard_page.dart';
-import 'Users/SingleUser/bookings.dart';
-import 'availableVehicle.dart';
 import 'classes/language_constants.dart';
 import 'gen_l10n/app_localizations.dart';
 import 'homePage.dart';
-import 'sample1.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -85,13 +68,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: _locale,
-      debugShowCheckedModeBanner: false,
-      home: SingleUserDashboardPage(
-        user: 'hjg',
-      ),
-    );
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: _locale,
+        debugShowCheckedModeBanner: false,
+        home: MyHomePage());
   }
 }

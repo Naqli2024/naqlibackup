@@ -22,6 +22,11 @@ class AllUsersFormController {
   final fromDate = TextEditingController();
   final toDate = TextEditingController();
   final truck = TextEditingController();
+  final truck1 = TextEditingController();
+  final truck2 = TextEditingController();
+  final truck3 = TextEditingController();
+  final truck4 = TextEditingController();
+  final truck5 = TextEditingController();
   final load = TextEditingController();
   final size = TextEditingController();
   final time = TextEditingController();
@@ -38,6 +43,14 @@ class AllUsersFormController {
   final selectedTypeName6 = TextEditingController();
   final selectedTypeName7 = TextEditingController();
   final selectedTypeName8 = TextEditingController();
+  final unitClassi = TextEditingController();
+  final subClassi = TextEditingController();
+  final plateInfo = TextEditingController();
+  final istimaraNo = TextEditingController();
+  final iqamaNo = TextEditingController();
+  final dob = TextEditingController();
+  final operPlatInfo = TextEditingController();
+  final partnerName = TextEditingController();
   final otp = TextEditingController();
   final equip = TextEditingController();
   final date = TextEditingController();

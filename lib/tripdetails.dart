@@ -24,8 +24,8 @@ class _MyHomePageState extends State<TripDetails> {
             elevation: 0.0,
             title: Container(
               padding: const EdgeInsets.only(left: 400),
-              child: Image.asset(
-                'naqlilogo.png',
+              child: Image.network(
+                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                 width: 140,
                 height: 140,
               ),
@@ -100,7 +100,8 @@ class _MyHomePageState extends State<TripDetails> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 image: DecorationImage(
-                                  image: AssetImage('bridge.jpg'),
+                                  image: NetworkImage(
+                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/bridge.jpg?alt=media&token=2e6245a3-09b3-49c3-a71c-ab1e8a8da677'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -113,7 +114,8 @@ class _MyHomePageState extends State<TripDetails> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 image: DecorationImage(
-                                  image: AssetImage('bridge.jpg'),
+                                  image: NetworkImage(
+                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/bridge.jpg?alt=media&token=2e6245a3-09b3-49c3-a71c-ab1e8a8da677'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -318,7 +320,7 @@ class _MyHomePageState extends State<TripDetails> {
                                             SizedBox(
                                                 width:
                                                     10), // Adjust this space as needed
-                                            Image.asset(
+                                            Image.network(
                                               'right-arrow.png',
                                               width: 30,
                                               height: 20,
