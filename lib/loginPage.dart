@@ -137,8 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             child: Align(
                               alignment: Alignment.bottomCenter,
-                              child: Image.asset(
-                                'loginlogo.png',
+                              child: Image.network(
+                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/loginlogo.png?alt=media&token=a1a83b51-32e5-4ebf-b457-6049bd8b7074',
                                 width: 600,
                               ),
                             ),
@@ -177,7 +177,8 @@ class _LoginPageState extends State<LoginPage> {
                                         Navigator.pop(context);
                                       },
                                       child: ImageIcon(
-                                        AssetImage('cancel.png'),
+                                        NetworkImage(
+                                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                                         color: Color.fromRGBO(112, 112, 112, 1),
                                       ),
                                     ),
@@ -319,7 +320,7 @@ class _LoginPageState extends State<LoginPage> {
                                           barrierColor: Colors.transparent,
                                           context: context,
                                           builder: (context) {
-                                            return ForgotPasswordPage();
+                                            return _101Forgot();
                                           },
                                         );
                                       },
@@ -425,7 +426,8 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.pop(context);
                               },
                               child: ImageIcon(
-                                AssetImage('cancel.png'),
+                                NetworkImage(
+                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                                 color: Color.fromRGBO(112, 112, 112, 1),
                               ),
                             ),
@@ -552,10 +554,10 @@ class _LoginPageState extends State<LoginPage> {
                               style: LoginpageText.purplehelvetica),
                           onTap: () {
                             showDialog(
-                              barrierColor: Colors.transparent,
+                              barrierColor: Colors.grey.withOpacity(0.5),
                               context: context,
                               builder: (context) {
-                                return ForgotPasswordPage();
+                                return _101Forgot();
                               },
                             );
                           },
@@ -623,7 +625,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class ForgotPasswordPage extends StatelessWidget {
+class _101Forgot extends StatefulWidget {
+  _101Forgot();
+  @override
+  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
+}
+
+class _ForgotPasswordPageState extends State<_101Forgot> {
   final TextEditingController _emailController = TextEditingController();
 
   Future<void> _resetPassword(BuildContext context) async {
@@ -656,7 +664,8 @@ class ForgotPasswordPage extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: ImageIcon(
-                          AssetImage('cancel.png'),
+                          NetworkImage(
+                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                           color: Colors.black,
                         ),
                       ),
@@ -716,105 +725,212 @@ class ForgotPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(18.w, 27.h, 18.w, 27.h),
-      child: SingleChildScrollView(
-        child: Expanded(
-          child: Card(
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(31))),
-            child: Container(
-              height: 360,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(31),
-                ),
-              ),
-              padding: EdgeInsets.fromLTRB(4.w, 4.h, 2.w, 4.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+    return Sizer(builder: (context, orientation, deviceType) {
+      return LayoutBuilder(
+          builder: (BuildContext ctx, BoxConstraints constraints) {
+        if (constraints.maxWidth >= 1180) {
+          return Padding(
+            padding: EdgeInsets.fromLTRB(18.w, 27.h, 18.w, 27.h),
+            child: SingleChildScrollView(
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(31))),
+                child: Container(
+                  height: 360,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(31)),
+                  ),
+                  padding: EdgeInsets.fromLTRB(4.w, 4.h, 2.w, 4.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: Center(
-                          child: Text('Reset Password',
-                              style: LoginpageText.helvetica30bold),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Text('Reset Password',
+                                  style: LoginpageText.helvetica30bold),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: ImageIcon(
+                              NetworkImage(
+                                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text('Enter your email to reset Password',
+                          style: DialogText.helvetica25black),
+                      SizedBox(
+                        height: 45,
+                        width: 400,
+                        child: TextField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(0)),
+                          ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: ImageIcon(
-                          AssetImage('cancel.png'),
-                          color: Colors.black,
+                      SizedBox(
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: () => _resetPassword(context),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromRGBO(60, 55, 148, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(11),
+                              )),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: 1.w,
+                              right: 1.w,
+                            ),
+                            child: Text('Send', style: DialogText.helvetica20),
+                          ),
                         ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 2.w, right: 5.w),
+                        child: Divider(
+                          color: Color.fromRGBO(112, 112, 112, 1),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Didn't receive OTP ?",
+                              style: HomepageText.helvetica16black),
+                          InkWell(
+                            child: Text(' Resend',
+                                style: DialogText.purplehelveticabold),
+                            onTap: () async {
+                              await FirebaseAuth.instance
+                                  .sendPasswordResetEmail(
+                                      email: _emailController.text);
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Text('Enter your email to reset Password',
-                      style: DialogText.helvetica25black),
-                  SizedBox(
-                    height: 45,
-                    width: 400,
-                    child: TextField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(0)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () => _resetPassword(context),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(60, 55, 148, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(11),
-                          )),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 1.w,
-                          right: 1.w,
-                        ),
-                        child: Text('Send', style: DialogText.helvetica20),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 2.w, right: 5.w),
-                    child: Divider(
-                      color: Color.fromRGBO(112, 112, 112, 1),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Didn't receive OTP ?",
-                          style: HomepageText.helvetica16black),
-                      InkWell(
-                        child: Text(' Resend',
-                            style: DialogText.purplehelveticabold),
-                        onTap: () async {
-                          await FirebaseAuth.instance.sendPasswordResetEmail(
-                              email: _emailController.text);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        } else {
+          return Padding(
+            padding: EdgeInsets.fromLTRB(18.w, 27.h, 18.w, 27.h),
+            child: SingleChildScrollView(
+              child: Expanded(
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(31))),
+                  child: Container(
+                    height: 360,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(31)),
+                    ),
+                    padding: EdgeInsets.fromLTRB(4.w, 4.h, 2.w, 4.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Center(
+                                child: Text('Reset Password',
+                                    style: LoginpageText.helvetica30bold),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: ImageIcon(
+                                NetworkImage(
+                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text('Enter your email to reset Password',
+                            style: DialogText.helvetica25black),
+                        SizedBox(
+                          height: 45,
+                          width: 400,
+                          child: TextField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(0)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: () => _resetPassword(context),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Color.fromRGBO(60, 55, 148, 1),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(11),
+                                )),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: 1.w,
+                                right: 1.w,
+                              ),
+                              child:
+                                  Text('Send', style: DialogText.helvetica20),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 2.w, right: 5.w),
+                          child: Divider(
+                            color: Color.fromRGBO(112, 112, 112, 1),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Didn't receive OTP ?",
+                                style: HomepageText.helvetica16black),
+                            InkWell(
+                              child: Text(' Resend',
+                                  style: DialogText.purplehelveticabold),
+                              onTap: () async {
+                                await FirebaseAuth.instance
+                                    .sendPasswordResetEmail(
+                                        email: _emailController.text);
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+      });
+    });
   }
 }

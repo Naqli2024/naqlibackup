@@ -76,7 +76,7 @@ class _EditContractState extends State<EditContract> {
                                 color: Colors.white,
                               ),
                             ),
-                            Image.asset(
+                            Image.network(
                               'cancel.png',
                               width: 20,
                               height: 25,
@@ -125,7 +125,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'Group68.png',
                                                 width: 59,
                                                 height: 41,
@@ -164,7 +164,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'bus.png',
                                                 width: 59,
                                                 height: 41,
@@ -206,7 +206,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'Group1496.png',
                                                 width: 59,
                                                 height: 41,
@@ -248,7 +248,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'Group1660.png',
                                                 width: 59,
                                                 height: 41,
@@ -290,7 +290,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'Group1716.png',
                                                 width: 59,
                                                 height: 41,
@@ -874,7 +874,7 @@ class _EditContractState extends State<EditContract> {
                                 color: Colors.white,
                               ),
                             ),
-                            Image.asset(
+                            Image.network(
                               'cancel.png',
                               width: 20,
                               height: 25,
@@ -923,7 +923,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'Group68.png',
                                                 width: 59,
                                                 height: 41,
@@ -962,7 +962,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'bus.png',
                                                 width: 59,
                                                 height: 41,
@@ -1004,7 +1004,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'Group1496.png',
                                                 width: 59,
                                                 height: 41,
@@ -1046,7 +1046,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'Group1660.png',
                                                 width: 59,
                                                 height: 41,
@@ -1088,7 +1088,7 @@ class _EditContractState extends State<EditContract> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Image.asset(
+                                              Image.network(
                                                 'Group1716.png',
                                                 width: 59,
                                                 height: 41,

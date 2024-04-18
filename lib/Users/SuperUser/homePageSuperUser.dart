@@ -94,8 +94,8 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 12, bottom: 6),
-                          child: Image.asset(
-                            'naqlilogo.png',
+                          child: Image.network(
+                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                           ),
                         ),
                         SizedBox(
@@ -310,7 +310,8 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                       Image(
                                         width: double.infinity,
                                         fit: BoxFit.cover,
-                                        image: AssetImage('truckslide.jpg'),
+                                        image: NetworkImage(
+                                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                                       ),
                                     ],
                                   ),
@@ -467,7 +468,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
+                                                            Image.network(
                                                               'Group68.png',
                                                               width: 150,
                                                               height: 139,
@@ -495,7 +496,10 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AvailableBus()),
+                                                              AvailableBus(
+                                                                user:
+                                                                    widget.user,
+                                                              )),
                                                     );
                                                   },
                                                   child: Card(
@@ -522,7 +526,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
+                                                            Image.network(
                                                               'bus.png',
                                                               width: 150,
                                                               height: 139,
@@ -581,7 +585,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
+                                                            Image.network(
                                                               'Group1496.png',
                                                               width: 150,
                                                               height: 139,
@@ -611,7 +615,9 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AvailableSpecial()),
+                                                              AvailableSpecial(
+                                                                user: '',
+                                                              )),
                                                     );
                                                   },
                                                   child: Card(
@@ -638,7 +644,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
+                                                            Image.network(
                                                               'Group1660.png',
                                                               width: 150,
                                                               height: 139,
@@ -668,7 +674,10 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AvailableSpecial()),
+                                                              AvailableSpecial(
+                                                                user:
+                                                                    widget.user,
+                                                              )),
                                                     );
                                                   },
                                                   child: Card(
@@ -695,7 +704,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
+                                                            Image.network(
                                                               'Group1716.png',
                                                               width: 150,
                                                               height: 139,
@@ -817,7 +826,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                                 ),
                                                                 SizedBox(
                                                                     height: 20),
-                                                                Image.asset(
+                                                                Image.network(
                                                                   'right-arrow.png',
                                                                   width: 30,
                                                                   height: 30,
@@ -982,8 +991,8 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                             )
                           ],
                         ),
-                        Image.asset(
-                          'naqlilogo.png',
+                        Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1031,7 +1040,8 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
                                   image: DecorationImage(
-                                    image: AssetImage('truckslide.jpg'),
+                                    image: NetworkImage(
+                                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1041,7 +1051,8 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
                                   image: DecorationImage(
-                                    image: AssetImage('truckslide.jpg'),
+                                    image: NetworkImage(
+                                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1174,7 +1185,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
+                                                    Image.network(
                                                       'Group68.png',
                                                       width: 150,
                                                       height: 139,
@@ -1201,7 +1212,9 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableBus()),
+                                                      AvailableBus(
+                                                        user: widget.user,
+                                                      )),
                                             );
                                           },
                                           child: Card(
@@ -1225,7 +1238,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
+                                                    Image.network(
                                                       'bus.png',
                                                       width: 150,
                                                       height: 139,
@@ -1278,7 +1291,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
+                                                    Image.network(
                                                       'Group1496.png',
                                                       width: 150,
                                                       height: 139,
@@ -1305,7 +1318,9 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableSpecial()),
+                                                      AvailableSpecial(
+                                                        user: widget.user,
+                                                      )),
                                             );
                                           },
                                           child: Card(
@@ -1329,7 +1344,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
+                                                    Image.network(
                                                       'Group1660.png',
                                                       width: 150,
                                                       height: 139,
@@ -1356,7 +1371,9 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableSpecial()),
+                                                      AvailableSpecial(
+                                                        user: widget.user,
+                                                      )),
                                             );
                                           },
                                           child: Card(
@@ -1380,7 +1397,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
+                                                    Image.network(
                                                       'Group1716.png',
                                                       width: 150,
                                                       height: 139,
@@ -1435,7 +1452,7 @@ class _MyHomePagesuperState extends State<MyHomePagesuper>
                                                       style: HomepageText
                                                           .helvetica16bold),
                                                   SizedBox(height: 20),
-                                                  Image.asset(
+                                                  Image.network(
                                                     'right-arrow.png',
                                                     width: 30,
                                                     height: 30,

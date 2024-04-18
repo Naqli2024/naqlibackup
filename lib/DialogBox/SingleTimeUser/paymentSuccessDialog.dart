@@ -5,6 +5,8 @@ import 'package:sizer/sizer.dart';
 import '../../Widgets/formText.dart';
 
 class BookingSuccessDialog extends StatefulWidget {
+  final String? bookingId;
+  BookingSuccessDialog({this.bookingId});
   @override
   _BookingSuccessDialogState createState() => _BookingSuccessDialogState();
 }

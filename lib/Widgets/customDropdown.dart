@@ -51,16 +51,14 @@ class CustomDropDown extends StatelessWidget {
             iconDisabledColor: null,
           ),
           dropdownStyleData: DropdownStyleData(
-            elevation: 0,
+            elevation: 1,
             maxHeight: 200,
             padding: EdgeInsets.all(3),
             decoration: BoxDecoration(
-              border: Border.all(color: Color.fromRGBO(112, 112, 112, 1)),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(0),
-                topRight: Radius.circular(0),
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
+              border: Border.all(
+                  color: Color.fromRGBO(183, 183, 183, 1).withOpacity(0.5)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
               ),
               color: Colors.white,
             ),

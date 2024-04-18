@@ -76,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage>
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 12, bottom: 6),
-                          child: Image.asset(
-                            'naqlilogo.png',
+                          child: Image.network(
+                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                           ),
                         ),
                         SizedBox(
@@ -213,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage>
                               ),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 20,
                             ),
                             InkWell(
                               onTap: () {
@@ -226,6 +226,9 @@ class _MyHomePageState extends State<MyHomePage>
                                 );
                               },
                               child: Text('Log in', style: TabelText.helvetica),
+                            ),
+                            SizedBox(
+                              width: 10,
                             ),
                             Icon(
                               Icons.notifications,
@@ -263,7 +266,8 @@ class _MyHomePageState extends State<MyHomePage>
                                       Image(
                                         width: double.infinity,
                                         fit: BoxFit.cover,
-                                        image: AssetImage('truckslide.jpg'),
+                                        image: NetworkImage(
+                                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                                       ),
                                     ],
                                   ),
@@ -438,8 +442,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
-                                                              'Group68.png',
+                                                            Image.network(
+                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group68.png?alt=media&token=5fe75cdd-40f3-48ff-9838-dfadcaf41ae4',
                                                               width: 150,
                                                               height: 139,
                                                             ),
@@ -497,8 +501,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
-                                                              'bus.png',
+                                                            Image.network(
+                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/bus.png?alt=media&token=62ffdc20-210e-447e-a0e5-51e14b06b449',
                                                               width: 150,
                                                               height: 139,
                                                             ),
@@ -558,8 +562,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
-                                                              'Group1496.png',
+                                                            Image.network(
+                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1496.png?alt=media&token=68985bbe-ba8a-4cd3-b4c9-b5f07ab7f3a5',
                                                               width: 150,
                                                               height: 139,
                                                             ),
@@ -619,8 +623,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
-                                                              'Group1660.png',
+                                                            Image.network(
+                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1660.png?alt=media&token=e1bdac76-bbdc-4d25-9003-665b2b936a99',
                                                               width: 150,
                                                               height: 139,
                                                             ),
@@ -680,8 +684,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Image.asset(
-                                                              'Group1716.png',
+                                                            Image.network(
+                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1716.png?alt=media&token=416db349-0c72-4bbe-b160-74792ba49f6e',
                                                               width: 150,
                                                               height: 139,
                                                             ),
@@ -806,8 +810,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                                 ),
                                                                 SizedBox(
                                                                     height: 20),
-                                                                Image.asset(
-                                                                  'right-arrow.png',
+                                                                Image.network(
+                                                                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/right-arrow.png?alt=media&token=cba6795c-11eb-449b-8a9a-ac790bf408f5',
                                                                   width: 30,
                                                                   height: 30,
                                                                   color: Colors
@@ -971,8 +975,8 @@ class _MyHomePageState extends State<MyHomePage>
                             )
                           ],
                         ),
-                        Image.asset(
-                          'naqlilogo.png',
+                        Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1020,7 +1024,8 @@ class _MyHomePageState extends State<MyHomePage>
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
                                   image: DecorationImage(
-                                    image: AssetImage('truckslide.jpg'),
+                                    image: NetworkImage(
+                                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1030,7 +1035,8 @@ class _MyHomePageState extends State<MyHomePage>
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
                                   image: DecorationImage(
-                                    image: AssetImage('truckslide.jpg'),
+                                    image: NetworkImage(
+                                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1179,8 +1185,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
-                                                      'Group68.png',
+                                                    Image.network(
+                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group68.png?alt=media&token=5fe75cdd-40f3-48ff-9838-dfadcaf41ae4',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1206,7 +1212,9 @@ class _MyHomePageState extends State<MyHomePage>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableBus()),
+                                                      AvailableBus(
+                                                        user: widget.user!,
+                                                      )),
                                             );
                                           },
                                           child: Card(
@@ -1230,8 +1238,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
-                                                      'bus.png',
+                                                    Image.network(
+                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/bus.png?alt=media&token=62ffdc20-210e-447e-a0e5-51e14b06b449',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1283,8 +1291,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
-                                                      'Group1496.png',
+                                                    Image.network(
+                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1496.png?alt=media&token=68985bbe-ba8a-4cd3-b4c9-b5f07ab7f3a5',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1310,7 +1318,9 @@ class _MyHomePageState extends State<MyHomePage>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableSpecial()),
+                                                      AvailableSpecial(
+                                                        user: widget.user!,
+                                                      )),
                                             );
                                           },
                                           child: Card(
@@ -1334,8 +1344,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
-                                                      'Group1660.png',
+                                                    Image.network(
+                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1660.png?alt=media&token=e1bdac76-bbdc-4d25-9003-665b2b936a99',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1361,7 +1371,9 @@ class _MyHomePageState extends State<MyHomePage>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableSpecial()),
+                                                      AvailableSpecial(
+                                                        user: widget.user!,
+                                                      )),
                                             );
                                           },
                                           child: Card(
@@ -1385,8 +1397,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.asset(
-                                                      'Group1716.png',
+                                                    Image.network(
+                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1716.png?alt=media&token=416db349-0c72-4bbe-b160-74792ba49f6e',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1440,8 +1452,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                       style: HomepageText
                                                           .helvetica16bold),
                                                   SizedBox(height: 20),
-                                                  Image.asset(
-                                                    'right-arrow.png',
+                                                  Image.network(
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/right-arrow.png?alt=media&token=cba6795c-11eb-449b-8a9a-ac790bf408f5',
                                                     width: 30,
                                                     height: 30,
                                                     color: Colors.white,

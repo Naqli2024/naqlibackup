@@ -89,7 +89,7 @@ class _PaymentsState extends State<Payments> {
         DataCell(Center(child: Text('_', style: TabelText.tableText1))),
         DataCell(
           Center(
-            child: Image.asset(
+            child: Image.network(
               'Group353.png',
               width: 50,
               height: 30,
@@ -122,7 +122,7 @@ class _PaymentsState extends State<Payments> {
         )),
         DataCell(
           Center(
-            child: Image.asset(
+            child: Image.network(
               'Group268.png',
               width: 50,
               height: 30,
@@ -165,7 +165,7 @@ class _PaymentsState extends State<Payments> {
         DataCell(Center(child: Text('_', style: TabelText.tableText1))),
         DataCell(
           Center(
-            child: Image.asset(
+            child: Image.network(
               'Group353.png',
               width: 50,
               height: 30,

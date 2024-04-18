@@ -12,6 +12,7 @@ import 'package:flutter_application_1/Widgets/customButton.dart';
 import 'package:flutter_application_1/Widgets/customDropdown.dart';
 import 'package:flutter_application_1/Widgets/customTextField.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
+import 'package:flutter_application_1/loginPage.dart';
 import 'package:sizer/sizer.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -148,7 +149,8 @@ class _CreateAccountState extends State<CreateAccount> {
                                   Navigator.pop(context);
                                 },
                                 child: ImageIcon(
-                                  AssetImage('cancel.png'),
+                                  NetworkImage(
+                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                                   color: Color.fromRGBO(112, 112, 112, 1),
                                 ),
                               ),
@@ -560,7 +562,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                   style: HomepageText.helvetica16black),
                               InkWell(
                                 onTap: () {
-                                  // Call _register function when onTap is triggered
+                                  Navigator.pop(context);
                                 },
                                 child: Text(
                                   'Sign In',
@@ -635,7 +637,8 @@ class _CreateAccountState extends State<CreateAccount> {
                                   Navigator.pop(context);
                                 },
                                 child: ImageIcon(
-                                  AssetImage('cancel.png'),
+                                  NetworkImage(
+                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                                   color: Color.fromRGBO(112, 112, 112, 1),
                                 ),
                               ),
@@ -1052,7 +1055,9 @@ class _CreateAccountState extends State<CreateAccount> {
                               Text('Already have an account? ',
                                   style: HomepageText.helvetica16black),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
                                 child: Text(
                                   'Sign In',
                                   style: TextStyle(

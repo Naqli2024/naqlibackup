@@ -425,7 +425,7 @@ class _DashboardState extends State<Dashboard> {
                                             borderRadius:
                                                 BorderRadius.circular(12.0),
                                           ),
-                                          child: Image.asset(
+                                          child: Image.network(
                                             'assets/add.png', // Make sure to provide the correct path to your image asset
                                             color: Color.fromRGBO(
                                                 143, 142, 151, 1),
@@ -646,7 +646,7 @@ class _DashboardState extends State<Dashboard> {
                                         borderRadius:
                                             BorderRadius.circular(12.0),
                                       ),
-                                      child: Image.asset(
+                                      child: Image.network(
                                         color: Color.fromRGBO(143, 142, 151, 1),
                                         'add.png',
                                         width: 120,

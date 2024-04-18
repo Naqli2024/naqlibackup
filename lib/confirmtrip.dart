@@ -23,8 +23,8 @@ class _ConfirmTrip extends State<ConfirmTrip> {
             elevation: 0.0,
             title: Container(
               padding: const EdgeInsets.only(left: 400),
-              child: Image.asset(
-                'naqlilogo.png',
+              child: Image.network(
+                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                 width: 140,
                 height: 140,
               ),
@@ -145,7 +145,7 @@ class _ConfirmTrip extends State<ConfirmTrip> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.asset(
+                                      Image.network(
                                         'delivery-truck.png',
                                         width: 300,
                                         height: 300,

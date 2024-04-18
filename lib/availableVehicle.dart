@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +10,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
 import 'package:flutter_application_1/DialogBox/SingleTimeUser/bookingIDDialog.dart';
-import 'package:flutter_application_1/Users/SingleUser/dashboard_page.dart';
 import 'package:flutter_application_1/Widgets/customButton.dart';
 import 'package:flutter_application_1/Widgets/customTextField.dart';
 import 'package:flutter_application_1/Widgets/unitsContainer.dart';
@@ -21,7 +22,7 @@ import 'main.dart';
 class AvailableVehicle extends StatefulWidget {
   final String? user;
 
-  const AvailableVehicle({this.user});
+  AvailableVehicle({this.user});
 
   @override
   State<AvailableVehicle> createState() => _AvailableVehicleState();
@@ -42,6 +43,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
   late GlobalKey<CustomContainerState> _vechiKey5;
   late GlobalKey<CustomContainerState> _vechiKey6;
   late GlobalKey<CustomContainerState> _vechiKey7;
+  int screenState = 0;
   int? selectedRadioValue;
   String loadtype = '';
   final List<String> loadList = [
@@ -90,6 +92,47 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
     _vechiKey7 = GlobalKey<CustomContainerState>();
   }
 
+  Future<Map<String, dynamic>?> fetchData(String userId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await FirebaseFirestore.instance.collection('user').doc(userId).get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> userData = documentSnapshot.data()!;
+        String firstName = userData['firstName'];
+        String lastName = userData['lastName'];
+        return {'firstName': firstName, 'lastName': lastName};
+      } else {
+        print('Document does not exist for userId: $userId');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching data for userId $userId: $e');
+      return null;
+    }
+  }
+
+  String _generateBookingID(String newBookingId) {
+    Random random = Random();
+
+    String bookingID = '';
+    for (int i = 0; i < 10; i++) {
+      bookingID += random.nextInt(10).toString();
+    }
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(widget.user)
+        .collection(
+            'vehicleBooking') // Replace 'subcollectionName' with your subcollection name
+        .doc(
+            newBookingId) // Replace 'subdocId' with the ID of the document in the subcollection
+        .update({
+      "bookingid": bookingID,
+    });
+    return bookingID;
+  }
+
   Future<void> _showDatePicker(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       initialEntryMode: DatePickerEntryMode.calendarOnly,
@@ -112,6 +155,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
     String load,
     String size,
     String date,
+    String time,
     String labour,
     String adminUid,
   ) async {
@@ -131,7 +175,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
         'load': load,
         'size': size,
         'date': date,
-        'createdTime': Timestamp.now(),
+        'time': time,
         'labour': labour,
       });
 
@@ -169,8 +213,8 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 12, bottom: 6),
-                          child: Image.asset(
-                            'naqlilogo.png',
+                          child: Image.network(
+                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
                           ),
                         ),
                         Row(
@@ -314,22 +358,69 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                 color: Colors.black,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 5,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("Hello Faizal!",
-                                      style: TabelText.helvetica11),
-                                  Text("Admin", style: TabelText.usertext),
-                                  Text("Faizal industries",
-                                      style: TabelText.usertext),
-                                ],
-                              ),
-                            ),
+                            widget.user != null
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 5,
+                                    ),
+                                    child: FutureBuilder<Map<String, dynamic>?>(
+                                      future: fetchData(widget
+                                          .user!), // Pass the userId to fetchData method
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return CircularProgressIndicator(); // Show a loading indicator while data is being fetched
+                                        } else if (snapshot.hasError) {
+                                          return Text(
+                                              'Error: ${snapshot.error}');
+                                        } else if (snapshot.hasData) {
+                                          // Extract first name and last name from snapshot data
+                                          String firstName =
+                                              snapshot.data?['firstName'] ?? '';
+                                          String lastName =
+                                              snapshot.data?['lastName'] ?? '';
+
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                  "Hello $firstName $lastName!",
+                                                  style: TabelText.helvetica11),
+                                              Text("Admin",
+                                                  style: TabelText.usertext),
+                                              Text("Faizal industries",
+                                                  style: TabelText.usertext),
+                                            ],
+                                          );
+                                        } else {
+                                          return Text(
+                                              'No data available'); // Handle case when snapshot has no data
+                                        }
+                                      },
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 5,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("Hello Faizal!",
+                                            style: TabelText.helvetica11),
+                                        Text("Admin",
+                                            style: TabelText.usertext),
+                                        Text("Faizal industries",
+                                            style: TabelText.usertext),
+                                      ],
+                                    ),
+                                  ),
                             Icon(
                               Icons.notifications,
                               color: Color.fromRGBO(106, 102, 209, 1),
@@ -358,7 +449,8 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                               Image(
                                 width: double.infinity,
                                 fit: BoxFit.cover,
-                                image: AssetImage('truckslide.jpg'),
+                                image: NetworkImage(
+                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                               ),
                             ],
                           ),
@@ -418,32 +510,38 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 UnitsContainer(
                                                   unitNames: [
                                                     {
-                                                      'image': 'img24.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img24.png?alt=media&token=d33751f1-20d4-4381-83d8-25231631e2d7',
                                                       'name': 'Short Sides',
                                                       'size': '(12m to 13.5m)'
                                                     },
                                                     {
-                                                      'image': 'img25.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img25.png?alt=media&token=04c48763-8b01-4c7d-9f40-647ae4c36911',
                                                       'name': 'Curtain',
                                                       'size': '(12m to 13.5m)'
                                                     },
                                                     {
-                                                      'image': 'img26.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img26.png?alt=media&token=45d68d3e-90d6-44bd-893c-269bdce30097',
                                                       'name': 'Refrigerator',
                                                       'size': '(12m to 13.5m)'
                                                     },
                                                     {
-                                                      'image': 'img28.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img28.png?alt=media&token=c13a796f-483d-4ecc-a2bf-0ea618b2f2c0',
                                                       'name': 'Flatbed',
                                                       'size': '(12m to 13.5m)'
                                                     },
                                                     {
-                                                      'image': 'img29.png',
-                                                      'name': 'High Sides ',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img29.png?alt=media&token=579954e4-eba9-4046-ba85-238f3017e14c',
+                                                      'name': 'High Sides',
                                                       'size': '(12m to 13.5m)'
                                                     },
                                                     {
-                                                      'image': 'img30.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img30.png?alt=media&token=929ce26b-d55b-44db-b521-22056af39f22',
                                                       'name': 'Freezer',
                                                       'size': '(12m to 13.5m)'
                                                     },
@@ -479,12 +577,14 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 UnitsContainer(
                                                   unitNames: [
                                                     {
-                                                      'image': 'img5.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img5.png?alt=media&token=a1a353e3-677b-4ca7-9932-3e7db7d5bd7a',
                                                       'name': 'Sides',
                                                       'size': '(6.5m to 7m)'
                                                     },
                                                     {
-                                                      'image': 'img6.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img6.png?alt=media&token=3424bce8-e2fe-4cb6-843a-dc6fac8d72de',
                                                       'name': 'Refrigerator',
                                                       'size': '(6.5m to 7m)'
                                                     },
@@ -520,7 +620,8 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 UnitsContainer(
                                                   unitNames: [
                                                     {
-                                                      'image': 'img7.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img7.png?alt=media&token=90368ea4-098c-49c3-9f69-9530b2ae9ba6',
                                                       'name': 'Sides',
                                                       'size': '(7m to 7.5m)'
                                                     },
@@ -556,32 +657,38 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 UnitsContainer(
                                                   unitNames: [
                                                     {
-                                                      'image': 'img10.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img10.png?alt=media&token=750a4d60-2050-4d66-b30b-1c58ff01c0e0',
                                                       'name': 'Sides',
                                                       'size': '(6m to 6.5m)'
                                                     },
                                                     {
-                                                      'image': 'img11.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img11.png?alt=media&token=323ef06a-2a01-456f-b36d-acb3fb1f5043',
                                                       'name': 'Closed',
                                                       'size': '(6m to 6.5m)'
                                                     },
                                                     {
-                                                      'image': 'img12.png',
-                                                      'name': 'Referigerator',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img12.png?alt=media&token=8a8b6263-58be-48a1-a7ef-14902688b6ae',
+                                                      'name': 'Refrigerator',
                                                       'size': '(6m to 6.5m)'
                                                     },
                                                     {
-                                                      'image': 'img13.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img13.png?alt=media&token=1d2275b8-88fd-4117-9576-3ef64071ca84',
                                                       'name': 'Crane 5 TON',
                                                       'size': '(6m to 6.5m)'
                                                     },
                                                     {
-                                                      'image': 'img14.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img14.png?alt=media&token=9f8664b8-5db9-441f-a13c-47d0c00eba2a',
                                                       'name': 'Crane 7 TON',
                                                       'size': '(6m to 6.5m)'
                                                     },
                                                     {
-                                                      'image': 'img15.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img15.png?alt=media&token=2cb4b9da-042c-4acd-bc72-7b5802523c56',
                                                       'name': 'Freezer',
                                                       'size': '(6m to 6.5m)'
                                                     },
@@ -617,27 +724,32 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 UnitsContainer(
                                                   unitNames: [
                                                     {
-                                                      'image': 'img16.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img16.png?alt=media&token=17254826-c309-476f-ae4b-b4f4f08f483e',
                                                       'name': 'Closed',
                                                       'size': '(4m to 4.5m)'
                                                     },
                                                     {
-                                                      'image': 'img17.png',
+                                                      'image':
+                                                          'https://console.firebase.google.com/project/naqli-5825c/storage/naqli-5825c.appspot.com/files',
                                                       'name': 'Crane',
                                                       'size': '(4m to 4.5m)'
                                                     },
                                                     {
-                                                      'image': 'img18.png',
-                                                      'name': 'Referigerator',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img18.png?alt=media&token=82b08eda-4637-4850-b25b-d4cf8210703e',
+                                                      'name': 'Refrigerator',
                                                       'size': '(4m to 4.5m)'
                                                     },
                                                     {
-                                                      'image': 'img19.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img19.png?alt=media&token=8c985cfe-4588-4d67-87b4-181101c0b93c',
                                                       'name': 'Sides',
                                                       'size': '(4m to 4.5m)'
                                                     },
                                                     {
-                                                      'image': 'img20.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img20.png?alt=media&token=20d9ce46-7c5e-4671-8f32-135b624c1f06',
                                                       'name': 'Freezer',
                                                       'size': '(4m to 4.5m)'
                                                     },
@@ -673,7 +785,8 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 UnitsContainer(
                                                   unitNames: [
                                                     {
-                                                      'image': 'img21.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img21.png?alt=media&token=823a5ea0-fee8-447f-b82a-f86731608c9c',
                                                       'name': 'Pickup',
                                                       'size': '(1m to 1.5m)'
                                                     },
@@ -709,12 +822,14 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 UnitsContainer(
                                                   unitNames: [
                                                     {
-                                                      'image': 'img22.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img22.png?alt=media&token=a96d6ed8-37f1-46bd-bbba-7cdddc87aae1',
                                                       'name': 'Regular',
                                                       'size': ''
                                                     },
                                                     {
-                                                      'image': 'img23.png',
+                                                      'image':
+                                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img23.png?alt=media&token=1a748d02-a87a-4e8e-8243-899cc81accc7',
                                                       'name': 'Hydraulic',
                                                       'size': ''
                                                     },
@@ -761,6 +876,9 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                                 child:
                                                                     CustomTextfieldGrey(
                                                                   text: 'Time',
+                                                                  controller:
+                                                                      controller
+                                                                          .time,
                                                                 ),
                                                               ),
                                                             ],
@@ -908,13 +1026,27 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                                       loadtype ==
                                                                           'Curtain' ||
                                                                       loadtype ==
-                                                                          'High sides' ||
+                                                                          'High Sides' ||
                                                                       loadtype ==
                                                                           'Sides' ||
                                                                       loadtype ==
                                                                           'Crane' ||
                                                                       loadtype ==
-                                                                          'Closed'
+                                                                          'Closed' ||
+                                                                      loadtype ==
+                                                                          'Refrigerator' ||
+                                                                      loadtype ==
+                                                                          'Freezer' ||
+                                                                      loadtype ==
+                                                                          'Flatbed' ||
+                                                                      loadtype ==
+                                                                          'Crane 5 TON' ||
+                                                                      loadtype ==
+                                                                          'Crane 7 TON' ||
+                                                                      loadtype ==
+                                                                          'Hydraulic' ||
+                                                                      loadtype ==
+                                                                          'Regular'
                                                                   ? (String?
                                                                       newValue) {
                                                                       setState(
@@ -1226,111 +1358,146 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 SizedBox(
                                                   height: 20,
                                                 ),
-                                                SizedBox(
-                                                  width: double.infinity,
-                                                  height: 47,
-                                                  child: CustomButton(
-                                                    onPressed: () async {
-                                                      try {
-                                                        String truck = '';
-                                                        if (controller
-                                                            .selectedTypeName1
-                                                            .text
-                                                            .isNotEmpty) {
-                                                          truck = controller
-                                                              .selectedTypeName1
-                                                              .text;
-                                                        } else if (controller
-                                                            .selectedTypeName2
-                                                            .text
-                                                            .isNotEmpty) {
-                                                          truck = controller
-                                                              .selectedTypeName2
-                                                              .text;
-                                                        } else if (controller
-                                                            .selectedTypeName3
-                                                            .text
-                                                            .isNotEmpty) {
-                                                          truck = controller
-                                                              .selectedTypeName3
-                                                              .text;
-                                                        } else if (controller
-                                                            .selectedTypeName4
-                                                            .text
-                                                            .isNotEmpty) {
-                                                          truck = controller
-                                                              .selectedTypeName4
-                                                              .text;
-                                                        } else if (controller
-                                                            .selectedTypeName5
-                                                            .text
-                                                            .isNotEmpty) {
-                                                          truck = controller
-                                                              .selectedTypeName5
-                                                              .text;
-                                                        } else if (controller
-                                                            .selectedTypeName6
-                                                            .text
-                                                            .isNotEmpty) {
-                                                          truck = controller
-                                                              .selectedTypeName6
-                                                              .text;
-                                                        } else if (controller
-                                                            .selectedTypeName7
-                                                            .text
-                                                            .isNotEmpty) {
-                                                          truck = controller
-                                                              .selectedTypeName7
-                                                              .text;
-                                                        }
-                                                        String truck1 = truck;
-                                                        String size = controller
-                                                            .size.text;
-                                                        String load = controller
-                                                            .load.text;
-                                                        String date = controller
-                                                            .date.text;
-                                                        print('load: $load');
-                                                        String labour =
-                                                            selectedRadioValue
-                                                                .toString();
-                                                        String newBookingId =
-                                                            await createNewBooking(
-                                                                truck,
-                                                                load,
-                                                                size,
-                                                                date,
-                                                                labour,
-                                                                widget.user!);
-                                                        String unitType =
-                                                            'Vehicle';
-                                                        showDialog(
-                                                          barrierDismissible:
-                                                              true,
-                                                          barrierColor:
-                                                              Color.fromRGBO(59,
-                                                                      57, 57, 1)
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return BookingIDDialog(
-                                                              user: widget.user,
-                                                              newBookingId:
-                                                                  newBookingId,
-                                                              unitType:
-                                                                  unitType,
-                                                            );
+                                                widget.user != null
+                                                    ? SizedBox(
+                                                        width: double.infinity,
+                                                        height: 47,
+                                                        child: CustomButton(
+                                                          onPressed: () async {
+                                                            try {
+                                                              String truck = '';
+                                                              if (controller
+                                                                  .selectedTypeName1
+                                                                  .text
+                                                                  .isNotEmpty) {
+                                                                truck = controller
+                                                                    .selectedTypeName1
+                                                                    .text;
+                                                              } else if (controller
+                                                                  .selectedTypeName2
+                                                                  .text
+                                                                  .isNotEmpty) {
+                                                                truck = controller
+                                                                    .selectedTypeName2
+                                                                    .text;
+                                                              } else if (controller
+                                                                  .selectedTypeName3
+                                                                  .text
+                                                                  .isNotEmpty) {
+                                                                truck = controller
+                                                                    .selectedTypeName3
+                                                                    .text;
+                                                              } else if (controller
+                                                                  .selectedTypeName4
+                                                                  .text
+                                                                  .isNotEmpty) {
+                                                                truck = controller
+                                                                    .selectedTypeName4
+                                                                    .text;
+                                                              } else if (controller
+                                                                  .selectedTypeName5
+                                                                  .text
+                                                                  .isNotEmpty) {
+                                                                truck = controller
+                                                                    .selectedTypeName5
+                                                                    .text;
+                                                              } else if (controller
+                                                                  .selectedTypeName6
+                                                                  .text
+                                                                  .isNotEmpty) {
+                                                                truck = controller
+                                                                    .selectedTypeName6
+                                                                    .text;
+                                                              } else if (controller
+                                                                  .selectedTypeName7
+                                                                  .text
+                                                                  .isNotEmpty) {
+                                                                truck = controller
+                                                                    .selectedTypeName7
+                                                                    .text;
+                                                              }
+                                                              String truck1 =
+                                                                  truck;
+                                                              String size =
+                                                                  controller
+                                                                      .size
+                                                                      .text;
+                                                              String load =
+                                                                  controller
+                                                                      .load
+                                                                      .text;
+                                                              String time =
+                                                                  controller
+                                                                      .time
+                                                                      .text;
+                                                              String date =
+                                                                  controller
+                                                                      .date
+                                                                      .text;
+                                                              print(
+                                                                  'load: $load');
+                                                              String labour =
+                                                                  selectedRadioValue
+                                                                      .toString();
+                                                              String
+                                                                  newBookingId =
+                                                                  await createNewBooking(
+                                                                      truck,
+                                                                      load,
+                                                                      size,
+                                                                      date,
+                                                                      time,
+                                                                      labour,
+                                                                      widget
+                                                                          .user!);
+                                                              String unitType =
+                                                                  'Vehicle';
+                                                              String bookingId =
+                                                                  _generateBookingID(
+                                                                      newBookingId);
+                                                              showDialog(
+                                                                barrierDismissible:
+                                                                    true,
+                                                                barrierColor: Color
+                                                                        .fromRGBO(
+                                                                            59,
+                                                                            57,
+                                                                            57,
+                                                                            1)
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return BookingIDDialog(
+                                                                    user: widget
+                                                                        .user,
+                                                                    bookingId:
+                                                                        bookingId,
+                                                                    unitType:
+                                                                        unitType,
+                                                                  );
+                                                                },
+                                                              );
+                                                            } catch (e) {
+                                                              print(
+                                                                  "Error creating user: $e");
+                                                            }
                                                           },
-                                                        );
-                                                      } catch (e) {
-                                                        print(
-                                                            "Error creating user: $e");
-                                                      }
-                                                    },
-                                                    text: 'Create Booking',
-                                                  ),
-                                                ),
+                                                          text:
+                                                              'Create Booking',
+                                                        ),
+                                                      )
+                                                    : SizedBox(
+                                                        width: double.infinity,
+                                                        height: 47,
+                                                        child: CustomButton(
+                                                          onPressed: () {},
+                                                          text:
+                                                              'Get an Estimate',
+                                                        ),
+                                                      ),
                                                 SizedBox(
                                                   height: 20,
                                                 ),
@@ -1367,7 +1534,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
               //           child: ClipRRect(
               //             borderRadius: BorderRadius.circular(
               //                 30.0), // Adjust the radius as needed
-              //             child: Image.asset(
+              //             child: Image.network(
               //               'Circleavatar.png',
               //               width: 550, // Adjust the height as needed
               //               fit: BoxFit.cover,
@@ -1527,7 +1694,8 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                               Image(
                                 width: double.infinity,
                                 fit: BoxFit.cover,
-                                image: AssetImage('truckslide.jpg'),
+                                image: NetworkImage(
+                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
                               ),
                             ],
                           ),
@@ -1578,27 +1746,33 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                           UnitsContainer(
                                             unitNames: [
                                               {
-                                                'image': 'img24.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img24.png?alt=media&token=d33751f1-20d4-4381-83d8-25231631e2d7',
                                                 'name': 'Short Sides'
                                               },
                                               {
-                                                'image': 'img25.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img25.png?alt=media&token=04c48763-8b01-4c7d-9f40-647ae4c36911',
                                                 'name': 'Curtain'
                                               },
                                               {
-                                                'image': 'img26.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img26.png?alt=media&token=45d68d3e-90d6-44bd-893c-269bdce30097',
                                                 'name': 'Refrigerator'
                                               },
                                               {
-                                                'image': 'img28.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img28.png?alt=media&token=c13a796f-483d-4ecc-a2bf-0ea618b2f2c0',
                                                 'name': 'Flatbed'
                                               },
                                               {
-                                                'image': 'img29.png',
-                                                'name': 'High Sides '
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img29.png?alt=media&token=579954e4-eba9-4046-ba85-238f3017e14c',
+                                                'name': 'High Sides'
                                               },
                                               {
-                                                'image': 'img30.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img30.png?alt=media&token=929ce26b-d55b-44db-b521-22056af39f22',
                                                 'name': 'Freezer'
                                               },
                                             ],
@@ -1610,11 +1784,13 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                           UnitsContainer(
                                             unitNames: [
                                               {
-                                                'image': 'img5.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img5.png?alt=media&token=a1a353e3-677b-4ca7-9932-3e7db7d5bd7a',
                                                 'name': 'Sides'
                                               },
                                               {
-                                                'image': 'img6.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img6.png?alt=media&token=3424bce8-e2fe-4cb6-843a-dc6fac8d72de',
                                                 'name': 'Refrigerator'
                                               },
                                             ],
@@ -1626,7 +1802,8 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                           UnitsContainer(
                                             unitNames: [
                                               {
-                                                'image': 'img7.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img7.png?alt=media&token=90368ea4-098c-49c3-9f69-9530b2ae9ba6',
                                                 'name': 'Sides'
                                               },
                                             ],
@@ -1638,27 +1815,33 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                           UnitsContainer(
                                             unitNames: [
                                               {
-                                                'image': 'img10.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img10.png?alt=media&token=750a4d60-2050-4d66-b30b-1c58ff01c0e0',
                                                 'name': 'Sides'
                                               },
                                               {
-                                                'image': 'img11.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img11.png?alt=media&token=323ef06a-2a01-456f-b36d-acb3fb1f5043',
                                                 'name': 'Closed'
                                               },
                                               {
-                                                'image': 'img12.png',
-                                                'name': 'Referigerator'
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img12.png?alt=media&token=8a8b6263-58be-48a1-a7ef-14902688b6ae',
+                                                'name': 'Refrigerator'
                                               },
                                               {
-                                                'image': 'img13.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img13.png?alt=media&token=1d2275b8-88fd-4117-9576-3ef64071ca84',
                                                 'name': 'Crane 5 TON'
                                               },
                                               {
-                                                'image': 'img14.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img14.png?alt=media&token=9f8664b8-5db9-441f-a13c-47d0c00eba2a',
                                                 'name': 'Crane 7 TON'
                                               },
                                               {
-                                                'image': 'img15.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img15.png?alt=media&token=2cb4b9da-042c-4acd-bc72-7b5802523c56',
                                                 'name': 'Freezer'
                                               },
                                             ],
@@ -1670,23 +1853,28 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                           UnitsContainer(
                                             unitNames: [
                                               {
-                                                'image': 'img16.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img16.png?alt=media&token=17254826-c309-476f-ae4b-b4f4f08f483e',
                                                 'name': 'Closed'
                                               },
                                               {
-                                                'image': 'img17.png',
+                                                'image':
+                                                    'https://console.firebase.google.com/project/naqli-5825c/storage/naqli-5825c.appspot.com/files',
                                                 'name': 'Crane'
                                               },
                                               {
-                                                'image': 'img18.png',
-                                                'name': 'Referigerator'
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img18.png?alt=media&token=82b08eda-4637-4850-b25b-d4cf8210703e',
+                                                'name': 'Refrigerator'
                                               },
                                               {
-                                                'image': 'img19.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img19.png?alt=media&token=8c985cfe-4588-4d67-87b4-181101c0b93c',
                                                 'name': 'Sides'
                                               },
                                               {
-                                                'image': 'img20.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img20.png?alt=media&token=20d9ce46-7c5e-4671-8f32-135b624c1f06',
                                                 'name': 'Freezer'
                                               },
                                             ],
@@ -1698,7 +1886,8 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                           UnitsContainer(
                                             unitNames: [
                                               {
-                                                'image': 'img21.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img21.png?alt=media&token=823a5ea0-fee8-447f-b82a-f86731608c9c',
                                                 'name': 'Pickup'
                                               },
                                             ],
@@ -1710,11 +1899,13 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                           UnitsContainer(
                                             unitNames: [
                                               {
-                                                'image': 'img22.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img22.png?alt=media&token=a96d6ed8-37f1-46bd-bbba-7cdddc87aae1',
                                                 'name': 'Regular'
                                               },
                                               {
-                                                'image': 'img23.png',
+                                                'image':
+                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/img23.png?alt=media&token=1a748d02-a87a-4e8e-8243-899cc81accc7',
                                                 'name': 'Hydraulic'
                                               },
                                             ],
@@ -1914,7 +2105,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
   List<DropdownMenuItem<String>> _getLoadItems() {
     if (loadtype == 'Short Sides' ||
         loadtype == 'Curtain' ||
-        loadtype == 'High sides' ||
+        loadtype == 'High Sides' ||
         loadtype == 'Sides' ||
         loadtype == 'Crane' ||
         loadtype == 'Closed') {
@@ -1932,7 +2123,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
         return DropdownMenuItem<String>(
             value: value, child: Text(value, style: AvailableText.helvetica));
       }).toList();
-    } else if (loadtype == 'Crane 5 Ton' || loadtype == 'Crane 7 Ton') {
+    } else if (loadtype == 'Crane 5 TON' || loadtype == 'Crane 7 TON') {
       return loadList3.map((String value) {
         return DropdownMenuItem<String>(
             value: value, child: Text(value, style: AvailableText.helvetica));

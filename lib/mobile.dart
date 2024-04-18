@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:html';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -182,7 +181,8 @@ class _MblNoDialogState extends State<MblNoDialog1> {
                           Navigator.pop(context);
                         },
                         child: ImageIcon(
-                          AssetImage('cancel.png'),
+                          NetworkImage(
+                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                           color: Colors.black,
                         ),
                       ),
@@ -382,7 +382,7 @@ class _MblNoDialogState extends State<MblNoDialog1> {
                               child: Row(
                                 children: [
                                   ImageIcon(
-                                    AssetImage(
+                                    NetworkImage(
                                       'approved.png',
                                     ),
                                     color: Color.fromRGBO(60, 55, 148, 1),
@@ -406,7 +406,8 @@ class _MblNoDialogState extends State<MblNoDialog1> {
                                           SingleTimeUserDashboardPage()));
                             },
                             child: ImageIcon(
-                              AssetImage('cancel.png'),
+                              NetworkImage(
+                                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                               color: Colors.black,
                             ),
                           ),
@@ -476,7 +477,8 @@ class _MblNoDialogState extends State<MblNoDialog1> {
                                 Navigator.pop(context);
                               },
                               child: ImageIcon(
-                                AssetImage('cancel.png'),
+                                NetworkImage(
+                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
                                 color: Colors.black,
                               ),
                             ),
