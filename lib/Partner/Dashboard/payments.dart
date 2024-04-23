@@ -1,212 +1,145 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
+import 'package:flutter_application_1/Users/SingleUser/singleuser.dart';
 import 'package:flutter_application_1/Widgets/colorContainer.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sizer/sizer.dart';
 
 class Payments extends StatefulWidget {
-  Payments();
+  final String? user;
+  final String? unitType;
+  Payments({this.user, this.unitType});
   @override
   State<Payments> createState() => _PaymentsState();
 }
 
 class _PaymentsState extends State<Payments> {
-  final ScrollController _paymentScroll = ScrollController();
+  PageController page = PageController();
+  SideMenuController sideMenu = SideMenuController();
   final ScrollController _scrollController1 = ScrollController();
   final ScrollController _scrollController2 = ScrollController();
   AllUsersFormController controller = AllUsersFormController();
   final fromDate = TextEditingController();
   final toDate = TextEditingController();
-  DataTable _createDataTable() {
-    return DataTable(
-        headingRowHeight: 65,
-        dataRowHeight: 80,
-        headingRowColor: MaterialStateColor.resolveWith(
-          (states) => Color.fromRGBO(75, 61, 82, 1),
-        ),
-        columns: _createColumns(),
-        rows: _payments());
+  Stream<List<Map<String, dynamic>>>? _currentStream;
+  @override
+  void dispose() {
+    _scrollController1.dispose();
+    _scrollController2.dispose();
+    super.dispose();
   }
 
-  List<DataColumn> _createColumns() {
-    return [
-      DataColumn(
-        label: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text('Booking ID', style: TabelText.headerText),
-          ),
-        ),
-      ),
-      DataColumn(
-        label: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:
-              Center(child: Text('Booking Type', style: TabelText.headerText)),
-        ),
-      ),
-      DataColumn(
-        label: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 40),
-            child: Text('Contract', style: TabelText.headerText),
-          ),
-        ),
-      ),
-      DataColumn(
-        label: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text('Status', style: TabelText.headerText),
-          ),
-        ),
-      ),
-      DataColumn(
-        label: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text('Payment Made', style: TabelText.headerText),
-          ),
-        ),
-      ),
-      DataColumn(
-        label: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text('Pending Payment', style: TabelText.headerText),
-          ),
-        ),
-      ),
-    ];
+  Stream<List<Map<String, dynamic>>> allBookings() {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    // Query for all documents in the 'user' collection
+    Stream<QuerySnapshot<Map<String, dynamic>>> userStream =
+        firestore.collection('user').snapshots();
+
+    // Merge the streams using flatMap to process each user document separately
+    Stream<List<Map<String, dynamic>>> mergedStream =
+        userStream.asyncMap((userSnapshot) async {
+      List<Map<String, dynamic>> combinedData = [];
+
+      // Iterate through each user document
+      for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc
+          in userSnapshot.docs) {
+        // Extract user data
+        String firstName = userDoc.data()?['firstName'] ?? '';
+        String lastName = userDoc.data()?['lastName'] ?? '';
+        String userId = userDoc.id;
+
+        // Query for vehicleBooking collection for this user
+        QuerySnapshot<Map<String, dynamic>> vehicleSnapshot = await firestore
+            .collection('user')
+            .doc(userId)
+            .collection('vehicleBooking')
+            .get();
+
+        // Iterate through vehicleBooking documents and extract relevant fields
+        vehicleSnapshot.docs.forEach((vehicleDoc) {
+          Map<String, dynamic> bookingData = {
+            'type': 'vehicle',
+            'userId': userId,
+            'firstName': firstName,
+            'lastName': lastName,
+            'truck': vehicleDoc['truck'],
+            'date': vehicleDoc['date'],
+            'size': vehicleDoc['size'],
+            'bookingid': vehicleDoc['bookingid'],
+          };
+          combinedData.add(bookingData);
+        });
+
+        // Query for equipmentBooking collection for this user
+        QuerySnapshot<Map<String, dynamic>> equipmentSnapshot = await firestore
+            .collection('user')
+            .doc(userId)
+            .collection('equipmentBooking')
+            .get();
+
+        // Iterate through equipmentBooking documents and extract relevant fields
+        equipmentSnapshot.docs.forEach((equipmentDoc) {
+          Map<String, dynamic> bookingData = {
+            'type': 'equipment',
+            'userId': userId,
+            'firstName': firstName,
+            'lastName': lastName,
+            'equipment': equipmentDoc['equipment'],
+            'quantity': equipmentDoc['quantity'],
+            'bookingid': equipmentDoc['bookingid'],
+          };
+          combinedData.add(bookingData);
+        });
+      }
+
+      return combinedData;
+    }).asBroadcastStream();
+
+    // Return the merged stream
+    return mergedStream;
   }
 
-  List<DataRow> _payments() {
-    return [
-      DataRow(cells: [
-        DataCell(
-          Text(
-            'NAQBOOK***',
-            style: TabelText.tableText1,
-          ),
-        ),
-        DataCell(
-          Center(child: Text('Single', style: TabelText.tableText1)),
-        ),
-        DataCell(Center(child: Text('_', style: TabelText.tableText1))),
-        DataCell(
-          Center(
-            child: Image.network(
-              'Group353.png',
-              width: 50,
-              height: 30,
-            ),
-          ),
-        ),
-        DataCell(Center(child: Text('SAR XXXX', style: TabelText.headerText1))),
-        DataCell(
-            Center(child: Text('Completed', style: TabelText.headerText2))),
-      ]),
-      DataRow(cells: [
-        DataCell(Text(
-          'NAQBOOK***',
-          style: TabelText.tableText1,
-        )),
-        DataCell(Center(child: Text('Contract', style: TabelText.tableText1))),
-        DataCell(Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text('SAR 3000', style: TabelText.tableText1),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Text('Per Month-August 2024', style: TabelText.text4),
-              ),
-            ],
-          ),
-        )),
-        DataCell(
-          Center(
-            child: Image.network(
-              'Group268.png',
-              width: 50,
-              height: 30,
-            ),
-          ),
-        ),
-        DataCell(Center(child: Text('SAR XXXX', style: TabelText.headerText1))),
-        DataCell(
-          Center(
-            child: SizedBox(
-              width: 95,
-              height: 30,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  side: BorderSide(
-                    color: Color.fromRGBO(92, 85, 67, 1),
-                  ),
-                ),
-                child: Text(
-                  'Running',
-                  style: TextStyle(
-                    color: Color.fromRGBO(92, 85, 67, 1),
-                    fontSize: 12,
-                    fontFamily: "Helvetica",
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ]),
-      DataRow(cells: [
-        DataCell(Text(
-          'NAQBOOK***',
-          style: TabelText.tableText1,
-        )),
-        DataCell(Center(child: Text('Single', style: TabelText.tableText1))),
-        DataCell(Center(child: Text('_', style: TabelText.tableText1))),
-        DataCell(
-          Center(
-            child: Image.network(
-              'Group353.png',
-              width: 50,
-              height: 30,
-            ),
-          ),
-        ),
-        DataCell(Center(child: Text('SAR XXXX', style: TabelText.headerText1))),
-        DataCell(
-          Center(
-            child: SizedBox(
-              width: 95,
-              height: 30,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(110, 90, 234, 1),
-                  side: BorderSide(
-                    color: Color.fromRGBO(110, 90, 234, 1),
-                  ),
-                ),
-                child: Text(
-                  'Pay Pal',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontFamily: "Helvetica",
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ]),
-    ];
+  Stream<Map<String, dynamic>> allUserData() {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    // Query for user documents
+    Stream<QuerySnapshot<Map<String, dynamic>>> userStream =
+        firestore.collection('user').snapshots();
+
+    // Transform the snapshot to Map<String, dynamic>
+    Stream<Map<String, dynamic>> userDataStream = userStream.map((snapshot) {
+      List<Map<String, dynamic>> userDataList = [];
+
+      // Iterate through each document snapshot
+      snapshot.docs.forEach((doc) {
+        // Extract the 'bookingId' field from each document
+        String bookingId = doc.data()['userId'] ?? '';
+
+        // Add the 'bookingId' to the list
+        userDataList.add({'userId': bookingId});
+      });
+
+      return {'userList': userDataList}; // Return the list of 'bookingId's
+    });
+
+    return userDataStream;
+  }
+
+  @override
+  void initState() {
+    _currentStream = allBookings();
+    sideMenu.addListener((p0) {
+      page.jumpToPage(p0);
+    });
+    super.initState();
   }
 
   @override
@@ -252,73 +185,61 @@ class _PaymentsState extends State<Payments> {
                   child: Column(
                     children: [
                       ElevationContainer(
-                        child: Scrollbar(
-                          controller: _scrollController1,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            controller: _scrollController1,
-                            child: Container(
-                              width: 1070,
-                              height:
-                                  100, // Increased height to accommodate button
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Booking ID  XXXXX',
-                                    style: PaymentText.SFproText,
-                                  ),
-                                  Text('Booking Value : SAR xxxxxx',
-                                      style: PaymentText.SFproText),
-                                  Text('Payment made: SAR xxxxx',
-                                      style: PaymentText.SFproText),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text('Pending Payment',
-                                          style: PaymentText.SFproText18),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          // Add your button functionality here
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              Color.fromRGBO(98, 105, 254, 1),
-                                          foregroundColor: Colors.white,
-                                          minimumSize: Size(200, 35),
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                                color: Color.fromRGBO(
-                                                    112, 112, 112, 1)),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.fromLTRB(
-                                              1.w, 5, 1.w, 5),
-                                          child: Text('XXXXX SAR',
-                                              style:
-                                                  PaymentText.SFproTextwhite),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(
-                                  color: Color.fromRGBO(112, 112, 112, 1)
-                                      .withOpacity(0.3),
-                                ),
-                              ),
+                        child: Container(
+                          width: 1070,
+                          height: 100, // Increased height to accommodate button
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            border: Border.all(
+                              color: Color.fromRGBO(112, 112, 112, 1)
+                                  .withOpacity(0.3),
                             ),
+                          ),
+                          child: StreamBuilder<Map<String, dynamic>>(
+                            stream: allUserData(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child:
+                                        CircularProgressIndicator()); // Show a loading indicator while waiting for data
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Error: ${snapshot.error}'),
+                                ); // Show an error message if there's an error
+                              } else {
+                                // If data is available, build the UI using the retrieved user data
+                                List<Map<String, dynamic>> userList =
+                                    snapshot.data?['userList'] ?? [];
+
+                                return SingleChildScrollView(
+                                  child: Container(
+                                    height: 100,
+                                    width: 1070,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: userList.length,
+                                          itemBuilder: (context, index) {
+                                            String bookingId =
+                                                userList[index]['userId'] ?? '';
+                                            return ListTile(
+                                              title: Text(
+                                                  'Booking ID: $bookingId'),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
                           ),
                         ),
                       ),
@@ -490,148 +411,69 @@ class _PaymentsState extends State<Payments> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      ElevationContainer(
-                        //width:300; // Set width to match screen width
-
-                        child: Scrollbar(
-                          controller: _scrollController2,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            controller: _scrollController2,
-                            child: SizedBox(
-                              width: 1070,
-                              child: DataTable(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(8),
-                                      bottomRight: Radius.circular(8)),
-                                  border: Border.all(
-                                    color: Color.fromRGBO(112, 112, 112, 1)
-                                        .withOpacity(0.3),
+                      StreamBuilder<List<Map<String, dynamic>>>(
+                        stream: allBookings(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return Center(
+                                child: Text("You haven't done any bookings"));
+                          } else {
+                            return ElevationContainer(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    height:
+                                        400, // Adjust the height as per your requirement
+                                    width: 1100,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                      border: Border.all(
+                                        color: Color.fromRGBO(112, 112, 112, 1)
+                                            .withOpacity(0.3),
+                                      ),
+                                    ),
+                                    constraints: BoxConstraints(minWidth: 1070),
+                                    child: DataTable(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(8),
+                                          bottomRight: Radius.circular(8),
+                                        ),
+                                        border: Border.all(
+                                          color:
+                                              Color.fromRGBO(112, 112, 112, 1)
+                                                  .withOpacity(0.3),
+                                        ),
+                                      ),
+                                      headingRowColor: MaterialStateColor
+                                          .resolveWith((states) =>
+                                              Color.fromRGBO(75, 61, 82, 1)),
+                                      dividerThickness: 1.0,
+                                      dataRowHeight: 65,
+                                      headingRowHeight: 70,
+                                      columns: DataSource.getColumns(context),
+                                      rows: snapshot.data!.map((user) {
+                                        return DataRow(
+                                          cells: DataSource.getCells(user),
+                                        );
+                                      }).toList(),
+                                    ),
                                   ),
                                 ),
-                                headingRowColor: MaterialStateColor.resolveWith(
-                                    (states) => Color.fromRGBO(75, 61, 82, 1)),
-                                dividerThickness: 1.0,
-                                dataRowHeight: 65,
-                                headingRowHeight: 70,
-                                columns: <DataColumn>[
-                                  DataColumn(
-                                      label: Expanded(
-                                          child: Text(
-                                    'Booked by',
-                                    style: BookingHistoryText.sfpro20white,
-                                    textAlign: TextAlign.center,
-                                  ))),
-                                  DataColumn(
-                                      label: Expanded(
-                                          child: Text(
-                                    'Booking ID',
-                                    style: BookingHistoryText.sfpro20white,
-                                    textAlign: TextAlign.center,
-                                  ))),
-                                  DataColumn(
-                                      label: Expanded(
-                                          child: Text(
-                                    'Mode',
-                                    style: BookingHistoryText.sfpro20white,
-                                    textAlign: TextAlign.center,
-                                  ))),
-                                  DataColumn(
-                                      label: Expanded(
-                                          child: Text(
-                                    'Date',
-                                    style: BookingHistoryText.sfpro20white,
-                                    textAlign: TextAlign.center,
-                                  ))),
-                                  DataColumn(
-                                      label: Expanded(
-                                          child: Text(
-                                    'Payment made',
-                                    style: BookingHistoryText.sfpro20white,
-                                    textAlign: TextAlign.center,
-                                  ))),
-                                  DataColumn(
-                                      label: Expanded(
-                                          child: Text(
-                                    'Payment Status',
-                                    style: BookingHistoryText.sfpro20white,
-                                    textAlign: TextAlign.center,
-                                  ))),
-                                ],
-                                rows: <DataRow>[
-                                  DataRow(
-                                    cells: <DataCell>[
-                                      for (var item in [
-                                        'Users',
-                                        '3459678234',
-                                        'Tow truck',
-                                        '14/11/2023',
-                                        'XXXX SAR',
-                                        'Completed'
-                                      ])
-                                        DataCell(
-                                          Container(
-                                            height:
-                                                65, // Adjust height as needed
-                                            alignment: Alignment.center,
-                                            child: Text(item,
-                                                style: BookingHistoryText
-                                                    .sfpro20black),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                  DataRow(
-                                    cells: <DataCell>[
-                                      for (var item in [
-                                        'Users',
-                                        '3459678234',
-                                        'Mini van',
-                                        '21/6/2023',
-                                        'XXXX SAR',
-                                        'Completed'
-                                      ])
-                                        DataCell(
-                                          Container(
-                                            height:
-                                                65, // Adjust height as needed
-                                            alignment: Alignment.center,
-                                            child: Text(item,
-                                                style: BookingHistoryText
-                                                    .sfpro20black),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                  DataRow(
-                                    cells: <DataCell>[
-                                      for (var item in [
-                                        'Users',
-                                        '3459678234',
-                                        'Bus',
-                                        '13/9/2023',
-                                        'XXXX SAR',
-                                        'Completed'
-                                      ])
-                                        DataCell(
-                                          Container(
-                                            height:
-                                                65, // Adjust height as needed
-                                            alignment: Alignment.center,
-                                            child: Text(item,
-                                                style: BookingHistoryText
-                                                    .sfpro20black),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ],
                               ),
-                            ),
-                          ),
-                        ),
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -913,5 +755,69 @@ class _PaymentsState extends State<Payments> {
         }
       });
     });
+  }
+}
+
+class DataSource {
+  static List<DataColumn> getColumns(BuildContext context) {
+    return [
+      DataColumn(
+        label: Text(
+          'Booked by',
+          style: BookingHistoryText.sfpro20white,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Booking ID',
+          style: BookingHistoryText.sfpro20white,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Mode',
+          style: BookingHistoryText.sfpro20white,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Date',
+          style: BookingHistoryText.sfpro20white,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Payment made',
+          style: BookingHistoryText.sfpro20white,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Payment Status',
+          style: BookingHistoryText.sfpro20white,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ];
+  }
+
+  static List<DataCell> getCells(Map<String, dynamic> user) {
+    return [
+      DataCell(Text(user['firstName']?.toString() ?? 'nill',
+          style: BookingHistoryText.sfpro20black)),
+      DataCell(Text(user['bookingid']?.toString() ?? 'nill',
+          style: BookingHistoryText.sfpro20black)),
+      DataCell(Text(user['truck']?.toString() ?? 'nill',
+          style: BookingHistoryText.sfpro20black)),
+      DataCell(Text(user['date']?.toString() ?? 'nill',
+          style: BookingHistoryText.sfpro20black)),
+      DataCell(Text('XXXXX SAR', style: BookingHistoryText.sfpro20black)),
+      DataCell(Text('Completed', style: BookingHistoryText.sfpro20black)),
+    ];
   }
 }

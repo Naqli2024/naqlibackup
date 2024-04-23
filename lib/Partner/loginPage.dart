@@ -6,20 +6,14 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
-import 'package:flutter_application_1/DialogBox/SingleTimeUser/mblNoDialog.dart';
-import 'package:flutter_application_1/DialogBox/SingleTimeUser/verfiedDialog.dart';
+
 import 'package:flutter_application_1/Partner/Dashboard/dashboard_page.dart';
 import 'package:flutter_application_1/Partner/joinUs.dart';
-import 'package:flutter_application_1/Users/Enterprise/dashboard_page.dart';
-import 'package:flutter_application_1/Users/SingleUser/dashboard_page.dart';
-import 'package:flutter_application_1/Users/SingleUser/homePageSingleUser.dart';
-import 'package:flutter_application_1/Users/SuperUser/dashboard_page.dart';
+
 import 'package:flutter_application_1/Widgets/customTextField.dart';
-import 'package:flutter_application_1/availableEquipment.dart';
-import 'package:flutter_application_1/availableVehicle.dart';
-import 'package:flutter_application_1/createAccount.dart';
+
 import 'package:flutter_application_1/Widgets/formText.dart';
-import 'package:flutter_application_1/homePage.dart';
+
 import 'package:sizer/sizer.dart';
 
 import 'homePage.dart';
@@ -141,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Align(
                               alignment: Alignment.bottomCenter,
                               child: Image.network(
-                                'loginlogo.png',
+                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/loginlogo.png?alt=media&token=a1a83b51-32e5-4ebf-b457-6049bd8b7074',
                                 width: 600,
                               ),
                             ),
@@ -487,29 +481,29 @@ class _LoginPageState extends State<LoginPage> {
 
                                 // Navigate to the appropriate dashboard based on the user's role
                                 if (userRole == 'User') {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          SingleUserDashboardPage(
-                                              user: userId!),
-                                    ),
-                                  );
+                                  // Navigator.pushReplacement(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) =>
+                                  //         SingleUserDashboardPage(
+                                  //             user: userId!),
+                                  //   ),
+                                  // );
                                 } else if (userRole == 'Super User') {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SuperUserDashboardPage(
-                                                user: userId),
-                                      ));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           SuperUserDashboardPage(
+                                  //               user: userId),
+                                  //     ));
                                 } else if (userRole == 'Enterprise') {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            EnterDashboardPage(user: userId),
-                                      ));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           EnterDashboardPage(user: userId),
+                                  //     ));
                                 } else {
                                   print('Unknown user role');
                                 }
@@ -572,13 +566,13 @@ class _LoginPageState extends State<LoginPage> {
                               child: Text(' Create One!',
                                   style: LoginpageText.purplehelvetica),
                               onTap: () {
-                                showDialog(
-                                  barrierColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) {
-                                    return CreateAccount();
-                                  },
-                                );
+                                // showDialog(
+                                //   barrierColor: Colors.transparent,
+                                //   context: context,
+                                //   builder: (context) {
+                                //     return CreateAccount();
+                                //   },
+                                // );
                               },
                             ),
                           ],
@@ -592,21 +586,21 @@ class _LoginPageState extends State<LoginPage> {
                             String password = controller.password.text;
                             String selectedAccounttype =
                                 controller.selectedAccounttype.text;
-                            showDialog(
-                              barrierColor: Colors.grey.withOpacity(0.5),
-                              context: context,
-                              builder: (context) {
-                                return VerifiedDialog(
-                                    email, password, selectedAccounttype);
-                              },
-                            );
+                            // showDialog(
+                            //   barrierColor: Colors.grey.withOpacity(0.5),
+                            //   context: context,
+                            //   builder: (context) {
+                            //     return VerifiedDialog(
+                            //         email, password, selectedAccounttype);
+                            //   },
+                            // );
                             if (isVerified) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MyHomePage(),
-                                ),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => MyHomePage(),
+                              //   ),
+                              // );
                             }
                           },
                         ),
@@ -672,10 +666,10 @@ class ForgotPasswordPage extends StatelessWidget {
                     height: 48,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => MyHomePage()),
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromRGBO(60, 55, 148, 1),

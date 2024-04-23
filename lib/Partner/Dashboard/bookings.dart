@@ -1,24 +1,26 @@
 // ignore_for_file: dead_code
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Widgets/customButton.dart';
+import 'package:flutter_application_1/Widgets/formText.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:sizer/sizer.dart';
 
-import '../../DialogBox/SingleTimeUser/paymentSuccessDialog.dart';
-import '../../Widgets/formText.dart';
-
-class Bookings extends StatefulWidget {
-  Bookings();
+class Bookingpartner extends StatefulWidget {
+  final String? user;
+  final String? unitType;
+  Bookingpartner({this.user, this.unitType});
 
   @override
-  State<Bookings> createState() => _BookingDetailsState();
+  State<Bookingpartner> createState() => _BookingDetailsState();
 }
 
-class _BookingDetailsState extends State<Bookings> {
+class _BookingDetailsState extends State<Bookingpartner> {
   String _selectedValue = '1';
   String categoryValue = '1';
   bool isClicked = false;
@@ -80,7 +82,7 @@ class _BookingDetailsState extends State<Bookings> {
                           Row(
                             children: [
                               Image.network(
-                                'Group1787.png',
+                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1787.png?alt=media&token=d2066c85-560c-4a61-80bc-d020dcd73f95',
                                 width: 62,
                                 height: 61,
                               ),
@@ -787,7 +789,7 @@ class _BookingDetailsState extends State<Bookings> {
                                                             SizedBox(
                                                                 height: 20),
                                                             Image.network(
-                                                              'right-arrow.png',
+                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/right-arrow.png?alt=media&token=cba6795c-11eb-449b-8a9a-ac790bf408f5',
                                                               width: 30,
                                                               height: 30,
                                                               color:
@@ -817,7 +819,7 @@ class _BookingDetailsState extends State<Bookings> {
                                             padding: const EdgeInsets.only(
                                                 bottom: 30),
                                             child: Image.network(
-                                              'Rectangle.png', // Replace with your image path
+                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Rectangle.png?alt=media&token=d7953e41-b610-47ca-a992-940fc2b7641e', // Replace with your image path
                                               width: 65,
                                               height: 120,
                                               color: Colors.grey,
@@ -866,7 +868,7 @@ class _BookingDetailsState extends State<Bookings> {
                                             padding: const EdgeInsets.only(
                                                 bottom: 30),
                                             child: Image.network(
-                                              'Rectangle.png', // Replace with your image path
+                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Rectangle.png?alt=media&token=d7953e41-b610-47ca-a992-940fc2b7641e', // Replace with your image path
                                               width: 65,
                                               height: 110,
                                               color: Colors.grey,
@@ -915,7 +917,7 @@ class _BookingDetailsState extends State<Bookings> {
                                             padding: const EdgeInsets.only(
                                                 bottom: 30),
                                             child: Image.network(
-                                              'Rectangle.png', // Replace with your image path
+                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Rectangle.png?alt=media&token=d7953e41-b610-47ca-a992-940fc2b7641e', // Replace with your image path
                                               width: 65,
                                               height: 110,
                                               color: Colors.grey,
@@ -968,7 +970,7 @@ class _BookingDetailsState extends State<Bookings> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.network(
-                                              'Phone.png', // Replace with your image path
+                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Phone.png?alt=media&token=f9f6f4db-3e0a-452b-bfff-a2825d84b397', // Replace with your image path
                                               width: 160,
                                               height: 160,
                                             ),

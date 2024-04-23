@@ -354,12 +354,70 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text('Use without Log in',
                                       style: LoginpageText.purplehelvetica),
                                   onTap: () async {
+                                    String email = controller.email.text;
+                                    String password = controller.password.text;
+                                    String selectedAccounttype =
+                                        controller.selectedAccounttype.text;
+
+                                    String firstName =
+                                        controller.firstName.text;
+                                    String lastName = controller.lastName.text;
+                                    String legalName =
+                                        controller.legalName.text;
+                                    String contactNumber =
+                                        controller.contactNumber.text;
+                                    String address = controller.address.text;
+                                    String govtId =
+                                        controller.selectedGovtId.text;
+                                    String confirmPassword =
+                                        controller.confirmPassword.text;
+                                    String alternateNumber =
+                                        controller.alternateNumber.text;
+                                    String address2 = controller.address2.text;
+                                    String idNumber = controller.idNumber.text;
+                                    String city = controller.selectedCity.text;
+                                    String companyidNumber =
+                                        controller.companyidNumber.text;
+                                    UserCredential userCredential = await _auth
+                                        .createUserWithEmailAndPassword(
+                                      email: controller.email.text,
+                                      password: controller.password.text,
+                                    );
+                                    // User creation successful
+                                    String adminUid = userCredential.user!.uid;
+                                    String accountType =
+                                        controller.selectedAccounttype.text;
+                                    print(
+                                        "User created: ${userCredential.user!.email}");
+                                    print(
+                                        'Account Type before create Account : $accountType');
+
+                                    print('value passed$accountType');
+                                    print("track1");
                                     showDialog(
                                       barrierColor:
                                           Colors.grey.withOpacity(0.5),
                                       context: context,
                                       builder: (context) {
-                                        return MblNoDialog();
+                                        return MblNoDialog(
+                                          email: email,
+                                          password: password,
+                                          selectedAccounttype:
+                                              selectedAccounttype,
+                                          firstName: firstName,
+                                          legalName: legalName,
+                                          lastName: legalName,
+                                          confirmPassword: confirmPassword,
+                                          contactNumber: contactNumber,
+                                          address2: address2,
+                                          address: address,
+                                          govtId: govtId,
+                                          alternateNumber: alternateNumber,
+                                          idNumber: idNumber,
+                                          city: city,
+                                          companyidNumber: companyidNumber,
+                                          adminUid: adminUid,
+                                        );
                                       },
                                     );
                                   },

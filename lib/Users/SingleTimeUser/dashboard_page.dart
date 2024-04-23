@@ -355,7 +355,7 @@ class _MyHomePageState extends State<SingleTimeUserDashboardPage> {
                         borderRadius: BorderRadius.circular(
                             30.0), // Adjust the radius as needed
                         child: Image.network(
-                          'Circleavatar.png',
+                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Circleavatar.png?alt=media&token=1204cc77-6756-42ab-ba0e-3946a3fe6c9f',
                           width: 550, // Adjust the height as needed
                           fit: BoxFit.cover,
                         ),

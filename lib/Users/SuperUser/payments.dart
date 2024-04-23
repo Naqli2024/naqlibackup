@@ -90,7 +90,7 @@ class _PaymentsState extends State<Payments> {
         DataCell(
           Center(
             child: Image.network(
-              'Group353.png',
+              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group353.png?alt=media&token=49b6c2b7-073e-4300-ad9a-137aec5909c8',
               width: 50,
               height: 30,
             ),
@@ -123,7 +123,7 @@ class _PaymentsState extends State<Payments> {
         DataCell(
           Center(
             child: Image.network(
-              'Group268.png',
+              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group268.png?alt=media&token=edc506eb-e110-49dc-9798-ab4c877c27ef',
               width: 50,
               height: 30,
             ),
@@ -166,7 +166,7 @@ class _PaymentsState extends State<Payments> {
         DataCell(
           Center(
             child: Image.network(
-              'Group353.png',
+              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group353.png?alt=media&token=49b6c2b7-073e-4300-ad9a-137aec5909c8',
               width: 50,
               height: 30,
             ),

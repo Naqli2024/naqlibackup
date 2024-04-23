@@ -77,7 +77,7 @@ class CustomContainerState extends State<UnitsContainer> {
               ),
               child: ListView.builder(
                 itemCount: widget.unitNames.length,
-                itemExtent: 65, // Height of each ListTile
+                itemExtent: 70, // Height of each ListTile
                 itemBuilder: (context, index) {
                   String image = widget.unitNames[index]['image']!;
                   String name = widget.unitNames[index]['name']!;
@@ -155,14 +155,19 @@ class CustomContainerState extends State<UnitsContainer> {
                   width: 100,
                   height: 100,
                 ),
-                Text(widget.buttonText!, style: AvailableText.helvetica17black),
+                SizedBox(
+                    width: 7.w,
+                    child: Text(widget.buttonText!,
+                        style: AvailableText.helvetica17black)),
                 SizedBox(
                   height: double.infinity,
                   child: VerticalDivider(),
                 ),
                 Text(
                   widget.selectedTypeName ?? 'Select Type',
-                  style: AvailableText.helvetica,
+                  style: widget.selectedTypeName != null
+                      ? AvailableText.helvetica
+                      : AvailableText.sfproblack,
                 ),
                 IconButton(
                   key: widget.buttonKey,

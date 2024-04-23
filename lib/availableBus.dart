@@ -126,9 +126,17 @@ class _AvailableBusState extends State<AvailableBus> {
 
       if (documentSnapshot.exists) {
         Map<String, dynamic> userData = documentSnapshot.data()!;
-        String firstName = userData['firstName'];
-        String lastName = userData['lastName'];
-        return {'firstName': firstName, 'lastName': lastName};
+
+        String address = userData['address'] ?? '';
+        String firstName = userData['firstName'] ?? '';
+        String lastName = userData['lastName'] ?? '';
+        String bookingid = userData['bookingid'] ?? '';
+        return {
+          'firstName': firstName,
+          'lastName': lastName,
+          'address': address,
+          'bookingid': bookingid
+        };
       } else {
         print('Document does not exist for userId: $userId');
         return null;
@@ -197,113 +205,10 @@ class _AvailableBusState extends State<AvailableBus> {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            DropdownButtonHideUnderline(
-                              child: DropdownButton2<Language>(
-                                isExpanded: true,
-                                hint: Row(
-                                  children: [
-                                    Text(
-                                      translation(context).english,
-                                      style: TabelText.helvetica11,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Expanded(child: SizedBox()),
-                                    Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.black,
-                                      size: 25,
-                                    )
-                                  ],
-                                ),
-                                onChanged: (Language? language) async {
-                                  if (language != null) {
-                                    Locale _locale =
-                                        await setLocale(language.languageCode);
-                                    MyApp.setLocale(context, _locale);
-                                  } else {
-                                    language;
-                                  }
-                                },
-                                items: Language.languageList()
-                                    .map<DropdownMenuItem<Language>>(
-                                      (e) => DropdownMenuItem<Language>(
-                                        value: e,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: <Widget>[
-                                            Text(
-                                              e.flag,
-                                              style: TabelText.helvetica11,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Text(
-                                              e.langname,
-                                              style: TabelText.helvetica11,
-                                              overflow: TextOverflow.ellipsis,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                                buttonStyleData: ButtonStyleData(
-                                  height: 30,
-                                  width: 130,
-                                  padding: const EdgeInsets.only(
-                                      left: 14, right: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                      color: Colors.black26,
-                                    ),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                iconStyleData: const IconStyleData(
-                                  icon: Icon(
-                                    Icons.arrow_drop_down_sharp,
-                                  ),
-                                  iconSize: 25,
-                                  iconEnabledColor: Colors.white,
-                                  iconDisabledColor: null,
-                                ),
-                                dropdownStyleData: DropdownStyleData(
-                                  maxHeight: 210,
-                                  padding: EdgeInsets.only(
-                                      left: 10, right: 10, top: 5, bottom: 15),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(color: Colors.black26),
-                                    color: Colors.white,
-                                  ),
-                                  scrollPadding: EdgeInsets.all(5),
-                                  scrollbarTheme: ScrollbarThemeData(
-                                    thickness:
-                                        MaterialStateProperty.all<double>(6),
-                                    thumbVisibility:
-                                        MaterialStateProperty.all<bool>(true),
-                                  ),
-                                ),
-                                menuItemStyleData: const MenuItemStyleData(
-                                  height: 25,
-                                  padding: EdgeInsets.only(left: 14, right: 14),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              height: 40,
-                              child: VerticalDivider(
-                                color: Colors.black,
-                              ),
-                            ),
-                            widget.user != null
-                                ? Padding(
+                        widget.user != null
+                            ? Row(
+                                children: [
+                                  Padding(
                                     padding: const EdgeInsets.only(
                                       left: 5,
                                     ),
@@ -321,22 +226,33 @@ class _AvailableBusState extends State<AvailableBus> {
                                           // Extract first name and last name from snapshot data
                                           String firstName =
                                               snapshot.data?['firstName'] ?? '';
-                                          String lastName =
-                                              snapshot.data?['lastName'] ?? '';
 
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                          return Row(
                                             children: [
-                                              Text(
-                                                  "Hello $firstName $lastName!",
-                                                  style: TabelText.helvetica11),
-                                              Text("Admin",
-                                                  style: TabelText.usertext),
-                                              Text("Faizal industries",
-                                                  style: TabelText.usertext),
+                                              Icon(
+                                                Icons.notifications,
+                                                color: Color.fromRGBO(
+                                                    106, 102, 209, 1),
+                                              ),
+                                              SizedBox(
+                                                width: 0.5.w,
+                                              ),
+                                              Text("Contact Us ",
+                                                  style: HomepageText
+                                                      .helvetica16black),
+                                              SizedBox(
+                                                height: 30,
+                                                child: VerticalDivider(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              widget.user != null
+                                                  ? Text("Hello $firstName!",
+                                                      style: HomepageText
+                                                          .helvetica16black)
+                                                  : Text("Hello Customer!",
+                                                      style: HomepageText
+                                                          .helvetica16black),
                                             ],
                                           );
                                         } else {
@@ -345,32 +261,41 @@ class _AvailableBusState extends State<AvailableBus> {
                                         }
                                       },
                                     ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 5,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text("Hello Faizal!",
-                                            style: TabelText.helvetica11),
-                                        Text("Admin",
-                                            style: TabelText.usertext),
-                                        Text("Faizal industries",
-                                            style: TabelText.usertext),
-                                      ],
-                                    ),
                                   ),
-                            Icon(
-                              Icons.notifications,
-                              color: Color.fromRGBO(106, 102, 209, 1),
-                            ),
-                          ],
-                        ),
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 5,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.notifications,
+                                            color: Color.fromRGBO(
+                                                106, 102, 209, 1),
+                                          ),
+                                          SizedBox(
+                                            width: 0.5.w,
+                                          ),
+                                          Text("Contact Us ",
+                                              style: HomepageText
+                                                  .helvetica16black),
+                                          SizedBox(
+                                            height: 30,
+                                            child: VerticalDivider(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text("Hello Customer!",
+                                              style: HomepageText
+                                                  .helvetica16black),
+                                        ],
+                                      )),
+                                ],
+                              ),
                       ],
                     ),
                   ),
@@ -717,8 +642,8 @@ class _AvailableBusState extends State<AvailableBus> {
                                                                   value: value,
                                                                   child: Text(
                                                                       value,
-                                                                      style: AvailableText
-                                                                          .helvetica),
+                                                                      style: BookingManagerText
+                                                                          .sfpro18black),
                                                                 );
                                                               }).toList(),
                                                               onChanged: (String?
@@ -987,19 +912,32 @@ class _AvailableBusState extends State<AvailableBus> {
                                                               183,
                                                               1)),
                                                       Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         children: [
-                                                          Icon(
-                                                            Icons.circle,
-                                                            color: Colors.red,
-                                                            size: 20,
+                                                          Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.circle,
+                                                                color:
+                                                                    Colors.red,
+                                                                size: 20,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Text(
+                                                                'Drop Point A',
+                                                                style: AvailableText
+                                                                    .helvetica17grey,
+                                                              ),
+                                                            ],
                                                           ),
-                                                          SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          Text(
-                                                            'Drop Point A',
-                                                            style: AvailableText
-                                                                .helvetica17grey,
+                                                          ImageIcon(
+                                                            NetworkImage(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/add(1).png?alt=media&token=aa9024ab-b917-4166-aaf0-abe740e28de0'),
+                                                            color: Colors.black,
                                                           ),
                                                         ],
                                                       ),

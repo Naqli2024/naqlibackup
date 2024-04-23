@@ -1057,7 +1057,8 @@ class _UsersState extends State<Users> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 onPressed: () {},
-                icon: Image.network('editicon.png')),
+                icon: Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
             SizedBox(
               width: 1.w,
             ),
@@ -1065,7 +1066,8 @@ class _UsersState extends State<Users> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 onPressed: () {},
-                icon: Image.network('deleteicon.png')),
+                icon: Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
           ],
         ))
       ]),
@@ -1093,7 +1095,8 @@ class _UsersState extends State<Users> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 onPressed: () {},
-                icon: Image.network('editicon.png')),
+                icon: Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
             SizedBox(
               width: 1.w,
             ),
@@ -1101,7 +1104,8 @@ class _UsersState extends State<Users> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 onPressed: () {},
-                icon: Image.network('deleteicon.png')),
+                icon: Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
           ],
         ))
       ]),
@@ -1130,7 +1134,8 @@ class _UsersState extends State<Users> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 onPressed: () {},
-                icon: Image.network('editicon.png')),
+                icon: Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
             SizedBox(
               width: 1.w,
             ),
@@ -1138,7 +1143,8 @@ class _UsersState extends State<Users> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 onPressed: () {},
-                icon: Image.network('deleteicon.png')),
+                icon: Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
           ],
         ))
       ]),
@@ -1165,7 +1171,8 @@ class _UsersState extends State<Users> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 onPressed: () {},
-                icon: Image.network('editicon.png')),
+                icon: Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
             SizedBox(
               width: 1.w,
             ),
@@ -1173,7 +1180,8 @@ class _UsersState extends State<Users> {
                 padding: EdgeInsets.zero,
                 constraints: BoxConstraints(),
                 onPressed: () {},
-                icon: Image.network('deleteicon.png')),
+                icon: Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
           ],
         ))
       ]),
@@ -1211,7 +1219,7 @@ class _UsersState extends State<Users> {
 //                 padding: EdgeInsets.zero,
 //                 constraints: BoxConstraints(),
 //                 onPressed: () {},
-//                 icon: Image.network('editicon.png')),
+//                 icon: Image.network('https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
 //             SizedBox(
 //               width: 1.w,
 //             ),
@@ -1219,7 +1227,7 @@ class _UsersState extends State<Users> {
 //                 padding: EdgeInsets.zero,
 //                 constraints: BoxConstraints(),
 //                 onPressed: () {},
-//                 icon: Image.network('deleteicon.png')),
+//                 icon: Image.network('https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
 //           ],
 //         ))
 //         // DataCell(
@@ -1325,7 +1333,8 @@ class SimpleCandidateListSource extends DataTableSource {
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('editicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
           SizedBox(
             width: 1.w,
           ),
@@ -1333,7 +1342,8 @@ class SimpleCandidateListSource extends DataTableSource {
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('deleteicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
         ],
       ))
     ]);
@@ -1364,7 +1374,8 @@ final List<SimpleCandidate> simpleCandidates = [
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('editicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
           SizedBox(
             width: 1.w,
           ),
@@ -1372,7 +1383,8 @@ final List<SimpleCandidate> simpleCandidates = [
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('deleteicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
         ],
       )),
   SimpleCandidate(
@@ -1389,7 +1401,8 @@ final List<SimpleCandidate> simpleCandidates = [
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('editicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
           SizedBox(
             width: 1.w,
           ),
@@ -1397,7 +1410,8 @@ final List<SimpleCandidate> simpleCandidates = [
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('deleteicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
         ],
       )),
   SimpleCandidate(
@@ -1414,7 +1428,8 @@ final List<SimpleCandidate> simpleCandidates = [
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('editicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
           SizedBox(
             width: 1.w,
           ),
@@ -1422,7 +1437,8 @@ final List<SimpleCandidate> simpleCandidates = [
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('deleteicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
         ],
       )),
   SimpleCandidate(
@@ -1439,7 +1455,8 @@ final List<SimpleCandidate> simpleCandidates = [
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('editicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/editicon.png?alt=media&token=b0315743-5ecb-437e-94e2-c6c3c82d343b')),
           SizedBox(
             width: 1.w,
           ),
@@ -1447,7 +1464,8 @@ final List<SimpleCandidate> simpleCandidates = [
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
               onPressed: () {},
-              icon: Image.network('deleteicon.png')),
+              icon: Image.network(
+                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/deleteicon.png?alt=media&token=ffdc3710-03dc-482a-90e5-72c72c83eb87')),
         ],
       )),
 ];

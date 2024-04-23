@@ -1,5 +1,3 @@
-// ignore_for_file: dead_code
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
 import 'package:flutter_application_1/DialogBox/SingleTimeUser/mblNoDialog.dart';
 import 'package:flutter_application_1/DialogBox/SingleTimeUser/mblNoDialog.dart';
+import 'package:flutter_application_1/Partner/homepage.dart';
 import 'package:flutter_application_1/Users/SingleUser/dashboard_page.dart';
 import 'package:flutter_application_1/availableBus.dart';
 import 'package:flutter_application_1/availableEquipment.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_application_1/classes/language_constants.dart';
 import 'package:flutter_application_1/createAccount.dart';
 import 'package:flutter_application_1/get_an_estimate.dart';
 import 'package:flutter_application_1/main.dart';
-import 'package:flutter_application_1/mobile.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -291,7 +289,7 @@ class _MyHomePageState extends State<MyHomePage>
                                   child: Container(
                                     padding:
                                         EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                    width: 1250,
+                                    width: 40.w,
                                     height: 350,
                                     decoration: BoxDecoration(
                                       border: Border.all(
@@ -304,96 +302,6 @@ class _MyHomePageState extends State<MyHomePage>
                                     child: Column(
                                       // Use ListView instead of Column
                                       children: [
-                                        SizedBox(height: 10),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            // Location text
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.black,
-                                                    width: 1.0),
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Icon(Icons
-                                                      .location_on_outlined),
-                                                  SizedBox(width: 5),
-                                                  Container(
-                                                    height: 30,
-                                                    width: 1,
-                                                    color: Colors.black,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  // SizedBox(
-                                                  //   height: 200,
-                                                  //   width: 200,
-                                                  //   child: OpenStreetMapSearchAndPick(
-                                                  //       buttonColor: Colors.blue,
-                                                  //       buttonText:
-                                                  //           'Set Current Location',
-                                                  //       onPicked: (pickedData) {}),
-                                                  // )
-                                                  // Replace the below DropdownButton with your actual dropdown widget
-                                                  DropdownButtonHideUnderline(
-                                                    child:
-                                                        DropdownButton<String>(
-                                                      value:
-                                                          selectedLocation, // Assign the selected location value to the dropdown
-                                                      onChanged:
-                                                          (String? newValue) {
-                                                        setState(() {
-                                                          selectedLocation =
-                                                              newValue; // Update the selected location when the user selects a new value
-                                                        });
-                                                      },
-
-                                                      items: <String>[
-                                                        'Location',
-                                                        'Riyadh ',
-                                                        'Mecca ',
-                                                        'Eastern ',
-                                                        'Medina',
-                                                        'Asir',
-                                                        'Jazan',
-                                                        'Al-Qassim',
-                                                        'Tabuk',
-                                                        'Hail',
-                                                        'Al-Jawaf',
-                                                        'Najran',
-                                                        'Northem Borders',
-                                                        'Al-Bahah',
-                                                      ].map<
-                                                          DropdownMenuItem<
-                                                              String>>(
-                                                        (String value) {
-                                                          return DropdownMenuItem<
-                                                              String>(
-                                                            value: value,
-                                                            child: Text(
-                                                              value,
-                                                              style: HomepageText
-                                                                  .helvetica16black,
-                                                            ),
-                                                          );
-                                                        },
-                                                      ).toList(),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 30,
-                                        ),
                                         Scrollbar(
                                           controller: _Scroll,
                                           thumbVisibility:
@@ -401,431 +309,466 @@ class _MyHomePageState extends State<MyHomePage>
                                           child: SingleChildScrollView(
                                             controller: _Scroll,
                                             scrollDirection: Axis.horizontal,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    showDialog(
-                                                      barrierColor:
-                                                          Color.fromRGBO(
-                                                                  59, 57, 57, 1)
-                                                              .withOpacity(0.5),
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return LoginPage();
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Card(
-                                                    elevation: 5.5,
-                                                    shadowColor: Color.fromRGBO(
-                                                            216, 216, 216, 1)
-                                                        .withOpacity(0.6),
-                                                    child: Container(
-                                                      width: 200,
-                                                      height: 200,
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(
-                                                            247, 246, 255, 1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Image.network(
-                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group68.png?alt=media&token=5fe75cdd-40f3-48ff-9838-dfadcaf41ae4',
-                                                              width: 150,
-                                                              height: 139,
-                                                            ),
-                                                            Divider(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            SizedBox(height: 2),
-                                                            Text('Vehicle',
-                                                                style: HomepageText
-                                                                    .helvetica16black),
-                                                          ],
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 1.w,
+                                                  right: 1.w,
+                                                  top: 6.h,
+                                                  bottom: 6.h),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        barrierColor:
+                                                            Color.fromRGBO(59,
+                                                                    57, 57, 1)
+                                                                .withOpacity(
+                                                                    0.5),
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return LoginPage();
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Card(
+                                                      elevation: 5.5,
+                                                      shadowColor:
+                                                          Color.fromRGBO(216,
+                                                                  216, 216, 1)
+                                                              .withOpacity(0.6),
+                                                      child: Container(
+                                                        height: 200,
+                                                        width: 10.w,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color.fromRGBO(
+                                                              247, 246, 255, 1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 15,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    showDialog(
-                                                      barrierColor:
-                                                          Color.fromRGBO(
-                                                                  59, 57, 57, 1)
-                                                              .withOpacity(0.5),
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return LoginPage();
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Card(
-                                                    elevation: 5.5,
-                                                    shadowColor: Color.fromRGBO(
-                                                            216, 216, 216, 1)
-                                                        .withOpacity(0.6),
-                                                    child: Container(
-                                                      width: 200,
-                                                      height: 200,
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(
-                                                            247, 246, 255, 1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Image.network(
-                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/bus.png?alt=media&token=62ffdc20-210e-447e-a0e5-51e14b06b449',
-                                                              width: 150,
-                                                              height: 139,
-                                                            ),
-                                                            Divider(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            SizedBox(height: 2),
-                                                            Text(
-                                                              'Bus',
-                                                              style: HomepageText
-                                                                  .helvetica16black,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 15,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    showDialog(
-                                                      barrierColor:
-                                                          Color.fromRGBO(
-                                                                  59, 57, 57, 1)
-                                                              .withOpacity(0.5),
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return LoginPage();
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Card(
-                                                    elevation: 5.5,
-                                                    shadowColor: Color.fromRGBO(
-                                                            216, 216, 216, 1)
-                                                        .withOpacity(0.6),
-                                                    child: Container(
-                                                      width: 200,
-                                                      height: 200,
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(
-                                                            247, 246, 255, 1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Image.network(
-                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1496.png?alt=media&token=68985bbe-ba8a-4cd3-b4c9-b5f07ab7f3a5',
-                                                              width: 150,
-                                                              height: 139,
-                                                            ),
-                                                            Divider(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            SizedBox(height: 2),
-                                                            Text(
-                                                              'Equipment-2',
-                                                              style: HomepageText
-                                                                  .helvetica16black,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 15,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    showDialog(
-                                                      barrierColor:
-                                                          Color.fromRGBO(
-                                                                  59, 57, 57, 1)
-                                                              .withOpacity(0.5),
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return LoginPage();
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Card(
-                                                    elevation: 5.5,
-                                                    shadowColor: Color.fromRGBO(
-                                                            216, 216, 216, 1)
-                                                        .withOpacity(0.6),
-                                                    child: Container(
-                                                      width: 200,
-                                                      height: 200,
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(
-                                                            247, 246, 255, 1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Image.network(
-                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1660.png?alt=media&token=e1bdac76-bbdc-4d25-9003-665b2b936a99',
-                                                              width: 150,
-                                                              height: 139,
-                                                            ),
-                                                            Divider(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            SizedBox(height: 2),
-                                                            Text(
-                                                              'Special',
-                                                              style: HomepageText
-                                                                  .helvetica16black,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 15,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    showDialog(
-                                                      barrierColor:
-                                                          Color.fromRGBO(
-                                                                  59, 57, 57, 1)
-                                                              .withOpacity(0.5),
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return LoginPage();
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Card(
-                                                    elevation: 5.5,
-                                                    shadowColor: Color.fromRGBO(
-                                                            216, 216, 216, 1)
-                                                        .withOpacity(0.6),
-                                                    child: Container(
-                                                      width: 200,
-                                                      height: 200,
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(
-                                                            247, 246, 255, 1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Image.network(
-                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1716.png?alt=media&token=416db349-0c72-4bbe-b160-74792ba49f6e',
-                                                              width: 150,
-                                                              height: 139,
-                                                            ),
-                                                            Divider(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            SizedBox(height: 2),
-                                                            Text(
-                                                              'Others',
-                                                              style: HomepageText
-                                                                  .helvetica16black,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 15,
-                                                ),
-                                                Card(
-                                                  elevation: 5.5,
-                                                  shadowColor: Color.fromRGBO(
-                                                          216, 216, 216, 1)
-                                                      .withOpacity(0.6),
-                                                  child: Container(
-                                                    width: 200,
-                                                    height: 200,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                      gradient: LinearGradient(
-                                                        begin: Alignment
-                                                            .centerLeft,
-                                                        end: Alignment
-                                                            .centerRight,
-                                                        colors: [
-                                                          Color.fromRGBO(
-                                                              96, 105, 255, 1),
-                                                          Color.fromRGBO(
-                                                              123, 107, 247, 1),
-                                                        ],
-                                                      ), // RGB color fill
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          GestureDetector(
-                                                            // onTap: () async {
-                                                            //   // Check if user is logged in
-                                                            //   if (isUserLoggedIn) {
-                                                            //     UserCredential
-                                                            //         userCredential =
-                                                            //         await _auth
-                                                            //             .signInWithEmailAndPassword(
-                                                            //       email: controller
-                                                            //           .email
-                                                            //           .text
-                                                            //           .trim(), // Trim to remove whitespace
-                                                            //       password:
-                                                            //           controller
-                                                            //               .password
-                                                            //               .text,
-                                                            //     );
-                                                            //     // Navigate to dashboard
-                                                            //     // Navigator.push(
-                                                            //     //   context,
-                                                            //     //   MaterialPageRoute(
-                                                            //     //       builder: (context) =>
-                                                            //     //           SingleUserDashboardPage(
-                                                            //     //               user:user)),
-                                                            //     // );
-                                                            //   } else {
-                                                            //     // Navigate to login page
-                                                            //     showDialog(
-                                                            //       barrierColor: Color
-                                                            //               .fromRGBO(
-                                                            //                   59,
-                                                            //                   57,
-                                                            //                   57,
-                                                            //                   1)
-                                                            //           .withOpacity(
-                                                            //               0.5),
-                                                            //       context:
-                                                            //           context,
-                                                            //       builder:
-                                                            //           (context) {
-                                                            //         return LoginPage();
-                                                            //       },
-                                                            //     );
-                                                            //   }
-                                                            // },
-                                                            onTap: () {
-                                                              showDialog(
-                                                                barrierColor: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
-                                                                  return GetanEstimate();
-                                                                },
-                                                              );
-                                                            },
-                                                            child: Column(
-                                                              children: [
-                                                                Text(
-                                                                  "Get an Estimate",
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Image.network(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group68.png?alt=media&token=5fe75cdd-40f3-48ff-9838-dfadcaf41ae4',
+                                                                width: 150,
+                                                                height: 139,
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 2),
+                                                              Text('Vehicle',
                                                                   style: HomepageText
-                                                                      .helvetica16bold,
-                                                                ),
-                                                                SizedBox(
-                                                                    height: 20),
-                                                                Image.network(
-                                                                  'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/right-arrow.png?alt=media&token=cba6795c-11eb-449b-8a9a-ac790bf408f5',
-                                                                  width: 30,
-                                                                  height: 30,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              ],
-                                                            ),
+                                                                      .helvetica16black),
+                                                            ],
                                                           ),
-                                                        ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        barrierColor:
+                                                            Color.fromRGBO(59,
+                                                                    57, 57, 1)
+                                                                .withOpacity(
+                                                                    0.5),
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return LoginPage();
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Card(
+                                                      elevation: 5.5,
+                                                      shadowColor:
+                                                          Color.fromRGBO(216,
+                                                                  216, 216, 1)
+                                                              .withOpacity(0.6),
+                                                      child: Container(
+                                                        height: 200,
+                                                        width: 10.w,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color.fromRGBO(
+                                                              247, 246, 255, 1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Image.network(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/bus.png?alt=media&token=62ffdc20-210e-447e-a0e5-51e14b06b449',
+                                                                width: 150,
+                                                                height: 139,
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 2),
+                                                              Text(
+                                                                'Bus',
+                                                                style: HomepageText
+                                                                    .helvetica16black,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        barrierColor:
+                                                            Color.fromRGBO(59,
+                                                                    57, 57, 1)
+                                                                .withOpacity(
+                                                                    0.5),
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return LoginPage();
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Card(
+                                                      elevation: 5.5,
+                                                      shadowColor:
+                                                          Color.fromRGBO(216,
+                                                                  216, 216, 1)
+                                                              .withOpacity(0.6),
+                                                      child: Container(
+                                                        height: 200,
+                                                        width: 10.w,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color.fromRGBO(
+                                                              247, 246, 255, 1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Image.network(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1496.png?alt=media&token=68985bbe-ba8a-4cd3-b4c9-b5f07ab7f3a5',
+                                                                width: 150,
+                                                                height: 139,
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 2),
+                                                              Text(
+                                                                'Equipment-2',
+                                                                style: HomepageText
+                                                                    .helvetica16black,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        barrierColor:
+                                                            Color.fromRGBO(59,
+                                                                    57, 57, 1)
+                                                                .withOpacity(
+                                                                    0.5),
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return LoginPage();
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Card(
+                                                      elevation: 5.5,
+                                                      shadowColor:
+                                                          Color.fromRGBO(216,
+                                                                  216, 216, 1)
+                                                              .withOpacity(0.6),
+                                                      child: Container(
+                                                        height: 200,
+                                                        width: 10.w,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color.fromRGBO(
+                                                              247, 246, 255, 1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Image.network(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1660.png?alt=media&token=e1bdac76-bbdc-4d25-9003-665b2b936a99',
+                                                                width: 150,
+                                                                height: 139,
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 2),
+                                                              Text(
+                                                                'Special',
+                                                                style: HomepageText
+                                                                    .helvetica16black,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        barrierColor:
+                                                            Color.fromRGBO(59,
+                                                                    57, 57, 1)
+                                                                .withOpacity(
+                                                                    0.5),
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return LoginPage();
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Card(
+                                                      elevation: 5.5,
+                                                      shadowColor:
+                                                          Color.fromRGBO(216,
+                                                                  216, 216, 1)
+                                                              .withOpacity(0.6),
+                                                      child: Container(
+                                                        height: 200,
+                                                        width: 10.w,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color.fromRGBO(
+                                                              247, 246, 255, 1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Image.network(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1716.png?alt=media&token=416db349-0c72-4bbe-b160-74792ba49f6e',
+                                                                width: 150,
+                                                                height: 139,
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 2),
+                                                              Text(
+                                                                'Others',
+                                                                style: HomepageText
+                                                                    .helvetica16black,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Card(
+                                                    elevation: 5.5,
+                                                    shadowColor: Color.fromRGBO(
+                                                            216, 216, 216, 1)
+                                                        .withOpacity(0.6),
+                                                    child: Container(
+                                                      height: 200,
+                                                      width: 10.w,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.0),
+                                                        gradient:
+                                                            LinearGradient(
+                                                          begin: Alignment
+                                                              .centerLeft,
+                                                          end: Alignment
+                                                              .centerRight,
+                                                          colors: [
+                                                            Color.fromRGBO(96,
+                                                                105, 255, 1),
+                                                            Color.fromRGBO(123,
+                                                                107, 247, 1),
+                                                          ],
+                                                        ), // RGB color fill
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            GestureDetector(
+                                                              // onTap: () async {
+                                                              //   // Check if user is logged in
+                                                              //   if (isUserLoggedIn) {
+                                                              //     UserCredential
+                                                              //         userCredential =
+                                                              //         await _auth
+                                                              //             .signInWithEmailAndPassword(
+                                                              //       email: controller
+                                                              //           .email
+                                                              //           .text
+                                                              //           .trim(), // Trim to remove whitespace
+                                                              //       password:
+                                                              //           controller
+                                                              //               .password
+                                                              //               .text,
+                                                              //     );
+                                                              //     // Navigate to dashboard
+                                                              //     // Navigator.push(
+                                                              //     //   context,
+                                                              //     //   MaterialPageRoute(
+                                                              //     //       builder: (context) =>
+                                                              //     //           SingleUserDashboardPage(
+                                                              //     //               user:user)),
+                                                              //     // );
+                                                              //   } else {
+                                                              //     // Navigate to login page
+                                                              //     showDialog(
+                                                              //       barrierColor: Color
+                                                              //               .fromRGBO(
+                                                              //                   59,
+                                                              //                   57,
+                                                              //                   57,
+                                                              //                   1)
+                                                              //           .withOpacity(
+                                                              //               0.5),
+                                                              //       context:
+                                                              //           context,
+                                                              //       builder:
+                                                              //           (context) {
+                                                              //         return LoginPage();
+                                                              //       },
+                                                              //     );
+                                                              //   }
+                                                              // },
+                                                              onTap: () {
+                                                                showDialog(
+                                                                  barrierColor: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return GetanEstimate();
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Column(
+                                                                children: [
+                                                                  Text(
+                                                                    "Get an Estimate",
+                                                                    style: HomepageText
+                                                                        .helvetica16bold,
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          20),
+                                                                  Image.asset(
+                                                                    'right-arrow.png',
+                                                                    width: 30,
+                                                                    height: 30,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -840,7 +783,7 @@ class _MyHomePageState extends State<MyHomePage>
                       ),
                     ),
                   ),
-                  Center(child: CreateAccount())
+                  Center(child: HomePagePartner())
                 ],
               ));
         } else {
@@ -975,8 +918,8 @@ class _MyHomePageState extends State<MyHomePage>
                             )
                           ],
                         ),
-                        Image.network(
-                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/naqlilogo.png?alt=media&token=db201cb1-dd7b-4b9e-b364-8fb7fa3b95db',
+                        Image.asset(
+                          'naqlilogo.png',
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1024,8 +967,7 @@ class _MyHomePageState extends State<MyHomePage>
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
                                   image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
+                                    image: AssetImage('truckslide.jpg'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1035,8 +977,7 @@ class _MyHomePageState extends State<MyHomePage>
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
                                   image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/truckslide.jpg?alt=media&token=3abaaa7a-3c22-44e3-81d2-d16af7336273'),
+                                    image: AssetImage('truckslide.jpg'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1185,8 +1126,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.network(
-                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group68.png?alt=media&token=5fe75cdd-40f3-48ff-9838-dfadcaf41ae4',
+                                                    Image.asset(
+                                                      'Group68.png',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1212,9 +1153,7 @@ class _MyHomePageState extends State<MyHomePage>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableBus(
-                                                        user: widget.user!,
-                                                      )),
+                                                      AvailableBus()),
                                             );
                                           },
                                           child: Card(
@@ -1238,8 +1177,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.network(
-                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/bus.png?alt=media&token=62ffdc20-210e-447e-a0e5-51e14b06b449',
+                                                    Image.asset(
+                                                      'bus.png',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1291,8 +1230,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.network(
-                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1496.png?alt=media&token=68985bbe-ba8a-4cd3-b4c9-b5f07ab7f3a5',
+                                                    Image.asset(
+                                                      'Group1496.png',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1318,9 +1257,7 @@ class _MyHomePageState extends State<MyHomePage>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableSpecial(
-                                                        user: widget.user!,
-                                                      )),
+                                                      AvailableSpecial()),
                                             );
                                           },
                                           child: Card(
@@ -1344,8 +1281,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.network(
-                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1660.png?alt=media&token=e1bdac76-bbdc-4d25-9003-665b2b936a99',
+                                                    Image.asset(
+                                                      'Group1660.png',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1371,9 +1308,7 @@ class _MyHomePageState extends State<MyHomePage>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      AvailableSpecial(
-                                                        user: widget.user!,
-                                                      )),
+                                                      AvailableSpecial()),
                                             );
                                           },
                                           child: Card(
@@ -1397,8 +1332,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
-                                                    Image.network(
-                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group1716.png?alt=media&token=416db349-0c72-4bbe-b160-74792ba49f6e',
+                                                    Image.asset(
+                                                      'Group1716.png',
                                                       width: 150,
                                                       height: 139,
                                                     ),
@@ -1452,8 +1387,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                       style: HomepageText
                                                           .helvetica16bold),
                                                   SizedBox(height: 20),
-                                                  Image.network(
-                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/right-arrow.png?alt=media&token=cba6795c-11eb-449b-8a9a-ac790bf408f5',
+                                                  Image.asset(
+                                                    'right-arrow.png',
                                                     width: 30,
                                                     height: 30,
                                                     color: Colors.white,

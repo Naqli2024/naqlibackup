@@ -188,9 +188,7 @@ class _GetanEstimateState extends State<GetanEstimate> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  AvailableSpecial(
-                                                    user: widget.user!,
-                                                  )),
+                                                  AvailableSpecial()),
                                         );
                                       },
                                       child: ElevationUnitContainer(
@@ -208,9 +206,7 @@ class _GetanEstimateState extends State<GetanEstimate> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  AvailableSpecial(
-                                                    user: widget.user!,
-                                                  )),
+                                                  AvailableSpecial()),
                                         );
                                       },
                                       child: ElevationUnitContainer(
