@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Controllers/allUsersFormController.dart';
+import 'package:flutter_application_1/Partner/Dashboard/bookings.dart';
+import 'package:flutter_application_1/Partner/Dashboard/dashboard_page.dart';
 import 'package:sizer/sizer.dart';
 
 class Operator extends StatefulWidget {
@@ -1163,19 +1165,29 @@ class _OperatorState extends State<Operator> {
                                 String operName = controller.partnerName.text;
                                 String operatorid = operatorID;
                                 await createOperator(
-                                    unit,
-                                    sub,
-                                    plateNo,
-                                    istimaraNo,
-                                    name,
-                                    email,
-                                    mblno,
-                                    iqamaNo,
-                                    dob,
-                                    plateinfo,
-                                    operName,
-                                    operatorid,
-                                    widget.user!);
+                                  unit,
+                                  sub,
+                                  plateNo,
+                                  istimaraNo,
+                                  name,
+                                  email,
+                                  mblno,
+                                  iqamaNo,
+                                  dob,
+                                  plateinfo,
+                                  operName,
+                                  operatorid,
+                                  widget.user!,
+                                );
+
+                                // Navigate to the desired class after submitting
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PartnerDashboardPage(),
+                                  ),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
@@ -1189,10 +1201,11 @@ class _OperatorState extends State<Operator> {
                                 child: Text(
                                   'Submit',
                                   style: TextStyle(
-                                      fontFamily: 'Colfax',
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                    fontFamily: 'Colfax',
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -1511,26 +1524,24 @@ class _OperatorState extends State<Operator> {
                         children: [
                           SizedBox(width: 150, child: Text('Driving License')),
                           SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              width: 160,
-                              child: Expanded(
-                                child: ElevatedButton(
-                                  child: Text(
-                                    'Upload a file',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(20, 3, 3, 1)),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 2,
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  onPressed: () {},
+                          SizedBox(
+                            height: 40,
+                            width: 160,
+                            child: Expanded(
+                              child: ElevatedButton(
+                                child: Text(
+                                  'Upload a file',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(20, 3, 3, 1)),
                                 ),
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 2,
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () {},
                               ),
                             ),
                           ),
@@ -1541,26 +1552,24 @@ class _OperatorState extends State<Operator> {
                         children: [
                           SizedBox(width: 150, child: Text('ID Copy')),
                           SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              width: 160,
-                              child: Expanded(
-                                child: ElevatedButton(
-                                  child: Text(
-                                    'Upload a file',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(20, 3, 3, 1)),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 2,
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  onPressed: () {},
+                          SizedBox(
+                            height: 40,
+                            width: 160,
+                            child: Expanded(
+                              child: ElevatedButton(
+                                child: Text(
+                                  'Upload a file',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(20, 3, 3, 1)),
                                 ),
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 2,
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () {},
                               ),
                             ),
                           ),
@@ -1571,26 +1580,24 @@ class _OperatorState extends State<Operator> {
                         children: [
                           SizedBox(width: 150, child: Text('National ID')),
                           SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              width: 160,
-                              child: Expanded(
-                                child: ElevatedButton(
-                                  child: Text(
-                                    'Upload a file',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(20, 3, 3, 1)),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 2,
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  onPressed: () {},
+                          SizedBox(
+                            height: 40,
+                            width: 160,
+                            child: Expanded(
+                              child: ElevatedButton(
+                                child: Text(
+                                  'Upload a file',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(20, 3, 3, 1)),
                                 ),
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 2,
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () {},
                               ),
                             ),
                           ),
@@ -1612,26 +1619,24 @@ class _OperatorState extends State<Operator> {
                             ),
                           ),
                           SizedBox(width: 5),
-                          Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              width: 160,
-                              child: Expanded(
-                                child: ElevatedButton(
-                                  child: Text(
-                                    'Upload a file',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(20, 3, 3, 1)),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 2,
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  onPressed: () {},
+                          SizedBox(
+                            height: 40,
+                            width: 160,
+                            child: Expanded(
+                              child: ElevatedButton(
+                                child: Text(
+                                  'Upload a file',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(20, 3, 3, 1)),
                                 ),
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 2,
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                onPressed: () {},
                               ),
                             ),
                           ),

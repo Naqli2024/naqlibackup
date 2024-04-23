@@ -7,10 +7,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/Widgets/colorContainer.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
-import 'package:flutter_application_1/pieChart/app_colors.dart';
-import 'package:flutter_application_1/pieChart/indicator.dart';
+
 import 'package:flutter_application_1/Widgets/customButton.dart';
 import 'package:flutter_application_1/echarts_data.dart';
+import 'package:flutter_application_1/pieChart/app_colors.dart';
+import 'package:flutter_application_1/pieChart/indicator.dart';
+
 import 'package:graphic/graphic.dart';
 import 'package:sizer/sizer.dart';
 
@@ -490,7 +492,7 @@ class _DashboardState extends State<Dashboard> {
                                         child: Image.network(
                                           color:
                                               Color.fromRGBO(143, 142, 151, 1),
-                                          'add.png',
+                                          'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/add.png?alt=media&token=a10203f3-6af3-4a15-aeea-eb7d9a5fff98',
                                           width: 120,
                                           height: 170,
                                         ),
@@ -912,7 +914,7 @@ class _DashboardState extends State<Dashboard> {
                                       ),
                                       child: Image.network(
                                         color: Color.fromRGBO(143, 142, 151, 1),
-                                        'add.png',
+                                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/add.png?alt=media&token=a10203f3-6af3-4a15-aeea-eb7d9a5fff98',
                                         width: 120,
                                         height: 170,
                                       ),

@@ -98,9 +98,17 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
 
       if (documentSnapshot.exists) {
         Map<String, dynamic> userData = documentSnapshot.data()!;
-        String firstName = userData['firstName'];
-        String lastName = userData['lastName'];
-        return {'firstName': firstName, 'lastName': lastName};
+
+        String address = userData['address'] ?? '';
+        String firstName = userData['firstName'] ?? '';
+        String lastName = userData['lastName'] ?? '';
+        String bookingid = userData['bookingid'] ?? '';
+        return {
+          'firstName': firstName,
+          'lastName': lastName,
+          'address': address,
+          'bookingid': bookingid
+        };
       } else {
         print('Document does not exist for userId: $userId');
         return null;
@@ -233,113 +241,10 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            DropdownButtonHideUnderline(
-                              child: DropdownButton2<Language>(
-                                isExpanded: true,
-                                hint: Row(
-                                  children: [
-                                    Text(
-                                      translation(context).english,
-                                      style: TabelText.helvetica11,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Expanded(child: SizedBox()),
-                                    Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.black,
-                                      size: 25,
-                                    )
-                                  ],
-                                ),
-                                onChanged: (Language? language) async {
-                                  if (language != null) {
-                                    Locale _locale =
-                                        await setLocale(language.languageCode);
-                                    MyApp.setLocale(context, _locale);
-                                  } else {
-                                    language;
-                                  }
-                                },
-                                items: Language.languageList()
-                                    .map<DropdownMenuItem<Language>>(
-                                      (e) => DropdownMenuItem<Language>(
-                                        value: e,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: <Widget>[
-                                            Text(
-                                              e.flag,
-                                              style: TabelText.helvetica11,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Text(
-                                              e.langname,
-                                              style: TabelText.helvetica11,
-                                              overflow: TextOverflow.ellipsis,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                                buttonStyleData: ButtonStyleData(
-                                  height: 30,
-                                  width: 130,
-                                  padding: const EdgeInsets.only(
-                                      left: 14, right: 14),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                      color: Colors.black26,
-                                    ),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                iconStyleData: const IconStyleData(
-                                  icon: Icon(
-                                    Icons.arrow_drop_down_sharp,
-                                  ),
-                                  iconSize: 25,
-                                  iconEnabledColor: Colors.white,
-                                  iconDisabledColor: null,
-                                ),
-                                dropdownStyleData: DropdownStyleData(
-                                  maxHeight: 210,
-                                  padding: EdgeInsets.only(
-                                      left: 10, right: 10, top: 5, bottom: 15),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(color: Colors.black26),
-                                    color: Colors.white,
-                                  ),
-                                  scrollPadding: EdgeInsets.all(5),
-                                  scrollbarTheme: ScrollbarThemeData(
-                                    thickness:
-                                        MaterialStateProperty.all<double>(6),
-                                    thumbVisibility:
-                                        MaterialStateProperty.all<bool>(true),
-                                  ),
-                                ),
-                                menuItemStyleData: const MenuItemStyleData(
-                                  height: 25,
-                                  padding: EdgeInsets.only(left: 14, right: 14),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              height: 40,
-                              child: VerticalDivider(
-                                color: Colors.black,
-                              ),
-                            ),
-                            widget.user != null
-                                ? Padding(
+                        widget.user != null
+                            ? Row(
+                                children: [
+                                  Padding(
                                     padding: const EdgeInsets.only(
                                       left: 5,
                                     ),
@@ -357,22 +262,33 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                           // Extract first name and last name from snapshot data
                                           String firstName =
                                               snapshot.data?['firstName'] ?? '';
-                                          String lastName =
-                                              snapshot.data?['lastName'] ?? '';
 
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                          return Row(
                                             children: [
-                                              Text(
-                                                  "Hello $firstName $lastName!",
-                                                  style: TabelText.helvetica11),
-                                              Text("Admin",
-                                                  style: TabelText.usertext),
-                                              Text("Faizal industries",
-                                                  style: TabelText.usertext),
+                                              Icon(
+                                                Icons.notifications,
+                                                color: Color.fromRGBO(
+                                                    106, 102, 209, 1),
+                                              ),
+                                              SizedBox(
+                                                width: 0.5.w,
+                                              ),
+                                              Text("Contact Us ",
+                                                  style: HomepageText
+                                                      .helvetica16black),
+                                              SizedBox(
+                                                height: 30,
+                                                child: VerticalDivider(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              widget.user != null
+                                                  ? Text("Hello $firstName!",
+                                                      style: HomepageText
+                                                          .helvetica16black)
+                                                  : Text("Hello Customer!",
+                                                      style: HomepageText
+                                                          .helvetica16black),
                                             ],
                                           );
                                         } else {
@@ -381,32 +297,41 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                         }
                                       },
                                     ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 5,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text("Hello Faizal!",
-                                            style: TabelText.helvetica11),
-                                        Text("Admin",
-                                            style: TabelText.usertext),
-                                        Text("Faizal industries",
-                                            style: TabelText.usertext),
-                                      ],
-                                    ),
                                   ),
-                            Icon(
-                              Icons.notifications,
-                              color: Color.fromRGBO(106, 102, 209, 1),
-                            ),
-                          ],
-                        ),
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 5,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.notifications,
+                                            color: Color.fromRGBO(
+                                                106, 102, 209, 1),
+                                          ),
+                                          SizedBox(
+                                            width: 0.5.w,
+                                          ),
+                                          Text("Contact Us ",
+                                              style: HomepageText
+                                                  .helvetica16black),
+                                          SizedBox(
+                                            height: 30,
+                                            child: VerticalDivider(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text("Hello Customer!",
+                                              style: HomepageText
+                                                  .helvetica16black),
+                                        ],
+                                      )),
+                                ],
+                              ),
                       ],
                     ),
                   ),
@@ -493,7 +418,7 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group4128.png?alt=media&token=059bdbcf-5284-45db-970f-dac34d34d828',
                                                       'name': 'Excavator',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                   ],
                                                   buttonText: 'Excavator',
@@ -505,6 +430,14 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                               .text
                                                           : 'Select Type',
                                                   buttonKey: _equipKey1,
+                                                  onSelectionChanged1: (value) {
+                                                    setState(() {
+                                                      controller.size.text =
+                                                          value;
+                                                      selectedContainerIndex =
+                                                          1;
+                                                    });
+                                                  },
                                                   onSelectionChanged: (value) {
                                                     setState(() {
                                                       loadtype = value;
@@ -522,19 +455,19 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group3071.png?alt=media&token=ea1181da-3870-4070-a76d-4d7350ae36cf',
                                                       'name': 'Back hoe',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                     {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group%202052.png?alt=media&token=f007cbeb-0403-4f10-8656-676338385563',
                                                       'name': 'Front hoe',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                     {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group4137.png?alt=media&token=147859f3-29e9-4d74-9124-9eb050678b74',
                                                       'name': 'Skid steer',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                   ],
                                                   buttonText: 'Loaders',
@@ -546,6 +479,14 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                               .text
                                                           : 'Select Type',
                                                   buttonKey: _equipKey2,
+                                                  onSelectionChanged1: (value) {
+                                                    setState(() {
+                                                      controller.size.text =
+                                                          value;
+                                                      selectedContainerIndex =
+                                                          2;
+                                                    });
+                                                  },
                                                   onSelectionChanged: (value) {
                                                     setState(() {
                                                       loadtype = value;
@@ -563,13 +504,13 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group%202271.png?alt=media&token=a908e28e-1818-4786-a1e6-bb36943c9592',
                                                       'name': 'Crawler crane',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                     {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group4240.png?alt=media&token=c2f68053-1088-47a7-9822-290084dc7f0b',
                                                       'name': 'Mobile crane',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                   ],
                                                   buttonText: 'Cranes',
@@ -581,6 +522,14 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                               .text
                                                           : 'Select Type',
                                                   buttonKey: _equipKey3,
+                                                  onSelectionChanged1: (value) {
+                                                    setState(() {
+                                                      controller.size.text =
+                                                          value;
+                                                      selectedContainerIndex =
+                                                          3;
+                                                    });
+                                                  },
                                                   onSelectionChanged: (value) {
                                                     setState(() {
                                                       loadtype = value;
@@ -598,37 +547,37 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group%202270.png?alt=media&token=628e8fe5-1435-4441-832d-c131a00e62ac',
                                                       'name': 'Compactors',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                     {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group2236.png?alt=media&token=b524badf-e101-422a-b3a2-615e95592f4e',
                                                       'name': 'Bulldozers',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                     {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group4225.png?alt=media&token=92ffcee1-5703-4602-812f-e8b8a0993b4a',
                                                       'name': 'Graders',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                     {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group2148.png?alt=media&token=8e651f25-a871-4f32-881e-edb02e0c1b3b',
                                                       'name': 'Dump truck',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                     {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group2181.png?alt=media&token=456cf532-6b18-4173-9665-51298359399f',
                                                       'name': 'Forklift',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                     {
                                                       'image':
                                                           'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group4239.png?alt=media&token=4acb7436-884b-41af-bb87-f82341a5ff1b',
                                                       'name': 'Scissorlift',
-                                                      'size': '',
+                                                      'size': '-',
                                                     },
                                                   ],
                                                   buttonText: 'Others',
@@ -640,6 +589,14 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                               .text
                                                           : 'Select Type',
                                                   buttonKey: _equipKey4,
+                                                  onSelectionChanged1: (value) {
+                                                    setState(() {
+                                                      controller.size.text =
+                                                          value;
+                                                      selectedContainerIndex =
+                                                          4;
+                                                    });
+                                                  },
                                                   onSelectionChanged: (value) {
                                                     setState(() {
                                                       loadtype = value;
@@ -829,8 +786,8 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                                   value: value,
                                                                   child: Text(
                                                                       value,
-                                                                      style: AvailableText
-                                                                          .helvetica),
+                                                                      style: BookingManagerText
+                                                                          .sfpro18black),
                                                                 );
                                                               }).toList(),
                                                               onChanged: (String?
@@ -1081,16 +1038,16 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                     children: [
                                                       Row(
                                                         children: [
-                                                          Icon(
-                                                            Icons.circle,
-                                                            color: Colors.green,
-                                                            size: 20,
+                                                          ImageIcon(
+                                                            NetworkImage(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Icon.png?alt=media&token=ed97c54c-b649-4e28-a502-fb2845284983'),
+                                                            color: Colors.black,
                                                           ),
                                                           SizedBox(
                                                             width: 10,
                                                           ),
                                                           Text(
-                                                            'Pick Up',
+                                                            ' Enter city name',
                                                             style: AvailableText
                                                                 .helvetica17grey,
                                                           ),
@@ -1104,18 +1061,54 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                               1)),
                                                       Row(
                                                         children: [
-                                                          Icon(
-                                                            Icons.circle,
-                                                            color: Colors.red,
-                                                            size: 20,
+                                                          ImageIcon(
+                                                            NetworkImage(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group15765.png?alt=media&token=c8fdcdd5-bbd4-4043-beba-236feaf6d695'),
+                                                            color: Colors.black,
                                                           ),
                                                           SizedBox(
                                                             width: 10,
                                                           ),
                                                           Text(
-                                                            'Drop Point A',
+                                                            'Enter your address',
                                                             style: AvailableText
                                                                 .helvetica17grey,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Divider(
+                                                          color: Color.fromRGBO(
+                                                              183,
+                                                              183,
+                                                              183,
+                                                              1)),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              ImageIcon(
+                                                                NetworkImage(
+                                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group15788.png?alt=media&token=7c513994-0221-4bed-aaf0-d24e39b20d1f'),
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Text(
+                                                                ' Zip code for construction site',
+                                                                style: AvailableText
+                                                                    .helvetica17grey,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          ImageIcon(
+                                                            NetworkImage(
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/add(1).png?alt=media&token=aa9024ab-b917-4166-aaf0-abe740e28de0'),
+                                                            color: Colors.black,
                                                           ),
                                                         ],
                                                       ),
@@ -1730,8 +1723,8 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                                   value: value,
                                                                   child: Text(
                                                                       value,
-                                                                      style: AvailableText
-                                                                          .helvetica),
+                                                                      style: BookingManagerText
+                                                                          .sfpro18black),
                                                                 );
                                                               }).toList(),
                                                               onChanged: (String?

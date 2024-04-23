@@ -146,7 +146,7 @@ class _ConfirmTrip extends State<ConfirmTrip> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Image.network(
-                                        'delivery-truck.png',
+                                        'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/delivery-truck.png?alt=media&token=e352f9eb-3dfb-4680-85df-df6b6903b2a2',
                                         width: 300,
                                         height: 300,
                                       ),

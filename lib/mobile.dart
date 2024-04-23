@@ -383,7 +383,7 @@ class _MblNoDialogState extends State<MblNoDialog1> {
                                 children: [
                                   ImageIcon(
                                     NetworkImage(
-                                      'approved.png',
+                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/approved.png?alt=media&token=1464e391-a8a7-4e1f-9ff8-90154603b7c9',
                                     ),
                                     color: Color.fromRGBO(60, 55, 148, 1),
                                     size: 30,

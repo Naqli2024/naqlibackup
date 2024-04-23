@@ -86,30 +86,6 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
     return mergedStream;
   }
 
-  void initState() {
-    sideMenu.addListener((p0) {
-      page.jumpToPage(p0);
-    });
-    _currentStream = allBookings();
-    super.initState();
-  }
-
-  void enablePayNowButton() {
-    setState(() {
-      payNowButtonEnabled = true;
-    });
-  }
-
-  void disablePayNowButton() {
-    setState(() {
-      payNowButtonEnabled = false;
-    });
-  }
-
-  bool isAnyCheckboxSelected() {
-    return checkbox1 || checkbox2 || checkbox3;
-  }
-
   Stream<Map<String, dynamic>> fetchData(String userId) {
     // Create a StreamController to manage the stream
     StreamController<Map<String, dynamic>> controller = StreamController();
@@ -163,6 +139,30 @@ class _SingleUserPaymentState extends State<SingleUserPayment> {
 
     // Return the stream from the StreamController
     return controller.stream;
+  }
+
+  void initState() {
+    sideMenu.addListener((p0) {
+      page.jumpToPage(p0);
+    });
+    _currentStream = allBookings();
+    super.initState();
+  }
+
+  void enablePayNowButton() {
+    setState(() {
+      payNowButtonEnabled = true;
+    });
+  }
+
+  void disablePayNowButton() {
+    setState(() {
+      payNowButtonEnabled = false;
+    });
+  }
+
+  bool isAnyCheckboxSelected() {
+    return checkbox1 || checkbox2 || checkbox3;
   }
 
   @override

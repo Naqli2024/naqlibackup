@@ -202,6 +202,12 @@ class AvailableText {
     color: Color.fromRGBO(183, 183, 183, 1),
     fontSize: 16,
   );
+  static const TextStyle sfproblack = TextStyle(
+    letterSpacing: 2,
+    fontFamily: 'Tajawal',
+    color: Color.fromRGBO(53, 53, 53, 1),
+    fontSize: 16,
+  );
   static const TextStyle helveticablack = TextStyle(
     letterSpacing: 0.5,
     fontFamily: 'Tajawal',
@@ -252,13 +258,19 @@ class BookingManagerText {
     color: Colors.white,
     fontFamily: 'SFProText',
     letterSpacing: 1,
-    fontSize: 18,
+    fontSize: 19,
   );
   static TextStyle sfpro20black = TextStyle(
     color: Color.fromRGBO(80, 69, 74, 1).withOpacity(0.9),
     fontFamily: 'SFProText',
     letterSpacing: 1,
-    fontSize: 18,
+    fontSize: 19,
+  );
+  static TextStyle sfpro18black = TextStyle(
+    color: Color.fromRGBO(53, 53, 53, 1),
+    fontFamily: 'SFProText',
+    letterSpacing: 1,
+    fontSize: 17,
   );
 }
 

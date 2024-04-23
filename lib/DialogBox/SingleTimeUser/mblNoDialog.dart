@@ -83,6 +83,22 @@ class _MblNoDialogState extends State<MblNoDialog> {
     userStream = fetchData().map((data) => data);
   }
 
+// Define FocusNode for each TextField
+  // Define FocusNode for each TextField
+  FocusNode otp1Focus = FocusNode();
+  FocusNode otp2Focus = FocusNode();
+  FocusNode otp3Focus = FocusNode();
+  FocusNode otp4Focus = FocusNode();
+  FocusNode otp5Focus = FocusNode();
+  FocusNode otp6Focus = FocusNode();
+
+// Assign focus to the next TextField when a number is entered
+  void _onOtpChanged(String value, FocusNode nextFocus) {
+    if (value.length == 1) {
+      nextFocus.requestFocus();
+    }
+  }
+
   Stream<Map<String, dynamic>?> fetchData() {
     try {
       String collectionName = '';
@@ -204,11 +220,11 @@ class _MblNoDialogState extends State<MblNoDialog> {
   String?
       storedVerificationId; // Declare a variable to store the verification ID
 
-  Future<void> _startPhoneAuth(String phoneNumber, String adminUid) async {
+  Future<void> _startPhoneAuth(String phoneNumber) async {
     print("mobtrack3");
 
     FirebaseAuth _auth = FirebaseAuth.instance;
-
+    String? adminUid = widget.adminUid;
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: "+91${contactNumberController.text}",
@@ -286,94 +302,150 @@ class _MblNoDialogState extends State<MblNoDialog> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 45,
+                            height: 60, // Increase the height of the TextField
                             width: 45,
                             child: TextField(
                               controller: otp1,
+                              focusNode: otp1Focus,
+                              onChanged: (value) {
+                                _onOtpChanged(value, otp2Focus);
+                              },
                               keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              textAlign:
+                                  TextAlign.center, // Align text in the center
                               decoration: InputDecoration(
+                                hintText: "", // Remove the hint text
+                                counterText:
+                                    "", // Remove the counter text that displays the entered characters count
+                                contentPadding: EdgeInsets
+                                    .zero, // Remove padding to align text at the center
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
                             ),
                           ),
+                          SizedBox(width: 0.5.w),
                           SizedBox(
-                            width: 0.5.w,
-                          ),
-                          SizedBox(
-                            height: 45,
+                            height: 60, // Increase the height of the TextField
                             width: 45,
                             child: TextField(
                               controller: otp2,
+                              focusNode: otp2Focus,
+                              onChanged: (value) {
+                                _onOtpChanged(value, otp3Focus);
+                              },
                               keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              textAlign:
+                                  TextAlign.center, // Align text in the center
                               decoration: InputDecoration(
+                                hintText: "",
+                                counterText: "",
+                                contentPadding: EdgeInsets.zero,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
                             ),
                           ),
+                          SizedBox(width: 0.5.w),
                           SizedBox(
-                            width: 0.5.w,
-                          ),
-                          SizedBox(
-                            height: 45,
+                            height: 60, // Increase the height of the TextField
                             width: 45,
                             child: TextField(
                               controller: otp3,
+                              focusNode: otp3Focus,
+                              onChanged: (value) {
+                                _onOtpChanged(value, otp4Focus);
+                              },
                               keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              textAlign:
+                                  TextAlign.center, // Align text in the center
                               decoration: InputDecoration(
+                                hintText: "",
+                                counterText: "",
+                                contentPadding: EdgeInsets.zero,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
                             ),
                           ),
+                          SizedBox(width: 0.5.w),
                           SizedBox(
-                            width: 0.5.w,
-                          ),
-                          SizedBox(
-                            height: 45,
+                            height: 60, // Increase the height of the TextField
                             width: 45,
                             child: TextField(
                               controller: otp4,
+                              focusNode: otp4Focus,
+                              onChanged: (value) {
+                                _onOtpChanged(value, otp5Focus);
+                              },
                               keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              textAlign:
+                                  TextAlign.center, // Align text in the center
                               decoration: InputDecoration(
+                                hintText: "",
+                                counterText: "",
+                                contentPadding: EdgeInsets.zero,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
                             ),
                           ),
+                          SizedBox(width: 0.5.w),
                           SizedBox(
-                            width: 0.5.w,
-                          ),
-                          SizedBox(
-                            height: 45,
+                            height: 60, // Increase the height of the TextField
                             width: 45,
                             child: TextField(
                               controller: otp5,
+                              focusNode: otp5Focus,
+                              onChanged: (value) {
+                                _onOtpChanged(value, otp6Focus);
+                              },
                               keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              textAlign:
+                                  TextAlign.center, // Align text in the center
                               decoration: InputDecoration(
+                                hintText: "",
+                                counterText: "",
+                                contentPadding: EdgeInsets.zero,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
                             ),
                           ),
+                          SizedBox(width: 0.5.w),
                           SizedBox(
-                            width: 0.5.w,
-                          ),
-                          SizedBox(
-                            height: 45,
+                            height: 60, // Increase the height of the TextField
                             width: 45,
                             child: TextField(
                               controller: otp6,
+                              focusNode: otp6Focus,
                               keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              textAlign:
+                                  TextAlign.center, // Align text in the center
                               decoration: InputDecoration(
+                                hintText: "",
+                                counterText: "",
+                                contentPadding: EdgeInsets.zero,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
+
                       SizedBox(height: 20), // Adjust spacing as needed
                       SizedBox(
                         height: 40,
@@ -461,7 +533,7 @@ class _MblNoDialogState extends State<MblNoDialog> {
                                                         children: [
                                                           ImageIcon(
                                                             NetworkImage(
-                                                                'approved.png'),
+                                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/approved.png?alt=media&token=1464e391-a8a7-4e1f-9ff8-90154603b7c9'),
                                                             color:
                                                                 Color.fromRGBO(
                                                                     60,
@@ -479,73 +551,70 @@ class _MblNoDialogState extends State<MblNoDialog> {
                                                         ],
                                                       ),
                                                     ),
-                                                    GestureDetector(
-                                                      onTap: () async {
-                                                        //dfgsfdg
-                                                        UserCredential
-                                                            userCredential =
-                                                            await _auth
-                                                                .signInWithEmailAndPassword(
-                                                          email: widget.email!,
-                                                          password:
-                                                              widget.password!,
-                                                        );
-                                                        String userId =
-                                                            userCredential
-                                                                .user!.uid;
-                                                        if (widget
-                                                                .selectedAccounttype ==
-                                                            'Enterprise') {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    EnterDashboardPage(
-                                                                        user:
-                                                                            userId)),
+                                                    // Padding the cancel.png icon to the right with 100 padding
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 100),
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          //dfgsfdg
+                                                          UserCredential
+                                                              userCredential =
+                                                              await _auth
+                                                                  .signInWithEmailAndPassword(
+                                                            email:
+                                                                widget.email!,
+                                                            password: widget
+                                                                .password!,
                                                           );
-                                                        } else if (widget
-                                                                .selectedAccounttype ==
-                                                            'Super User') {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    SuperUserDashboardPage(
-                                                                        user:
-                                                                            userId)),
-                                                          );
-                                                        } else if (widget
-                                                                .selectedAccounttype ==
-                                                            'User') {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    MyHomePagesingle(
-                                                                        user:
-                                                                            userId)),
-                                                          );
-                                                        } else {
-                                                          // Handle invalid selectedType
-                                                          print(
-                                                              'Invalid selected type: ${widget.selectedAccounttype}');
-                                                        }
-                                                      },
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Center(
-                                                            child: ImageIcon(
-                                                              NetworkImage(
-                                                                  'cancel.png'),
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                          String userId =
+                                                              userCredential
+                                                                  .user!.uid;
+                                                          if (widget
+                                                                  .selectedAccounttype ==
+                                                              'Enterprise') {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      EnterDashboardPage(
+                                                                          user:
+                                                                              userId)),
+                                                            );
+                                                          } else if (widget
+                                                                  .selectedAccounttype ==
+                                                              'Super User') {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      SuperUserDashboardPage(
+                                                                          user:
+                                                                              userId)),
+                                                            );
+                                                          } else if (widget
+                                                                  .selectedAccounttype ==
+                                                              'User') {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      MyHomePagesingle(
+                                                                          user:
+                                                                              userId)),
+                                                            );
+                                                          } else {
+                                                            // Handle invalid selectedType
+                                                            print(
+                                                                'Invalid selected type: ${widget.selectedAccounttype}');
+                                                          }
+                                                        },
+                                                        child: ImageIcon(
+                                                          NetworkImage(
+                                                              'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
+                                                          color: Colors.black,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -633,7 +702,8 @@ class _MblNoDialogState extends State<MblNoDialog> {
                                 style: FormTextStyle.purplehelvetica),
                             onTap: () async {
                               await _startPhoneAuth(
-                                  contactNumberController.text, adminUid);
+                                contactNumberController.text,
+                              );
                             },
                           ),
                         ],
@@ -726,23 +796,31 @@ class _MblNoDialogState extends State<MblNoDialog> {
                             ),
                           ),
                           SizedBox(
-                            height: 30,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                String adminUid = widget.adminUid!;
-                                await _startPhoneAuth(
-                                    contactNumberController.text, adminUid);
-                              },
-                              style: ElevatedButton.styleFrom(
+                              height: 30,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (widget.adminUid != null) {
+                                    String adminUid = widget.adminUid!;
+                                    await _startPhoneAuth(
+                                      contactNumberController.text,
+                                    );
+                                  } else {
+                                    await _startPhoneAuth(
+                                        contactNumberController.text);
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       Color.fromRGBO(60, 55, 148, 1),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(0),
-                                  )),
-                              child: Text("Get OTP",
-                                  style: LoginpageText.helvetica16white),
-                            ),
-                          ),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Get OTP",
+                                  style: LoginpageText.helvetica16white,
+                                ),
+                              )),
                         ],
                       ),
                       SizedBox(height: 40),
@@ -784,116 +862,113 @@ class _MblNoDialogState extends State<MblNoDialog> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(18.w, 33.h, 18.w, 33.h),
               child: SingleChildScrollView(
-                child: Expanded(
-                  child: Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(31))),
-                    child: Container(
-                      height: 280,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(31),
-                        ),
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(31))),
+                  child: Container(
+                    height: 280,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(31),
                       ),
-                      padding: EdgeInsets.fromLTRB(4.w, 4.h, 2.w, 4.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Center(
-                                  child: Text('Enter Mobile No',
-                                      style: LoginpageText.helvetica30bold),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: ImageIcon(
-                                  NetworkImage(
-                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 30,
-                                width: 200,
-                                child: TextField(
-                                  controller: contactNumberController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    hintText: '99999 99999',
-                                    contentPadding: EdgeInsets.only(
-                                      left: 1.w,
-                                    ),
-                                    hintStyle: DialogText.helvetica16sandal,
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(0)),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 30,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    String adminUid = widget.adminUid!;
-                                    await _startPhoneAuth(
-                                        contactNumberController.text, adminUid);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Color.fromRGBO(60, 55, 148, 1),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0),
-                                      )),
-                                  child: Text("Get OTP",
-                                      style: LoginpageText.helvetica16white),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 40),
-                          Padding(
-                            padding: EdgeInsets.only(left: 2.w, right: 5.w),
-                            child: Divider(
-                              color: Color.fromRGBO(112, 112, 112, 1),
+                    ),
+                    padding: EdgeInsets.fromLTRB(4.w, 4.h, 2.w, 4.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Center(
+                              child: Text('Enter Mobile No',
+                                  style: LoginpageText.helvetica30bold),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Don't have an account?",
-                                  style: HomepageText.helvetica16black),
-                              InkWell(
-                                child: Text('Create One!',
-                                    style: LoginpageText.purplehelvetica),
-                                onTap: () {
-                                  showDialog(
-                                    barrierColor: Colors.grey.withOpacity(0.5),
-                                    context: context,
-                                    builder: (context) {
-                                      return CreateAccount();
-                                    },
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: ImageIcon(
+                                NetworkImage(
+                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5'),
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 30,
+                              width: 200,
+                              child: TextField(
+                                controller: contactNumberController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  hintText: '99999 99999',
+                                  contentPadding: EdgeInsets.only(
+                                    left: 1.w,
+                                  ),
+                                  hintStyle: DialogText.helvetica16sandal,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(0)),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  String adminUid = widget.adminUid!;
+                                  await _startPhoneAuth(
+                                    contactNumberController.text,
                                   );
                                 },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromRGBO(60, 55, 148, 1),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                    )),
+                                child: Text("Get OTP",
+                                    style: LoginpageText.helvetica16white),
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 40),
+                        Padding(
+                          padding: EdgeInsets.only(left: 2.w, right: 5.w),
+                          child: Divider(
+                            color: Color.fromRGBO(112, 112, 112, 1),
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Don't have an account?",
+                                style: HomepageText.helvetica16black),
+                            InkWell(
+                              child: Text('Create One!',
+                                  style: LoginpageText.purplehelvetica),
+                              onTap: () {
+                                showDialog(
+                                  barrierColor: Colors.grey.withOpacity(0.5),
+                                  context: context,
+                                  builder: (context) {
+                                    return CreateAccount();
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

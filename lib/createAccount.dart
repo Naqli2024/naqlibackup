@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +97,21 @@ class _CreateAccountState extends State<CreateAccount> {
     } else {
       if (!regex.hasMatch(value)) {
         return 'Enter valid password';
+      } else {
+        return null;
+      }
+    }
+  }
+
+  String? validateAddress(String? value) {
+    RegExp regex = RegExp(
+      r'^[a-zA-Z0-9 ]+$',
+    );
+    if (value!.isEmpty) {
+      return 'Please enter your address';
+    } else {
+      if (!regex.hasMatch(value)) {
+        return 'Address must contain only letters and numbers';
       } else {
         return null;
       }
@@ -271,7 +288,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                     ),
                                     CustomTextfield(
                                       controller: controller.address,
-                                      validator: nameValidator,
+                                      validator: validateAddress,
                                       text: 'Address',
                                     ),
                                     SizedBox(
@@ -384,12 +401,12 @@ class _CreateAccountState extends State<CreateAccount> {
                                       height: 15,
                                     ),
                                     CustomTextfield(
-                                      validator: (value) {
-                                        if (value!.length != 10)
-                                          return 'Mobile Number must be of 10 digit';
-                                        else
-                                          return null;
-                                      },
+                                      // validator: (value) {
+                                      //   if (value!.length != 10)
+                                      //     return 'Mobile Number must be of 10 digit';
+                                      //   else
+                                      //     return null;
+                                      // },
                                       controller: controller.alternateNumber,
                                       text: 'Phone Number',
                                     ),
@@ -397,7 +414,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                       height: 15,
                                     ),
                                     CustomTextfield(
-                                      validator: nameValidator,
+                                      validator: validateAddress,
                                       controller: controller.address2,
                                       text: 'Address',
                                     ),
@@ -774,12 +791,12 @@ class _CreateAccountState extends State<CreateAccount> {
                               SizedBox(width: 5),
                               Expanded(
                                 child: CustomTextfield(
-                                  validator: (value) {
-                                    if (value!.length != 10)
-                                      return 'Mobile Number must be of 10 digit';
-                                    else
-                                      return null;
-                                  },
+                                  // validator: (value) {
+                                  //   if (value!.length != 10)
+                                  //     return 'Mobile Number must be of 10 digit';
+                                  //   else
+                                  //     return null;
+                                  // },
                                   controller: controller.alternateNumber,
                                   text: 'Phone Number',
                                 ),
@@ -798,7 +815,7 @@ class _CreateAccountState extends State<CreateAccount> {
                               SizedBox(width: 5),
                               Expanded(
                                 child: CustomTextfield(
-                                  validator: nameValidator,
+                                  validator: validateAddress,
                                   controller: controller.address,
                                   text: 'Address',
                                 ),
@@ -817,7 +834,7 @@ class _CreateAccountState extends State<CreateAccount> {
                               SizedBox(width: 5),
                               Expanded(
                                 child: CustomTextfield(
-                                  validator: nameValidator,
+                                  validator: validateAddress,
                                   controller: controller.address2,
                                   text: 'Address',
                                 ),
@@ -1102,8 +1119,17 @@ class _CreateAccountState extends State<CreateAccount> {
     });
   }
 
-  Future<void> _createAccount(String uid, String selectedType) async {
+  Future<void> _createAccount(
+    String uid,
+    String selectedType,
+  ) async {
     try {
+      Random random = Random();
+
+      String bookingID = '';
+      for (int i = 0; i < 10; i++) {
+        bookingID += random.nextInt(10).toString();
+      }
       String userCollection;
       Map<String, dynamic> userData = {
         'firstName': controller.firstName.text,
@@ -1116,6 +1142,7 @@ class _CreateAccountState extends State<CreateAccount> {
         'address2': controller.address2.text,
         'city': controller.selectedCity.text,
         'accounttype': controller.selectedAccounttype.text,
+        'userId': bookingID,
       };
 
       if (selectedType == 'Enterprise') {
