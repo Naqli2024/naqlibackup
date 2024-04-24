@@ -175,6 +175,48 @@ final class CustomButton3 extends StatelessWidget {
   }
 }
 
+@immutable
+final class CustomButton4 extends StatelessWidget {
+  final String? text;
+  Widget? child;
+  final Function()? onPressed;
+
+  final Color? color;
+  final double? dynamicHeight;
+  CustomButton4({
+    super.key,
+    this.text,
+    this.onPressed,
+    this.color,
+    this.dynamicHeight,
+    this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 52,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          elevation: 2,
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+                color: const Color.fromRGBO(112, 112, 112, 1).withOpacity(0.3)),
+            borderRadius:
+                BorderRadius.circular(28), // Adjust border radius as needed
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+          child: Text(text!, style: DialogText.helvetica20),
+        ),
+      ),
+    );
+  }
+}
+
 final class ViewButton extends StatelessWidget {
   final String? text;
   Widget? child;

@@ -10,8 +10,8 @@ import 'package:flutter_application_1/Partner/Dashboard/dashboard_page.dart';
 import 'package:sizer/sizer.dart';
 
 class Operator extends StatefulWidget {
-  final String? user;
-  const Operator({this.user});
+  final String? user, operId;
+  const Operator({this.user, this.operId});
 
   @override
   _OperatorState createState() => _OperatorState();
@@ -674,7 +674,7 @@ class _OperatorState extends State<Operator> {
                                       child: Row(
                                         children: [
                                           Image.network(
-                                            'assets/cancel.png', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
+                                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
                                             width: 17,
                                             height: 17,
                                             // color: Colors.black,
@@ -730,7 +730,7 @@ class _OperatorState extends State<Operator> {
                                           child: Row(
                                             children: [
                                               Image.network(
-                                                'assets/cancel.png', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
+                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
                                                 width: 17,
                                                 height: 17,
                                                 // color: Colors.black,
@@ -1051,7 +1051,7 @@ class _OperatorState extends State<Operator> {
                                       child: Row(
                                         children: [
                                           Image.network(
-                                            'assets/cancel.png', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
+                                            'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
                                             width: 17,
                                             height: 17,
                                             // color: Colors.black,
@@ -1107,7 +1107,7 @@ class _OperatorState extends State<Operator> {
                                           child: Row(
                                             children: [
                                               Image.network(
-                                                'assets/cancel.png', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
+                                                'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/cancel.png?alt=media&token=dd1ed39b-abda-4780-94dd-f5c15e7d12f5', // Assuming you have an image asset named 'upload_icon.png' in your assets folder
                                                 width: 17,
                                                 height: 17,
                                                 // color: Colors.black,
@@ -1162,7 +1162,9 @@ class _OperatorState extends State<Operator> {
                                 String iqamaNo = controller.iqamaNo.text;
                                 String dob = controller.dob.text;
                                 String plateinfo = controller.operPlatInfo.text;
-                                String operName = controller.partnerName.text;
+                                String operName =
+                                    '${controller.firstName.text} ${controller.lastName.text}';
+
                                 String operatorid = operatorID;
                                 await createOperator(
                                   unit,

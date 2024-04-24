@@ -88,7 +88,7 @@ class _GetanEstimateState extends State<GetanEstimate> {
                     ),
                     Expanded(
                       child: Container(
-                        height: 775,
+                        height: 800,
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(

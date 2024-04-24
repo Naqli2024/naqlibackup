@@ -146,6 +146,7 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
     String size,
     String date,
     String labour,
+    String productValue,
     String adminUid,
   ) async {
     try {
@@ -165,6 +166,7 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
         'size': size,
         'date': date,
         'labour': labour,
+        'productValue': productValue,
       });
 
       // Store the auto-generated ID
@@ -614,304 +616,127 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                 Row(
                                                   children: [
                                                     Expanded(
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Flexible(
-                                                                child:
-                                                                    CustomTextfieldGrey(
-                                                                  controller:
-                                                                      controller
-                                                                          .time,
-                                                                  text: 'Time',
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Flexible(
-                                                                child:
-                                                                    CustomTextfieldGrey(
-                                                                  controller:
-                                                                      controller
-                                                                          .size,
-                                                                  text:
-                                                                      'Value of the Product',
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          )
-                                                        ],
+                                                      child:
+                                                          CustomTextfieldGrey(
+                                                        controller:
+                                                            controller.fromtime,
+                                                        text: 'From Time',
                                                       ),
                                                     ),
                                                     SizedBox(
-                                                      width: 15,
+                                                      width: 50,
                                                     ),
                                                     Expanded(
-                                                      child: Column(
-                                                        children: [
-                                                          GestureDetector(
-                                                            child: Container(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .fromLTRB(
-                                                                          0.5.w,
-                                                                          0,
-                                                                          1.w,
-                                                                          0),
-                                                              height: 50,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Color
-                                                                        .fromRGBO(
-                                                                            183,
-                                                                            183,
-                                                                            183,
-                                                                            1)),
-                                                                color: Colors
-                                                                    .white,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          8),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          8),
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          8),
-                                                                  bottomRight: Radius
-                                                                      .circular(
-                                                                          8),
-                                                                ),
-                                                              ),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  IconButton(
-                                                                    icon: Icon(
-                                                                        Icons
-                                                                            .calendar_today,
-                                                                        size:
-                                                                            25,
-                                                                        color: Color.fromRGBO(
-                                                                            183,
-                                                                            183,
-                                                                            183,
-                                                                            1)),
-                                                                    onPressed:
-                                                                        () {
-                                                                      _showDatePicker(
-                                                                          context);
-                                                                    },
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 10,
-                                                                  ),
-                                                                  VerticalDivider(
-                                                                    width: 0.2,
-                                                                    color: Color
-                                                                        .fromRGBO(
-                                                                            183,
-                                                                            183,
-                                                                            183,
-                                                                            1),
-                                                                  ),
-                                                                  Expanded(
-                                                                    child:
-                                                                        TextFormField(
-                                                                      controller:
-                                                                          controller
-                                                                              .date,
-                                                                      style: AvailableText
-                                                                          .helvetica,
-                                                                      readOnly:
-                                                                          true,
-                                                                      onTap:
-                                                                          () {
-                                                                        _showDatePicker(
-                                                                            context);
-                                                                      },
-                                                                      decoration:
-                                                                          InputDecoration(
-                                                                        contentPadding:
-                                                                            EdgeInsets.only(left: 12),
-                                                                        border:
-                                                                            InputBorder.none,
-                                                                        hintStyle:
-                                                                            AvailableText.helvetica,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          DropdownButtonHideUnderline(
-                                                            child:
-                                                                DropdownButton2<
-                                                                    String>(
-                                                              value: controller
-                                                                      .load
-                                                                      .text
-                                                                      .isNotEmpty
-                                                                  ? controller
-                                                                      .load.text
-                                                                  : 'Load Type', // Use value from the list
-                                                              items: <String>[
-                                                                'Trigger Bookings',
-                                                                'Booking Manager',
-                                                                'Contract',
-                                                                'Load Type',
-                                                                'None'
-                                                              ].map<
-                                                                  DropdownMenuItem<
-                                                                      String>>((String
-                                                                  value) {
-                                                                return DropdownMenuItem<
-                                                                    String>(
-                                                                  value: value,
-                                                                  child: Text(
-                                                                      value,
-                                                                      style: BookingManagerText
-                                                                          .sfpro18black),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (String?
-                                                                  newValue) {
-                                                                setState(() {
-                                                                  controller
-                                                                          .load
-                                                                          .text =
-                                                                      newValue!; // Update value in the list
-                                                                });
-                                                              },
-                                                              buttonStyleData:
-                                                                  ButtonStyleData(
-                                                                height: 50,
-                                                                width: 15.w,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left: 9,
-                                                                        right:
-                                                                            5),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  border: Border.all(
-                                                                      color: Color.fromRGBO(
-                                                                          183,
-                                                                          183,
-                                                                          183,
-                                                                          1)),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            8),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            8),
-                                                                    bottomLeft:
-                                                                        Radius.circular(
-                                                                            8),
-                                                                    bottomRight:
-                                                                        Radius.circular(
-                                                                            8),
-                                                                  ),
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              ),
-                                                              iconStyleData:
-                                                                  const IconStyleData(
-                                                                icon: Icon(
-                                                                  Icons
-                                                                      .arrow_drop_down_sharp,
-                                                                ),
-                                                                iconSize: 25,
-                                                                iconEnabledColor:
-                                                                    Colors
-                                                                        .black,
-                                                                iconDisabledColor:
-                                                                    null,
-                                                              ),
-                                                              dropdownStyleData:
-                                                                  DropdownStyleData(
-                                                                elevation: 0,
-                                                                maxHeight: 200,
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(3),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  border: Border.all(
-                                                                      color: Color.fromRGBO(
-                                                                          112,
-                                                                          112,
-                                                                          112,
-                                                                          1)),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            5),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            5),
-                                                                    bottomLeft:
-                                                                        Radius.circular(
-                                                                            5),
-                                                                    bottomRight:
-                                                                        Radius.circular(
-                                                                            5),
-                                                                  ),
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                                scrollPadding:
-                                                                    EdgeInsets
-                                                                        .all(5),
-                                                                scrollbarTheme:
-                                                                    ScrollbarThemeData(
-                                                                  thickness:
-                                                                      MaterialStateProperty
-                                                                          .all<double>(
-                                                                              6),
-                                                                  thumbVisibility:
-                                                                      MaterialStateProperty.all<
-                                                                              bool>(
-                                                                          true),
-                                                                ),
-                                                              ),
-                                                              menuItemStyleData:
-                                                                  MenuItemStyleData(
-                                                                height: 30,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left: 9,
-                                                                        right:
-                                                                            5),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
+                                                      child:
+                                                          CustomTextfieldGrey(
+                                                        controller:
+                                                            controller.totime,
+                                                        text: 'To Time',
                                                       ),
-                                                    )
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: GestureDetector(
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(0.5.w,
+                                                                  0, 1.w, 0),
+                                                          height: 50,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        183,
+                                                                        183,
+                                                                        183,
+                                                                        1)),
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                              topLeft: Radius
+                                                                  .circular(8),
+                                                              topRight: Radius
+                                                                  .circular(8),
+                                                              bottomLeft: Radius
+                                                                  .circular(8),
+                                                              bottomRight:
+                                                                  Radius
+                                                                      .circular(
+                                                                          8),
+                                                            ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              IconButton(
+                                                                icon: Icon(
+                                                                    Icons
+                                                                        .calendar_today,
+                                                                    size: 25,
+                                                                    color: Color
+                                                                        .fromRGBO(
+                                                                            183,
+                                                                            183,
+                                                                            183,
+                                                                            1)),
+                                                                onPressed: () {
+                                                                  _showDatePicker(
+                                                                      context);
+                                                                },
+                                                              ),
+                                                              SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              VerticalDivider(
+                                                                width: 0.2,
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        183,
+                                                                        183,
+                                                                        183,
+                                                                        1),
+                                                              ),
+                                                              Expanded(
+                                                                child:
+                                                                    TextFormField(
+                                                                  controller:
+                                                                      controller
+                                                                          .date,
+                                                                  style: AvailableText
+                                                                      .helvetica,
+                                                                  readOnly:
+                                                                      true,
+                                                                  onTap: () {
+                                                                    _showDatePicker(
+                                                                        context);
+                                                                  },
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    contentPadding:
+                                                                        EdgeInsets.only(
+                                                                            left:
+                                                                                12),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintStyle:
+                                                                        AvailableText
+                                                                            .helvetica,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
                                                 SizedBox(
@@ -919,18 +744,22 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Checkbox(
-                                                      value: checkbox1,
-                                                      onChanged:
-                                                          (bool? newValue) {
-                                                        setState(() {
-                                                          checkbox1 = newValue!;
-                                                          if (!checkbox1) {
-                                                            groupValue =
-                                                                null; // Disable all radio buttons
-                                                          }
-                                                        });
-                                                      },
+                                                    Transform.scale(
+                                                      scale: 0.8,
+                                                      child: Checkbox(
+                                                        value: checkbox1,
+                                                        onChanged:
+                                                            (bool? newValue) {
+                                                          setState(() {
+                                                            checkbox1 =
+                                                                newValue!;
+                                                            if (!checkbox1) {
+                                                              groupValue =
+                                                                  null; // Disable all radio buttons
+                                                            }
+                                                          });
+                                                        },
+                                                      ),
                                                     ),
                                                     // Variable to store the selected radio button value
 
@@ -1090,11 +919,14 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                           Row(
                                                             children: [
                                                               ImageIcon(
-                                                                NetworkImage(
-                                                                    'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group15788.png?alt=media&token=7c513994-0221-4bed-aaf0-d24e39b20d1f'),
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
+                                                                  NetworkImage(
+                                                                      'https://firebasestorage.googleapis.com/v0/b/naqli-5825c.appspot.com/o/Group15788.png?alt=media&token=7c513994-0221-4bed-aaf0-d24e39b20d1f'),
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                          183,
+                                                                          183,
+                                                                          183,
+                                                                          1)),
                                                               SizedBox(
                                                                 width: 10,
                                                               ),
@@ -1200,6 +1032,11 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                               }
                                                               String truck1 =
                                                                   truck;
+                                                              String
+                                                                  productValue =
+                                                                  controller
+                                                                      .productValue
+                                                                      .text;
                                                               String size =
                                                                   controller
                                                                       .size
@@ -1223,6 +1060,7 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                                       size,
                                                                       date,
                                                                       labour,
+                                                                      productValue,
                                                                       widget
                                                                           .user!);
                                                               String unitType =
@@ -1619,7 +1457,7 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                                     CustomTextfieldGrey(
                                                                   controller:
                                                                       controller
-                                                                          .size,
+                                                                          .productValue,
                                                                   text:
                                                                       'Value of the Product',
                                                                 ),
@@ -1854,19 +1692,25 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Checkbox(
-                                                      value: checkbox1,
-                                                      onChanged:
-                                                          (bool? newValue) {
-                                                        setState(() {
-                                                          checkbox1 = newValue!;
-                                                          if (!checkbox1) {
-                                                            groupValue =
-                                                                null; // Disable all radio buttons
-                                                          }
-                                                        });
-                                                      },
+                                                    Transform.scale(
+                                                      scale: 0.8,
+                                                      child: Checkbox(
+                                                        value: checkbox1,
+                                                        onChanged:
+                                                            (bool? newValue) {
+                                                          setState(() {
+                                                            checkbox1 =
+                                                                newValue!;
+                                                            if (!checkbox1) {
+                                                              groupValue =
+                                                                  null; // Disable all radio buttons
+                                                            }
+                                                          });
+                                                        },
+                                                      ),
                                                     ),
+                                                    // Variable to store the selected radio button value
+
                                                     Text(
                                                       'Need Additional Labour',
                                                       style: AvailableText
@@ -1909,17 +1753,19 @@ class _AvailableEquipmentState extends State<AvailableEquipment> {
                                                                       .8),
                                                               value: i,
                                                               groupValue: checkbox1
-                                                                  ? groupValue
-                                                                  : null, // Enable/disable based on checkbox state
-                                                              onChanged: checkbox1
-                                                                  ? (int? value) {
-                                                                      setState(
-                                                                          () {
-                                                                        groupValue =
-                                                                            value;
-                                                                      });
-                                                                    }
-                                                                  : null, // Set onChanged to null if checkbox is unchecked
+                                                                  ? selectedRadioValue
+                                                                  : null, // Set groupValue to the selectedRadioValue variable
+                                                              onChanged:
+                                                                  checkbox1
+                                                                      ? (int?
+                                                                          value) {
+                                                                          setState(
+                                                                              () {
+                                                                            selectedRadioValue =
+                                                                                value; // Update the selectedRadioValue when radio button is changed
+                                                                          });
+                                                                        }
+                                                                      : null,
                                                             ),
                                                           ),
                                                           Text(

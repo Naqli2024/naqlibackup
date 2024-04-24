@@ -144,6 +144,18 @@ class BookingText {
       letterSpacing: 1,
       fontSize: 14,
       fontWeight: FontWeight.bold);
+  static const TextStyle helvetica18bold = TextStyle(
+      fontFamily: 'Helvetica',
+      color: Color.fromRGBO(121, 121, 124, 1),
+      letterSpacing: 1,
+      fontSize: 16,
+      fontWeight: FontWeight.bold);
+  static const TextStyle helvetica21bold = TextStyle(
+      fontFamily: 'Helvetica',
+      color: Color.fromRGBO(121, 121, 124, 1),
+      letterSpacing: 1,
+      fontSize: 19,
+      fontWeight: FontWeight.bold);
 }
 
 class PaymentText {
@@ -218,6 +230,24 @@ class AvailableText {
       fontFamily: 'Helvetica',
       color: Colors.white,
       fontSize: 28,
+      fontWeight: FontWeight.bold);
+}
+
+class DetailsText {
+  static TextStyle helvetica = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(16, 3, 3, 1).withOpacity(0.5),
+    fontSize: 15,
+  );
+  static const TextStyle helvetica20 = TextStyle(
+    fontFamily: 'Helvetica',
+    color: Color.fromRGBO(16, 3, 3, 1),
+    fontSize: 18,
+  );
+  static const TextStyle helvetica25black = TextStyle(
+      fontFamily: 'Helvetica',
+      color: Color.fromRGBO(0, 0, 0, 1),
+      fontSize: 23,
       fontWeight: FontWeight.bold);
 }
 

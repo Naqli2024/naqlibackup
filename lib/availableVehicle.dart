@@ -165,6 +165,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
     String date,
     String time,
     String labour,
+    String productValue,
     String adminUid,
   ) async {
     try {
@@ -185,6 +186,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
         'date': date,
         'time': time,
         'labour': labour,
+        'productValue': productValue,
       });
 
       // Store the auto-generated ID
@@ -816,9 +818,9 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                               Flexible(
                                                                 child:
                                                                     CustomTextfieldGrey(
-                                                                  // controller:
-                                                                  //     controller
-                                                                  //         .size,
+                                                                  controller:
+                                                                      controller
+                                                                          .productValue,
                                                                   text:
                                                                       'Value of the Product',
                                                                 ),
@@ -1102,19 +1104,25 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Checkbox(
-                                                      value: checkbox1,
-                                                      onChanged:
-                                                          (bool? newValue) {
-                                                        setState(() {
-                                                          checkbox1 = newValue!;
-                                                          if (!checkbox1) {
-                                                            groupValue =
-                                                                null; // Disable all radio buttons
-                                                          }
-                                                        });
-                                                      },
+                                                    Transform.scale(
+                                                      scale: 0.8,
+                                                      child: Checkbox(
+                                                        value: checkbox1,
+                                                        onChanged:
+                                                            (bool? newValue) {
+                                                          setState(() {
+                                                            checkbox1 =
+                                                                newValue!;
+                                                            if (!checkbox1) {
+                                                              groupValue =
+                                                                  null; // Disable all radio buttons
+                                                            }
+                                                          });
+                                                        },
+                                                      ),
                                                     ),
+                                                    // Variable to store the selected radio button value
+
                                                     Text(
                                                       'Need Additional Labour',
                                                       style: AvailableText
@@ -1158,16 +1166,18 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                               value: i,
                                                               groupValue: checkbox1
                                                                   ? selectedRadioValue
-                                                                  : null, // Enable/disable based on checkbox state
-                                                              onChanged: checkbox1
-                                                                  ? (int? value) {
-                                                                      setState(
-                                                                          () {
-                                                                        selectedRadioValue =
-                                                                            value;
-                                                                      });
-                                                                    }
-                                                                  : null, // Set onChanged to null if checkbox is unchecked
+                                                                  : null, // Set groupValue to the selectedRadioValue variable
+                                                              onChanged:
+                                                                  checkbox1
+                                                                      ? (int?
+                                                                          value) {
+                                                                          setState(
+                                                                              () {
+                                                                            selectedRadioValue =
+                                                                                value; // Update the selectedRadioValue when radio button is changed
+                                                                          });
+                                                                        }
+                                                                      : null,
                                                             ),
                                                           ),
                                                           Text(
@@ -1356,6 +1366,11 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                               }
                                                               String truck1 =
                                                                   truck;
+                                                              String
+                                                                  productValue =
+                                                                  controller
+                                                                      .productValue
+                                                                      .text;
                                                               String size =
                                                                   controller
                                                                       .size
@@ -1386,6 +1401,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                                                       date,
                                                                       time,
                                                                       labour,
+                                                                      productValue,
                                                                       widget
                                                                           .user!);
                                                               String unitType =
@@ -1856,6 +1872,7 @@ class _AvailableVehicleState extends State<AvailableVehicle> {
                                             text: 'Time',
                                           ),
                                           CustomTextfieldGrey(
+                                            controller: controller.productValue,
                                             text: 'Value of the Product',
                                           ),
                                           Row(

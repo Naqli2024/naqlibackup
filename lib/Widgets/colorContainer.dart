@@ -124,7 +124,7 @@ final class ElevationUnitsContainer extends StatelessWidget {
       shadowColor: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.6),
       child: Container(
         width: 155,
-        height: 156,
+        height: 160,
         decoration: BoxDecoration(
           border: Border.all(
               color: Color.fromRGBO(112, 112, 112, 1).withOpacity(0.3)),
@@ -132,27 +132,30 @@ final class ElevationUnitsContainer extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 5),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Image(
                 width: 150,
-                height: 100,
+                height: 90,
                 image: NetworkImage(imgpath!),
               ),
               Divider(
                 color: Color.fromRGBO(112, 112, 112, 1),
               ),
-              SizedBox(height: 2),
-              Text(
-                text1!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    letterSpacing: 1.5,
-                    fontSize: 14,
-                    fontFamily: 'SFProText',
-                    color: Color.fromRGBO(0, 0, 0, 1)),
+              Container(
+                height: 37,
+                width: 155,
+                child: Text(
+                  text1!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      letterSpacing: 1.5,
+                      fontSize: 14,
+                      fontFamily: 'SFProText',
+                      color: Color.fromRGBO(0, 0, 0, 1)),
+                ),
               ),
             ],
           ),
