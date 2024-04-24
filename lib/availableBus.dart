@@ -497,7 +497,7 @@ class _AvailableBusState extends State<AvailableBus> {
                                                                       'Value of the Product',
                                                                   controller:
                                                                       controller
-                                                                          .size,
+                                                                          .productValue,
                                                                 ),
                                                               ),
                                                             ],
@@ -775,19 +775,25 @@ class _AvailableBusState extends State<AvailableBus> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Checkbox(
-                                                      value: checkbox1,
-                                                      onChanged:
-                                                          (bool? newValue) {
-                                                        setState(() {
-                                                          checkbox1 = newValue!;
-                                                          if (!checkbox1) {
-                                                            groupValue =
-                                                                null; // Disable all radio buttons
-                                                          }
-                                                        });
-                                                      },
+                                                    Transform.scale(
+                                                      scale: 0.8,
+                                                      child: Checkbox(
+                                                        value: checkbox1,
+                                                        onChanged:
+                                                            (bool? newValue) {
+                                                          setState(() {
+                                                            checkbox1 =
+                                                                newValue!;
+                                                            if (!checkbox1) {
+                                                              groupValue =
+                                                                  null; // Disable all radio buttons
+                                                            }
+                                                          });
+                                                        },
+                                                      ),
                                                     ),
+                                                    // Variable to store the selected radio button value
+
                                                     Text(
                                                       'Need Additional Labour',
                                                       style: AvailableText
@@ -831,16 +837,18 @@ class _AvailableBusState extends State<AvailableBus> {
                                                               value: i,
                                                               groupValue: checkbox1
                                                                   ? selectedRadioValue
-                                                                  : null, // Enable/disable based on checkbox state
-                                                              onChanged: checkbox1
-                                                                  ? (int? value) {
-                                                                      setState(
-                                                                          () {
-                                                                        selectedRadioValue =
-                                                                            value;
-                                                                      });
-                                                                    }
-                                                                  : null, // Set onChanged to null if checkbox is unchecked
+                                                                  : null, // Set groupValue to the selectedRadioValue variable
+                                                              onChanged:
+                                                                  checkbox1
+                                                                      ? (int?
+                                                                          value) {
+                                                                          setState(
+                                                                              () {
+                                                                            selectedRadioValue =
+                                                                                value; // Update the selectedRadioValue when radio button is changed
+                                                                          });
+                                                                        }
+                                                                      : null,
                                                             ),
                                                           ),
                                                           Text(
@@ -999,7 +1007,8 @@ class _AvailableBusState extends State<AvailableBus> {
                                                                 truck;
                                                             String size =
                                                                 controller
-                                                                    .size.text;
+                                                                    .productValue
+                                                                    .text;
                                                             String time =
                                                                 controller
                                                                     .time.text;
@@ -1528,22 +1537,27 @@ class _AvailableBusState extends State<AvailableBus> {
                                           ),
                                           CustomTextfieldGrey(
                                             text: 'Value of the Product',
-                                            controller: controller.size,
+                                            controller: controller.productValue,
                                           ),
                                           Row(
                                             children: [
-                                              Checkbox(
-                                                value: checkbox1,
-                                                onChanged: (bool? newValue) {
-                                                  setState(() {
-                                                    checkbox1 = newValue!;
-                                                    if (!checkbox1) {
-                                                      groupValue =
-                                                          null; // Disable all radio buttons
-                                                    }
-                                                  });
-                                                },
+                                              Transform.scale(
+                                                scale: 0.8,
+                                                child: Checkbox(
+                                                  value: checkbox1,
+                                                  onChanged: (bool? newValue) {
+                                                    setState(() {
+                                                      checkbox1 = newValue!;
+                                                      if (!checkbox1) {
+                                                        groupValue =
+                                                            null; // Disable all radio buttons
+                                                      }
+                                                    });
+                                                  },
+                                                ),
                                               ),
+                                              // Variable to store the selected radio button value
+
                                               Text(
                                                 'Need Additional Labour',
                                                 style: AvailableText
@@ -1580,16 +1594,16 @@ class _AvailableBusState extends State<AvailableBus> {
                                                                     .8),
                                                         value: i,
                                                         groupValue: checkbox1
-                                                            ? groupValue
-                                                            : null, // Enable/disable based on checkbox state
+                                                            ? selectedRadioValue
+                                                            : null, // Set groupValue to the selectedRadioValue variable
                                                         onChanged: checkbox1
                                                             ? (int? value) {
                                                                 setState(() {
-                                                                  groupValue =
-                                                                      value;
+                                                                  selectedRadioValue =
+                                                                      value; // Update the selectedRadioValue when radio button is changed
                                                                 });
                                                               }
-                                                            : null, // Set onChanged to null if checkbox is unchecked
+                                                            : null,
                                                       ),
                                                     ),
                                                     Text(

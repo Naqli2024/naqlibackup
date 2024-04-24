@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/Partner/Dashboard/detailsPage.dart';
 import 'package:flutter_application_1/Users/SingleUser/singleuser.dart';
 import 'package:flutter_application_1/Widgets/colorContainer.dart';
 import 'package:flutter_application_1/Widgets/formText.dart';
@@ -20,10 +21,10 @@ import 'package:sizer/sizer.dart';
 import 'dart:ui';
 
 class Bookings1 extends StatefulWidget {
-  final String? user;
+  final String? partner;
   final String? unitType;
-
-  Bookings1({this.user, this.unitType});
+  final String? operatorName;
+  Bookings1({this.operatorName, this.partner, this.unitType});
   @override
   State<Bookings1> createState() => _Bookings1State();
 }
@@ -75,29 +76,16 @@ class _Bookings1State extends State<Bookings1> {
         String firstName = userDoc.data()?['firstName'] ?? '';
         String lastName = userDoc.data()?['lastName'] ?? '';
         String userId = userDoc.id;
-
+        String? partnerId = widget.partner;
+        String? operator = widget.operatorName;
+        print(
+            '$partnerId---------------------------------------------------------------------------------');
         // Query for vehicleBooking collection for this user
         QuerySnapshot<Map<String, dynamic>> vehicleSnapshot = await firestore
             .collection('user')
             .doc(userId)
             .collection('vehicleBooking')
             .get();
-
-        // Iterate through vehicleBooking documents and extract relevant fields
-        vehicleSnapshot.docs.forEach((vehicleDoc) {
-          Map<String, dynamic> bookingData = {
-            'type': 'vehicle',
-            'userId': userId,
-            'firstName': firstName,
-            'lastName': lastName,
-            'truck': vehicleDoc['truck'],
-            'time': vehicleDoc['time'],
-            'date': vehicleDoc['date'],
-            'size': vehicleDoc['size'],
-            'bookingid': vehicleDoc['bookingid'],
-          };
-          combinedData.add(bookingData);
-        });
 
         // Query for equipmentBooking collection for this user
         QuerySnapshot<Map<String, dynamic>> equipmentSnapshot = await firestore
@@ -106,11 +94,32 @@ class _Bookings1State extends State<Bookings1> {
             .collection('equipmentBooking')
             .get();
 
+        // Iterate through vehicleBooking documents and extract relevant fields
+        vehicleSnapshot.docs.forEach((vehicleDoc) {
+          Map<String, dynamic> bookingData = {
+            'type': 'vehicle',
+            'userId': userId,
+            'operName': operator,
+            'firstName': firstName,
+            'lastName': lastName,
+            'load': vehicleDoc['load'],
+            'truck': vehicleDoc['truck'],
+            'time': vehicleDoc['time'],
+            'labour': vehicleDoc['labour'],
+            'productValue': vehicleDoc['productValue'],
+            'date': vehicleDoc['date'],
+            'size': vehicleDoc['size'],
+            'bookingid': vehicleDoc['bookingid'],
+          };
+          combinedData.add(bookingData);
+        });
+
         // Iterate through equipmentBooking documents and extract relevant fields
         equipmentSnapshot.docs.forEach((equipmentDoc) {
           Map<String, dynamic> bookingData = {
             'type': 'equipment',
             'userId': userId,
+            'operName': operator,
             'firstName': firstName,
             'lastName': lastName,
             'truck': equipmentDoc['truck'],
@@ -195,6 +204,7 @@ class _Bookings1State extends State<Bookings1> {
                       return Center(
                           child: Text("You haven't done any bookings"));
                     } else {
+                      String? partner = widget.partner;
                       return ElevationContainer(
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -229,10 +239,12 @@ class _Bookings1State extends State<Bookings1> {
                                 dividerThickness: 1.0,
                                 dataRowHeight: 65,
                                 headingRowHeight: 70,
-                                columns: DataSource.getColumns(context),
+                                columns: DataSource(snapshot.data!, context)
+                                    .getColumns(),
                                 rows: snapshot.data!.map((user) {
                                   return DataRow(
-                                    cells: DataSource.getCells(user),
+                                    cells: DataSource(snapshot.data!, context)
+                                        .getCells(user, partner),
                                   );
                                 }).toList(),
                               ),
@@ -290,6 +302,7 @@ class _Bookings1State extends State<Bookings1> {
                       return Center(
                           child: Text("You haven't done any bookings"));
                     } else {
+                      String? partner = widget.partner;
                       return ElevationContainer(
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -324,10 +337,12 @@ class _Bookings1State extends State<Bookings1> {
                                 dividerThickness: 1.0,
                                 dataRowHeight: 65,
                                 headingRowHeight: 70,
-                                columns: DataSource.getColumns(context),
+                                columns: DataSource(snapshot.data!, context)
+                                    .getColumns(),
                                 rows: snapshot.data!.map((user) {
                                   return DataRow(
-                                    cells: DataSource.getCells(user),
+                                    cells: DataSource(snapshot.data!, context)
+                                        .getCells(user, partner),
                                   );
                                 }).toList(),
                               ),
@@ -347,30 +362,13 @@ class _Bookings1State extends State<Bookings1> {
   }
 }
 
-class DataSource extends DataTableSource {
-  final List<SingleUserBooking> candidates;
+class DataSource {
+  final List<Map<String, dynamic>> candidates;
   final BuildContext context;
-  final Function(SingleUserBooking) onSelect;
 
-  DataSource(this.candidates, {required this.context, required this.onSelect});
+  DataSource(this.candidates, this.context);
 
-  @override
-  DataRow? getRow(int index) {
-    final e = candidates[index];
-
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-        DataCell(Text(e.truck?.toString() ?? 'nill')),
-        DataCell(Text('#623832623')),
-        DataCell(Text('14.02.2024')),
-        DataCell(Text(e.load.toString())),
-        DataCell(Text(e.size?.toString() ?? 'nill')),
-      ],
-    );
-  }
-
-  static List<DataColumn> getColumns(BuildContext context) {
+  List<DataColumn> getColumns() {
     return [
       DataColumn(
           label: Text(
@@ -427,19 +425,53 @@ class DataSource extends DataTableSource {
     ];
   }
 
-  static List<DataCell> getCells(Map<String, dynamic> user) {
+  List<DataCell> getCells(Map<String, dynamic> user, String? partner) {
     return [
       DataCell(Text(user['firstName']?.toString() ?? 'nill',
           style: BookingHistoryText.sfpro20black)),
       DataCell(
-        Text(user['bookingid']?.toString() ?? 'nill',
-            style: TextStyle(
-                decoration: TextDecoration.underline,
-                decorationColor: Color.fromRGBO(173, 28, 134, 1),
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Details(
+                  partner: partner,
+                  user: user['firstName'],
+                  operName: user['operName'],
+                  pickup: 'xxxxxxxxxxxxxxxx',
+                  productValue: user['productValue'],
+                  dropoff: 'xxxxxxxxxxxxxxxx',
+                  labour: user['labour'],
+                  load: user['load'],
+                  bookingid: user['bookingid'],
+                  truck: user['truck'],
+                  date: user['date'],
+                  time: user['time'],
+                );
+              },
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color.fromRGBO(173, 28, 134, 1), // Underline color
+                  width: 2.0, // Underline thickness
+                ),
+              ),
+            ),
+            child: Text(
+              user['bookingid']?.toString() ?? 'nill',
+              style: TextStyle(
                 fontSize: 17,
                 letterSpacing: 1,
                 fontFamily: 'SFproText',
-                color: Color.fromRGBO(10, 5, 5, 1))),
+                color: Color.fromRGBO(173, 28, 134, 1),
+              ),
+            ),
+          ),
+        ),
       ),
       DataCell(
         Container(
@@ -519,13 +551,4 @@ class DataSource extends DataTableSource {
       ),
     ];
   }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => candidates.length;
-
-  @override
-  int get selectedRowCount => 0;
 }

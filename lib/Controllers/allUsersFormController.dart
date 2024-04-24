@@ -30,6 +30,9 @@ class AllUsersFormController {
   final load = TextEditingController();
   final size = TextEditingController();
   final time = TextEditingController();
+  final productValue = TextEditingController();
+  final fromtime = TextEditingController();
+  final totime = TextEditingController();
   final booking = TextEditingController();
   final companyidNumber = TextEditingController();
   final selectedAccounttype = TextEditingController();

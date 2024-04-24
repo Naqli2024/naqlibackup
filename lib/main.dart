@@ -1,7 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Partner/loginPage.dart';
-import 'package:flutter_application_1/Users/Enterprise/dashboard_page.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'classes/language_constants.dart';
@@ -75,6 +73,6 @@ class _MyAppState extends State<MyApp> {
         supportedLocales: AppLocalizations.supportedLocales,
         locale: _locale,
         debugShowCheckedModeBanner: false,
-        home: LoginPage());
+        home: MyHomePage());
   }
 }

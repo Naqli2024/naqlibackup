@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +144,7 @@ class CustomContainerState extends State<UnitsContainer> {
               ),
               color: Colors.white,
             ),
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

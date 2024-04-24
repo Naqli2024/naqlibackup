@@ -19,8 +19,9 @@ import '../../Widgets/formText.dart';
 import '../../main.dart';
 
 class PartnerDashboardPage extends StatefulWidget {
-  final String? user;
-  PartnerDashboardPage({this.user});
+  final String? partner;
+
+  PartnerDashboardPage({this.partner});
 
   @override
   State<PartnerDashboardPage> createState() => _MyHomePageState();
@@ -60,7 +61,7 @@ class _MyHomePageState extends State<PartnerDashboardPage> {
     super.initState();
     _currentContent = Bookingpartner(
       unitType: 'Vehicle',
-      user: widget.user,
+      user: widget.partner,
     );
   }
 
@@ -88,7 +89,7 @@ class _MyHomePageState extends State<PartnerDashboardPage> {
           'firstName': firstName,
           'lastName': lastName,
           'address': address,
-          'userId': userId
+          'userId': userId,
         };
       } else {
         print('Document does not exist for userId: $userId');
@@ -97,6 +98,35 @@ class _MyHomePageState extends State<PartnerDashboardPage> {
     } catch (e) {
       print('Error fetching data for userId $userId: $e');
       return null;
+    }
+  }
+
+  Future<String> fetchOperatorName(String? partner) async {
+    try {
+      // Query the 'operatorReg' subcollection based on partner
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+          .instance
+          .collection('partneruser')
+          .doc(partner)
+          .collection('operatorReg')
+          // Limit to 1 document, assuming there's only one operator per partner
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Get the first document's 'operName'
+        String? operName = querySnapshot.docs.first.data()['operName'];
+        print('Fetched operName: $operName');
+        return operName ??
+            ''; // Return the 'operName', or an empty string if it's null
+      } else {
+        // Handle if no matching document is found
+        print('No operator document found for partner: $partner');
+        return ''; // Return an empty string or handle error as needed
+      }
+    } catch (e) {
+      // Handle any potential errors
+      print('Error fetching operator name: $e');
+      return ''; // Return an empty string or handle error as needed
     }
   }
 
@@ -276,7 +306,7 @@ class _MyHomePageState extends State<PartnerDashboardPage> {
                             ),
                             child: FutureBuilder<Map<String, dynamic>?>(
                               future: fetchData(widget
-                                  .user!), // Pass the userId to fetchData method
+                                  .partner!), // Pass the userId to fetchData method
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -374,7 +404,7 @@ class _MyHomePageState extends State<PartnerDashboardPage> {
                             ),
                             child: FutureBuilder<Map<String, dynamic>?>(
                               future: fetchData(widget
-                                  .user!), // Pass the userId to fetchData method
+                                  .partner!), // Pass the userId to fetchData method
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -484,7 +514,7 @@ class _MyHomePageState extends State<PartnerDashboardPage> {
                                     setState(() {
                                       _currentContent = Bookingpartner(
                                         unitType: 'Vehicle',
-                                        user: widget.user,
+                                        user: widget.partner,
                                       );
                                     });
                                     sideMenu.changePage(page);
@@ -498,7 +528,7 @@ class _MyHomePageState extends State<PartnerDashboardPage> {
                                     setState(() {
                                       _currentContent = Payments(
                                         unitType: 'Vehicle',
-                                        user: widget.user,
+                                        user: widget.partner,
                                       );
                                     });
                                     sideMenu.changePage(page);
@@ -507,13 +537,22 @@ class _MyHomePageState extends State<PartnerDashboardPage> {
                                 ),
                                 SideMenuItem(
                                   title: 'Report',
-                                  onTap: (page, _) {
+                                  onTap: (page, _) async {
+                                    // Fetch the operator name
+                                    String operatorName =
+                                        await fetchOperatorName(
+                                      widget.partner,
+                                    );
+
                                     setState(() {
+                                      // Pass the operator name and other necessary data to the Bookings1 widget
                                       _currentContent = Bookings1(
                                         unitType: 'Vehicle',
-                                        user: widget.user,
+                                        partner: widget.partner,
+                                        operatorName: operatorName,
                                       );
                                     });
+                                    // Change the page using the SideMenu instance
                                     sideMenu.changePage(page);
                                   },
                                   icon: const Icon(Icons.mode_comment_outlined),
